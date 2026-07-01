@@ -1,0 +1,326 @@
+// Bisiklet E-Ticaret — Prisma şeması (yol haritası Bölüm 3'e göre).
+// Para her zaman kuruş (INT). 2. el alanları nullable. Sıfır → varyantlı stok.
+//
+// Kurulum: Supabase projesi aç, DATABASE_URL + DIRECT_URL'i .env'e koy, sonra:
+//   npx prisma migrate dev --name init
+//   npx prisma db seed
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  // Prisma 7: bağlantı URL'leri prisma.config.ts içinde tanımlanır.
+}
+
+// ============ ENUM'lar ============
+enum ProductCondition {
+  NEW
+  USED
+}
+
+enum BikeType {
+  MOUNTAIN
+  ROAD
+  CITY
+  ELECTRIC
+  KIDS
+  GRAVEL
+}
+
+enum SellerType {
+  SHOP
+  CONSUMER
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PREPARING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
+
+enum ListingStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  PUBLISHED
+}
+
+enum UserRole {
+  CUSTOMER
+  ADMIN
+}
+
+enum FulfillmentType {
+  DELIVERY
+  PICKUP
+}
+
+// ============ USERS ============
+// Supabase Auth kullanılırsa User.id = auth.users.id ile eşlenir.
+model User {
+  id        String   @id @default(uuid()) @db.Uuid
+  email     String   @unique
+  fullName  String?  @map("full_name")
+  phone     String?
+  role      UserRole @default(CUSTOMER)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  addresses     Address[]
+  orders        Order[]
+  listings      Listing[]
+  wishlistItems WishlistItem[]
+
+  @@map("users")
+}
+
+// ============ ADDRESSES ============
+model Address {
+  id          String   @id @default(uuid()) @db.Uuid
+  userId      String   @map("user_id") @db.Uuid
+  title       String?
+  recipient   String
+  phone       String
+  city        String
+  district    String
+  fullAddress String   @map("full_address")
+  zipCode     String?  @map("zip_code")
+  isDefault   Boolean  @default(false) @map("is_default")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("addresses")
+}
+
+// ============ CATEGORIES (self-referencing) ============
+model Category {
+  id        String   @id @default(uuid()) @db.Uuid
+  name      String
+  slug      String   @unique
+  parentId  String?  @map("parent_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  parent   Category?  @relation("CategoryTree", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("CategoryTree")
+  products Product[]
+
+  @@map("categories")
+}
+
+// ============ PRODUCTS (sıfır + 2. el tek tabloda) ============
+model Product {
+  id         String  @id @default(uuid()) @db.Uuid
+  categoryId String? @map("category_id") @db.Uuid
+
+  title       String
+  slug        String           @unique
+  description String?
+  brand       String?
+  condition   ProductCondition @default(NEW)
+  sellerType  SellerType       @default(SHOP) @map("seller_type")
+
+  // Filtrelenebilir teknik alanlar (indekslenir)
+  bikeType  BikeType? @map("bike_type")
+  frameSize String?   @map("frame_size")
+  wheelSize Decimal?  @map("wheel_size") @db.Decimal(4, 1)
+  gearCount Int?      @map("gear_count")
+  brakeType String?   @map("brake_type")
+  color     String?
+
+  // Fiyat ve stok (kuruş cinsinden INT)
+  priceCents     Int  @map("price_cents")
+  compareAtCents Int? @map("compare_at_cents")
+  stock          Int  @default(0)
+
+  // 2. EL'e özgü alanlar (condition = USED ise dolu)
+  usageLevel          String? @map("usage_level")
+  manufactureYear     Int?    @map("manufacture_year")
+  inspectionReportUrl String? @map("inspection_report_url")
+  cosmeticNotes       String? @map("cosmetic_notes")
+  mileageKm           Int?    @map("mileage_km")
+
+  isActive      Boolean  @default(true) @map("is_active")
+  isPlaceholder Boolean  @default(false) @map("is_placeholder")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  category      Category?        @relation(fields: [categoryId], references: [id], onDelete: SetNull)
+  images        ProductImage[]
+  variants      ProductVariant[]
+  specs         ProductSpec[]
+  orderItems    OrderItem[]
+  wishlistItems WishlistItem[]
+  listings      Listing[]
+
+  @@index([bikeType, condition, priceCents], name: "idx_products_filter")
+  @@index([isActive])
+  @@index([brand])
+  @@map("products")
+}
+
+// ============ PRODUCT IMAGES ============
+model ProductImage {
+  id        String  @id @default(uuid()) @db.Uuid
+  productId String  @map("product_id") @db.Uuid
+  url       String
+  alt       String?
+  position  Int     @default(0)
+  isCover   Boolean @default(false) @map("is_cover")
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_images")
+}
+
+// ============ PRODUCT VARIANTS (sıfır ürün beden/renk stoğu) ============
+model ProductVariant {
+  id         String  @id @default(uuid()) @db.Uuid
+  productId  String  @map("product_id") @db.Uuid
+  sku        String? @unique
+  frameSize  String? @map("frame_size")
+  color      String?
+  priceCents Int?    @map("price_cents") // NULL ise products.priceCents geçerli
+  stock      Int     @default(0)
+
+  product    Product     @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+
+  @@index([productId])
+  @@map("product_variants")
+}
+
+// ============ PRODUCT SPECS (esnek key-value) ============
+model ProductSpec {
+  id        String @id @default(uuid()) @db.Uuid
+  productId String @map("product_id") @db.Uuid
+  specKey   String @map("spec_key")
+  specValue String @map("spec_value")
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_specs")
+}
+
+// ============ ORDERS ============
+model Order {
+  id          String      @id @default(uuid()) @db.Uuid
+  userId      String?     @map("user_id") @db.Uuid // NULL = misafir sipariş
+  orderNumber String      @unique @map("order_number")
+  status      OrderStatus @default(PENDING)
+
+  // Misafir (üyeliksiz) alışveriş
+  guestEmail String? @map("guest_email")
+  guestPhone String? @map("guest_phone")
+
+  fulfillment FulfillmentType @default(DELIVERY)
+
+  subtotalCents   Int     @map("subtotal_cents")
+  shippingCents   Int     @default(0) @map("shipping_cents")
+  totalCents      Int     @map("total_cents")
+  shippingAddress Json?   @map("shipping_address") // sipariş anı kopyası
+  trackingCode    String? @map("tracking_code")
+  pickupReady     Boolean @default(false) @map("pickup_ready")
+
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  user    User?       @relation(fields: [userId], references: [id], onDelete: SetNull)
+  items   OrderItem[]
+  payment Payment?
+
+  @@index([userId])
+  @@index([status])
+  @@map("orders")
+}
+
+// ============ ORDER ITEMS ============
+model OrderItem {
+  id        String  @id @default(uuid()) @db.Uuid
+  orderId   String  @map("order_id") @db.Uuid
+  productId String? @map("product_id") @db.Uuid
+  variantId String? @map("variant_id") @db.Uuid
+
+  // Sipariş anındaki kopya (immutability)
+  productTitle String @map("product_title")
+  unitCents    Int    @map("unit_cents")
+  quantity     Int    @default(1)
+  lineCents    Int    @map("line_cents")
+
+  order   Order           @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product?        @relation(fields: [productId], references: [id], onDelete: SetNull)
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@index([orderId])
+  @@map("order_items")
+}
+
+// ============ PAYMENTS ============
+model Payment {
+  id          String        @id @default(uuid()) @db.Uuid
+  orderId     String        @unique @map("order_id") @db.Uuid
+  provider    String        @default("iyzico")
+  providerRef String?       @map("provider_ref") // iyzico paymentId
+  status      PaymentStatus @default(PENDING)
+  amountCents Int           @map("amount_cents")
+  rawResponse Json?         @map("raw_response")
+  createdAt   DateTime      @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+// ============ LISTINGS ("Bisikletini Sat") ============
+model Listing {
+  id               String        @id @default(uuid()) @db.Uuid
+  userId           String        @map("user_id") @db.Uuid
+  title            String
+  description      String?
+  bikeType         BikeType?     @map("bike_type")
+  frameSize        String?       @map("frame_size")
+  wheelSize        Decimal?      @map("wheel_size") @db.Decimal(4, 1)
+  askingPriceCents Int?          @map("asking_price_cents")
+  images           Json?
+  status           ListingStatus @default(PENDING)
+  adminNote        String?       @map("admin_note")
+  convertedProductId String?     @map("converted_product_id") @db.Uuid
+  createdAt        DateTime      @default(now()) @map("created_at")
+
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  convertedProduct Product? @relation(fields: [convertedProductId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([status])
+  @@map("listings")
+}
+
+// ============ WISHLIST ============
+model WishlistItem {
+  id        String   @id @default(uuid()) @db.Uuid
+  userId    String   @map("user_id") @db.Uuid
+  productId String   @map("product_id") @db.Uuid
+  createdAt DateTime @default(now()) @map("created_at")
+
+  user    User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId])
+  @@map("wishlist_items")
+}

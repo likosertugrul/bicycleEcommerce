@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Elektrikli Bisiklet — temsili görsel">
+  <defs>
+    <linearGradient id="g-electric-01" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#eceff1"/>
+      <stop offset="1" stop-color="#d5dbe0"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="600" fill="url(#g-electric-01)"/>
+  <g fill="none" stroke="#455a64" stroke-width="10" stroke-linecap="round" stroke-linejoin="round">
+    <!-- wheels -->
+    <circle cx="245" cy="380" r="105"/>
+    <circle cx="555" cy="380" r="105"/>
+    <circle cx="245" cy="380" r="14" fill="#455a64" stroke="none"/>
+    <circle cx="555" cy="380" r="14" fill="#455a64" stroke="none"/>
+    <!-- frame -->
+    <path d="M245 380 L360 380 L470 250 L555 380 M360 380 L440 250 L470 250 M440 250 L470 250"/>
+    <!-- seat tube + saddle -->
+    <path d="M360 380 L340 250"/>
+    <path d="M310 245 L375 245" stroke-width="14"/>
+    <!-- handlebar + fork -->
+    <path d="M470 250 L500 200"/>
+    <path d="M478 195 L525 200" stroke-width="14"/>
+    <path d="M470 250 L555 380"/>
+    <!-- pedals/crank -->
+    <circle cx="360" cy="380" r="26"/>
+    <path d="M360 380 L385 405"/>
+  </g>
+  <text x="400" y="545" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="600" fill="#455a64" opacity="0.85">Elektrikli Bisiklet</text>
+  <text x="400" y="580" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#455a64" opacity="0.55">Temsili görsel</text>
+</svg>
