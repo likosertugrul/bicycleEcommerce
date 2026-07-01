@@ -2,11 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import {
-  getProductBySlug,
-  getAllProductSlugs,
-  getRelatedProducts,
-} from "@/server/products";
+import { getProductBySlug, getRelatedProducts } from "@/server/products";
 import { ProductCard } from "@/components/product-card";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { FavoriteButton } from "@/components/favorite-button";
@@ -18,20 +14,9 @@ import {
 } from "@/lib/types";
 import { site } from "@/lib/site";
 
-// Ürün detay — ISR/SSG. generateStaticParams ile build'de statik üretilir.
-export const revalidate = 3600;
-
-export async function generateStaticParams() {
-  // Build anında DB'ye ulaşılamazsa build'i çökertme; sayfalar runtime'da
-  // (ilk istekte) üretilir. dynamicParams varsayılan olarak açık.
-  try {
-    const slugs = await getAllProductSlugs();
-    return slugs.map((slug) => ({ slug }));
-  } catch (err) {
-    console.error("generateStaticParams: DB'ye ulaşılamadı, runtime'a bırakılıyor.", err);
-    return [];
-  }
-}
+// Ürün detay — runtime'da render (build ortamı DB'ye bağlanmasın diye).
+// Runtime SSR yine tam HTML üretir; SEO için sorun değil.
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({
   params,

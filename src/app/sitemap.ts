@@ -2,8 +2,17 @@ import type { MetadataRoute } from "next";
 import { getAllProductSlugs } from "@/server/products";
 import { site } from "@/lib/site";
 
+// Runtime'da üret (build ortamı DB'ye bağlanmasın diye).
+export const dynamic = "force-dynamic";
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const slugs = await getAllProductSlugs();
+  // DB'ye ulaşılamazsa (örn. build/edge sorunu) statik rotalarla dön, çökme.
+  let slugs: string[] = [];
+  try {
+    slugs = await getAllProductSlugs();
+  } catch (err) {
+    console.error("sitemap: ürün slug'ları alınamadı.", err);
+  }
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: site.url, changeFrequency: "daily", priority: 1 },

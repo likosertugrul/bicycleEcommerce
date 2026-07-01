@@ -3,8 +3,9 @@ import { getFeaturedProducts } from "@/server/products";
 import { ProductCard } from "@/components/product-card";
 import { BIKE_TYPE_LABELS, BIKE_TYPE_TO_SLUG, type BikeType } from "@/lib/types";
 
-// Ana sayfa — ISR (vitrin). Placeholder veriyle çalışıyor.
-export const revalidate = 3600;
+// Ana sayfa — runtime'da render (Cloudflare build ortamı DB'ye erişmesin diye).
+// DB yalnızca runtime'da kullanılır; orada DATABASE_URL mevcut.
+export const dynamic = "force-dynamic";
 
 const CATEGORIES: { type: BikeType; emoji: string }[] = [
   { type: "MOUNTAIN", emoji: "⛰️" },
