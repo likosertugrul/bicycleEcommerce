@@ -8,6 +8,7 @@ import {
   getRelatedProducts,
 } from "@/server/products";
 import { ProductCard } from "@/components/product-card";
+import { AddToCartButton } from "@/components/add-to-cart-button";
 import { formatPrice, discountPercent } from "@/lib/format";
 import {
   BIKE_TYPE_LABELS,
@@ -181,12 +182,7 @@ export default async function ProductDetailPage({
           <p className="mt-4 text-slate-600">{product.description}</p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <button
-              disabled={!inStock}
-              className="rounded-full bg-emerald-600 px-8 py-3 font-semibold text-white hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
-            >
-              Sepete Ekle
-            </button>
+            <AddToCartButton productId={product.id} disabled={!inStock} />
             <button className="rounded-full border border-slate-300 px-6 py-3 font-semibold text-slate-700 hover:bg-slate-50">
               ♡ Favori
             </button>

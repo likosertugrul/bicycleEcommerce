@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { site } from "@/lib/site";
+import { CartBadge } from "@/components/cart-badge";
 
 export function SiteHeader() {
   return (
@@ -29,12 +30,7 @@ export function SiteHeader() {
           >
             Ara
           </Link>
-          <Link
-            href="/sepet"
-            className="rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700 transition-colors"
-          >
-            Sepet
-          </Link>
+          <CartBadge />
         </div>
       </div>
 
