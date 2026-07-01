@@ -53,6 +53,7 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 ## Sıradaki TODO
 - [x] Sprint 0 + Sprint 1: iskelet, şema, Supabase, katalog/vitrin, SEO, canlı deploy
 - [x] Sepet (cookie + server actions, sunucu-hesaplı toplam)
+- [x] Favoriler/Wishlist (cookie tabanlı, misafir dostu; Auth gelince `WishlistItem`'a taşınır). `src/server/wishlist*.ts`, `FavoriteButton`, `WishlistBadge`, `/favorilerim`.
 - [ ] Supabase Auth (kayıt/giriş, oturum middleware) — @supabase/ssr
 - [ ] Adres yönetimi + kullanıcı paneli (siparişlerim, favoriler)
 - [ ] Ödeme (Sprint 3): `createOrder`, iyzico, `/odeme`, webhook

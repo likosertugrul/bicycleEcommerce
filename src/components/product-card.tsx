@@ -6,6 +6,7 @@ import {
   CONDITION_LABELS,
 } from "@/lib/types";
 import { formatPrice, discountPercent } from "@/lib/format";
+import { FavoriteButton } from "@/components/favorite-button";
 
 export function ProductCard({ product }: { product: Product }) {
   const cover = product.images.find((i) => i.isCover) ?? product.images[0];
@@ -47,6 +48,9 @@ export function ProductCard({ product }: { product: Product }) {
             Temsili görsel
           </span>
         )}
+        <div className="absolute right-2 top-2">
+          <FavoriteButton productId={product.id} variant="icon" />
+        </div>
       </div>
 
       <div className="flex flex-1 flex-col p-4">

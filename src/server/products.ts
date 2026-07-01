@@ -109,6 +109,20 @@ export async function getProducts(
   return rows.map(toDomain);
 }
 
+/** Verilen ID'lerdeki aktif ürünler (favoriler için). Sıra: verilen id sırası. */
+export async function getProductsByIds(ids: string[]): Promise<Product[]> {
+  if (ids.length === 0) return [];
+  const rows = await prisma.product.findMany({
+    where: { id: { in: ids }, isActive: true },
+    include: productInclude,
+  });
+  const byId = new Map(rows.map((r) => [r.id, r]));
+  return ids
+    .map((id) => byId.get(id))
+    .filter((r): r is DbProduct => Boolean(r))
+    .map(toDomain);
+}
+
 /** Tek ürün (detay sayfası). */
 export async function getProductBySlug(slug: string): Promise<Product | null> {
   const row = await prisma.product.findUnique({

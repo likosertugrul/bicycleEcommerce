@@ -9,6 +9,7 @@ import {
 } from "@/server/products";
 import { ProductCard } from "@/components/product-card";
 import { AddToCartButton } from "@/components/add-to-cart-button";
+import { FavoriteButton } from "@/components/favorite-button";
 import { formatPrice, discountPercent } from "@/lib/format";
 import {
   BIKE_TYPE_LABELS,
@@ -183,9 +184,7 @@ export default async function ProductDetailPage({
 
           <div className="mt-6 flex flex-wrap gap-3">
             <AddToCartButton productId={product.id} disabled={!inStock} />
-            <button className="rounded-full border border-slate-300 px-6 py-3 font-semibold text-slate-700 hover:bg-slate-50">
-              ♡ Favori
-            </button>
+            <FavoriteButton productId={product.id} />
           </div>
 
           {/* Teknik özellikler */}
