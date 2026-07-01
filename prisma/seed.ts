@@ -1,8 +1,14 @@
+import "dotenv/config";
 import { PrismaClient, Prisma } from "@prisma/client";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 // Yer tutucu ürünlerle DB'yi doldurur. Görseller public/placeholders/*.svg.
 // Çalıştırma (DATABASE_URL tanımlıyken):  npx prisma db seed
-const prisma = new PrismaClient();
+// Prisma 7: driver adapter (pg) şart. Migration'daki DIRECT_URL'i kullanıyoruz.
+const adapter = new PrismaPg({
+  connectionString: process.env.DIRECT_URL ?? process.env.DATABASE_URL,
+});
+const prisma = new PrismaClient({ adapter });
 
 type Seed = {
   slug: string;

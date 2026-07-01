@@ -20,8 +20,15 @@ import { site } from "@/lib/site";
 export const revalidate = 3600;
 
 export async function generateStaticParams() {
-  const slugs = await getAllProductSlugs();
-  return slugs.map((slug) => ({ slug }));
+  // Build anında DB'ye ulaşılamazsa build'i çökertme; sayfalar runtime'da
+  // (ilk istekte) üretilir. dynamicParams varsayılan olarak açık.
+  try {
+    const slugs = await getAllProductSlugs();
+    return slugs.map((slug) => ({ slug }));
+  } catch (err) {
+    console.error("generateStaticParams: DB'ye ulaşılamadı, runtime'a bırakılıyor.", err);
+    return [];
+  }
 }
 
 export async function generateMetadata({
