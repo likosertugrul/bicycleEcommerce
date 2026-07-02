@@ -18,7 +18,7 @@ export default async function AccountPage() {
   const cards = [
     { href: "/siparislerim", label: t.auth.orders, emoji: "📦", soon: true },
     { href: "/favorilerim", label: t.auth.favorites, emoji: "♥", soon: false },
-    { href: "/adreslerim", label: t.auth.addresses, emoji: "📍", soon: true },
+    { href: "/adreslerim", label: t.auth.addresses, emoji: "📍", soon: false },
     { href: "/ilanlarim", label: t.auth.listings, emoji: "🚲", soon: true },
   ];
 
