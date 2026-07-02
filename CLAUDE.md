@@ -75,7 +75,7 @@ Sprint 1 fonksiyonel olarak ~%85 bitti; aşağıdakiler ertelendi:
 ## Notlar
 - Placeholder bisiklet görselleri harici AI modeliyle üretilip eklenecek (yol haritası Bölüm 5). 2. el gerçek ilanlarda AI görsel yok.
 - Büyük yol haritasını bu dosyaya kopyalama; `@bisiklet-eticaret-yol-haritasi.md` ile referansla.
-- **Dil seçimi:** header'da `LanguageSelector` (popüler diller, cookie: `lang`) eklendi — şimdilik yalnızca tercih/`<html lang>`; gerçek içerik çevirisi (i18n) ayrı iş (yol haritası 6.1 açık kararı).
+- **Dil seçimi:** header'da `LanguageSelector` (şimdilik **TR + EN**, cookie: `lang`) — yalnızca tercih/`<html lang>`; gerçek içerik çevirisi (i18n) ve diğer diller o adıma gelince (yol haritası 6.1 açık kararı).
 
 ## Compact talimatı
 Compact yaparken şunları koru: alınan mimari/şema kararları, değişen dosyalar ve ne değiştiği, aktif görev durumu ve sıradaki adımlar, çözülen hatalar.

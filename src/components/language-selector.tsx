@@ -2,20 +2,14 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Popüler diller. Şimdilik yalnızca tercih (cookie `lang` + <html lang/dir>);
-// gerçek içerik çevirisi (i18n) sonraki iş.
+// Şimdilik yalnızca TR + EN (cookie `lang` + <html lang>). Diğer diller ve
+// gerçek içerik çevirisi (i18n) o adıma gelince eklenecek.
 const LANGUAGES = [
   { code: "tr", label: "Türkçe", flag: "🇹🇷" },
   { code: "en", label: "English", flag: "🇬🇧" },
-  { code: "de", label: "Deutsch", flag: "🇩🇪" },
-  { code: "fr", label: "Français", flag: "🇫🇷" },
-  { code: "es", label: "Español", flag: "🇪🇸" },
-  { code: "ru", label: "Русский", flag: "🇷🇺" },
-  { code: "ar", label: "العربية", flag: "🇸🇦" },
 ] as const;
 
 const COOKIE = "lang";
-const RTL = new Set(["ar"]);
 
 function readLang(): string {
   if (typeof document === "undefined") return "tr";
@@ -39,7 +33,6 @@ export function LanguageSelector() {
   // Dil değişince <html lang/dir> güncelle ve cookie'ye yaz (side-effect: effect'te).
   useEffect(() => {
     document.documentElement.lang = lang;
-    document.documentElement.dir = RTL.has(lang) ? "rtl" : "ltr";
     if (mounted.current) {
       document.cookie = `${COOKIE}=${lang}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
     } else {
