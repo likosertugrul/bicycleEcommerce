@@ -3,14 +3,17 @@ import Link from "next/link";
 import type { Product } from "@/lib/types";
 import type { Dictionary } from "@/lib/i18n";
 import { formatPrice, discountPercent } from "@/lib/format";
+import type { Currency } from "@/lib/currency";
 import { FavoriteButton } from "@/components/favorite-button";
 
 export function ProductCard({
   product,
   t,
+  currency = "TRY",
 }: {
   product: Product;
   t: Dictionary;
+  currency?: Currency;
 }) {
   const cover = product.images.find((i) => i.isCover) ?? product.images[0];
   const discount = discountPercent(product.priceCents, product.compareAtCents);
@@ -71,11 +74,11 @@ export function ProductCard({
 
         <div className="mt-auto flex items-end gap-2 pt-3">
           <span className="text-lg font-bold text-slate-900">
-            {formatPrice(product.priceCents)}
+            {formatPrice(product.priceCents, currency)}
           </span>
           {product.compareAtCents && (
             <span className="text-sm text-slate-400 line-through">
-              {formatPrice(product.compareAtCents)}
+              {formatPrice(product.compareAtCents, currency)}
             </span>
           )}
         </div>

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { getFeaturedProducts } from "@/server/products";
-import { getT } from "@/lib/locale";
+import { getT, getCurrency } from "@/lib/locale";
 import { ProductCard } from "@/components/product-card";
 import { BIKE_TYPE_TO_SLUG, type BikeType } from "@/lib/types";
 
@@ -18,7 +18,11 @@ const CATEGORIES: { type: BikeType; emoji: string }[] = [
 ];
 
 export default async function HomePage() {
-  const [t, featured] = await Promise.all([getT(), getFeaturedProducts(6)]);
+  const [t, currency, featured] = await Promise.all([
+    getT(),
+    getCurrency(),
+    getFeaturedProducts(6),
+  ]);
 
   return (
     <div>
@@ -81,7 +85,7 @@ export default async function HomePage() {
         </div>
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {featured.map((product) => (
-            <ProductCard key={product.id} product={product} t={t} />
+            <ProductCard key={product.id} product={product} t={t} currency={currency} />
           ))}
         </div>
       </section>

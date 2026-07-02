@@ -4,6 +4,7 @@ import type { Dictionary } from "@/lib/i18n";
 import { CartBadge } from "@/components/cart-badge";
 import { WishlistBadge } from "@/components/wishlist-badge";
 import { LanguageSelector } from "@/components/language-selector";
+import { CurrencySelector } from "@/components/currency-selector";
 import { AccountMenu } from "@/components/account-menu";
 
 export function SiteHeader({ t }: { t: Dictionary }) {
@@ -41,6 +42,7 @@ export function SiteHeader({ t }: { t: Dictionary }) {
           >
             {t.nav.search}
           </Link>
+          <CurrencySelector />
           <LanguageSelector />
           <AccountMenu t={t} />
           <WishlistBadge label={t.nav.wishlist} />

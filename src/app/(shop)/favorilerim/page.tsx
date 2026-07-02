@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { getWishlist } from "@/server/wishlist";
 import { clearWishlist } from "@/server/wishlist-actions";
-import { getT } from "@/lib/locale";
+import { getT, getCurrency } from "@/lib/locale";
 import { ProductCard } from "@/components/product-card";
 
 export const metadata: Metadata = {
@@ -11,7 +11,11 @@ export const metadata: Metadata = {
 };
 
 export default async function WishlistPage() {
-  const [t, products] = await Promise.all([getT(), getWishlist()]);
+  const [t, currency, products] = await Promise.all([
+    getT(),
+    getCurrency(),
+    getWishlist(),
+  ]);
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
@@ -53,7 +57,7 @@ export default async function WishlistPage() {
       ) : (
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product) => (
-            <ProductCard key={product.id} product={product} t={t} />
+            <ProductCard key={product.id} product={product} t={t} currency={currency} />
           ))}
         </div>
       )}

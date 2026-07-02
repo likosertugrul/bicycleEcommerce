@@ -86,6 +86,7 @@ Sprint 1 fonksiyonel olarak ~%85 bitti; aşağıdakiler ertelendi:
 ## Notlar
 - Placeholder bisiklet görselleri harici AI modeliyle üretilip eklenecek (yol haritası Bölüm 5). 2. el gerçek ilanlarda AI görsel yok.
 - Büyük yol haritasını bu dosyaya kopyalama; `@bisiklet-eticaret-yol-haritasi.md` ile referansla.
+- **Para birimi seçici (TRY/USD/EUR/GBP):** `src/lib/currency.ts` (kurlar YAKLAŞIK/statik — ileride canlı API). `cur` cookie, `getCurrency()` (locale.ts), `formatPrice(cents, currency)` TRY'den dönüştürür. `CurrencySelector` header'da (cookie + `router.refresh()`). Müşteri-yüzü fiyatlar (kart/detay/sepet) `currency` prop'u alır; admin fiyatları TRY sabit.
 - **i18n (TR + EN, GERÇEK ÇEVİRİ):** Hafif, bağımlılıksız. Sözlük `src/lib/i18n.ts` (`tr`/`en`), sunucu tarafı `src/lib/locale.ts` `getLocale()`/`getT()` `lang` cookie'sini okur. Sunucu bileşenleri `const t = await getT()` ile çevirir; client çocuklara (AddToCartButton, FavoriteButton, CartBadge, WishlistBadge) etiketler prop olarak geçer. `LanguageSelector` seçince cookie yazar + `router.refresh()` ile sayfayı yeni dille render eder. Tür/durum etiketleri `t.bikeType`/`t.condition` (types.ts'ten kaldırıldı). **Not:** yalnızca arayüz metinleri çevrilir; ürün verisi (başlık/açıklama) DB'de tek dil — çok dilli ürün alanları ayrı iş. Yeni dil eklemek için: i18n.ts'e sözlük + `LOCALES`/`isLocale` güncelle + `LanguageSelector` LABELS.
 
 ## Compact talimatı

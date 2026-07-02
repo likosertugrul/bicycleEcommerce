@@ -1,18 +1,27 @@
-// Para: her zaman kuruş (INT) olarak saklanır, burada gösterime formatlanır.
+// Para: her zaman kuruş (INT) / TRY olarak saklanır, burada gösterime formatlanır.
+import {
+  DEFAULT_CURRENCY,
+  RATES,
+  localeFor,
+  type Currency,
+} from "@/lib/currency";
 
-const tryFormatter = new Intl.NumberFormat("tr-TR", {
-  style: "currency",
-  currency: "TRY",
-  minimumFractionDigits: 0,
-  maximumFractionDigits: 0,
-});
-
-/** Kuruş (INT) → "12.500 ₺" */
-export function formatPrice(cents: number): string {
-  return tryFormatter.format(Math.round(cents / 100));
+/** Kuruş (INT, TRY) → seçilen para biriminde biçimlenmiş fiyat. */
+export function formatPrice(
+  cents: number,
+  currency: Currency = DEFAULT_CURRENCY,
+): string {
+  const amount = (cents / 100) * RATES[currency];
+  const fractionDigits = currency === "TRY" ? 0 : 2;
+  return new Intl.NumberFormat(localeFor(currency), {
+    style: "currency",
+    currency,
+    minimumFractionDigits: fractionDigits,
+    maximumFractionDigits: fractionDigits,
+  }).format(amount);
 }
 
-/** Kuruş → indirim yüzdesi (varsa) */
+/** Kuruş → indirim yüzdesi (para biriminden bağımsız). */
 export function discountPercent(
   priceCents: number,
   compareAtCents: number | null,

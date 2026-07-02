@@ -5,7 +5,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getCart } from "@/server/cart";
 import { setQuantity, removeFromCart, clearCart } from "@/server/cart-actions";
-import { getT } from "@/lib/locale";
+import { getT, getCurrency } from "@/lib/locale";
 import { formatPrice } from "@/lib/format";
 
 export const metadata: Metadata = {
@@ -14,7 +14,11 @@ export const metadata: Metadata = {
 };
 
 export default async function CartPage() {
-  const [t, cart] = await Promise.all([getT(), getCart()]);
+  const [t, currency, cart] = await Promise.all([
+    getT(),
+    getCurrency(),
+    getCart(),
+  ]);
 
   return (
     <>
@@ -68,7 +72,7 @@ export default async function CartPage() {
                         </Link>
                         <p className="mt-0.5 text-xs text-slate-500">
                           {t.condition[item.condition]} · {t.cart.unit}{" "}
-                          {formatPrice(item.unitCents)}
+                          {formatPrice(item.unitCents, currency)}
                         </p>
                       </div>
                       <form action={removeFromCart.bind(null, item.productId)}>
@@ -120,7 +124,7 @@ export default async function CartPage() {
                         </form>
                       </div>
                       <span className="text-lg font-bold text-slate-900">
-                        {formatPrice(item.lineCents)}
+                        {formatPrice(item.lineCents, currency)}
                       </span>
                     </div>
                   </div>
@@ -134,7 +138,7 @@ export default async function CartPage() {
               <dl className="mt-4 space-y-2 text-sm">
                 <div className="flex justify-between">
                   <dt className="text-slate-500">{t.cart.subtotal}</dt>
-                  <dd className="font-medium">{formatPrice(cart.subtotalCents)}</dd>
+                  <dd className="font-medium">{formatPrice(cart.subtotalCents, currency)}</dd>
                 </div>
                 <div className="flex justify-between">
                   <dt className="text-slate-500">{t.cart.shipping}</dt>
@@ -144,7 +148,7 @@ export default async function CartPage() {
               <div className="mt-4 flex justify-between border-t border-slate-200 pt-4">
                 <span className="font-semibold">{t.cart.total}</span>
                 <span className="text-xl font-extrabold text-slate-900">
-                  {formatPrice(cart.subtotalCents)}
+                  {formatPrice(cart.subtotalCents, currency)}
                 </span>
               </div>
 

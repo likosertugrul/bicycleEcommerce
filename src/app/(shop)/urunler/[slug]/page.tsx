@@ -3,7 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getRelatedProducts } from "@/server/products";
-import { getT } from "@/lib/locale";
+import { getT, getCurrency } from "@/lib/locale";
 import { ProductCard } from "@/components/product-card";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { FavoriteButton } from "@/components/favorite-button";
@@ -42,7 +42,7 @@ export default async function ProductDetailPage({
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
-  const t = await getT();
+  const [t, currency] = await Promise.all([getT(), getCurrency()]);
   const cover = product.images.find((i) => i.isCover) ?? product.images[0];
   const discount = discountPercent(product.priceCents, product.compareAtCents);
   const related = await getRelatedProducts(product);
@@ -139,11 +139,11 @@ export default async function ProductDetailPage({
 
           <div className="mt-4 flex items-end gap-3">
             <span className="text-3xl font-extrabold text-slate-900">
-              {formatPrice(product.priceCents)}
+              {formatPrice(product.priceCents, currency)}
             </span>
             {product.compareAtCents && (
               <span className="text-lg text-slate-400 line-through">
-                {formatPrice(product.compareAtCents)}
+                {formatPrice(product.compareAtCents, currency)}
               </span>
             )}
             {discount && (
@@ -231,7 +231,7 @@ export default async function ProductDetailPage({
           <h2 className="text-xl font-bold text-slate-900">{t.detail.related}</h2>
           <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (
-              <ProductCard key={p.id} product={p} t={t} />
+              <ProductCard key={p.id} product={p} t={t} currency={currency} />
             ))}
           </div>
         </section>

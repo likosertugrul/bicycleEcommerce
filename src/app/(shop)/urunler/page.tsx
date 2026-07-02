@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { getProducts, getBrands } from "@/server/products";
-import { getT } from "@/lib/locale";
+import { getT, getCurrency } from "@/lib/locale";
 import { parseFilters } from "@/lib/search-params";
 import { ProductCard } from "@/components/product-card";
 import { ProductFilters } from "@/components/product-filters";
@@ -17,8 +17,9 @@ export default async function ProductsPage({
 }: PageProps<"/urunler">) {
   const sp = await searchParams;
   const filters = parseFilters(sp);
-  const [t, products, brands] = await Promise.all([
+  const [t, currency, products, brands] = await Promise.all([
     getT(),
+    getCurrency(),
     getProducts(filters),
     getBrands(),
   ]);
@@ -84,7 +85,7 @@ export default async function ProductsPage({
           ) : (
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} t={t} />
+                <ProductCard key={product.id} product={product} t={t} currency={currency} />
               ))}
             </div>
           )}
