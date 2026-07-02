@@ -182,6 +182,12 @@ const tr = {
     welcome: "Hoş geldin",
     comingSoon: "Yakında",
     panelIntro: "Hesap bilgilerini ve siparişlerini buradan yönet.",
+    verifyTitle: "E-postanı doğrula",
+    sentTo: "Doğrulama e-postası gönderildi:",
+    verifyHint:
+      "E-postadaki bağlantıya tıklayabilir ya da aşağıya 6 haneli kodu girebilirsin.",
+    codeLabel: "Doğrulama Kodu",
+    verifyBtn: "Doğrula",
   },
 };
 
@@ -357,6 +363,12 @@ const en: typeof tr = {
     welcome: "Welcome",
     comingSoon: "Coming soon",
     panelIntro: "Manage your account details and orders here.",
+    verifyTitle: "Verify your email",
+    sentTo: "Verification email sent to:",
+    verifyHint:
+      "Click the link in the email, or enter the 6-digit code below.",
+    codeLabel: "Verification Code",
+    verifyBtn: "Verify",
   },
 };
 

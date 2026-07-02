@@ -56,14 +56,30 @@ export async function signUpWithPassword(
   });
   if (error) return { error: error.message };
 
-  // "Confirm email" kapalıysa oturum hemen açılır; açıksa doğrulama beklenir.
+  // "Confirm email" kapalıysa oturum hemen açılır; açıksa doğrulama sayfasına git.
   if (data.session && data.user) {
     await ensureUserRow(data.user);
     redirect("/hesabim");
   }
-  return {
-    message: "Kaydınız alındı. E-posta onayı gerekiyorsa gelen kutunuzu kontrol edin.",
-  };
+  redirect(`/dogrula?email=${encodeURIComponent(email)}`);
+}
+
+/** E-posta doğrulama — 6 haneli kod ile. */
+export async function verifyEmailOtp(
+  _prev: AuthState,
+  formData: FormData,
+): Promise<AuthState> {
+  const email = String(formData.get("email") ?? "").trim();
+  const token = String(formData.get("code") ?? "").trim();
+  if (!email || token.length < 6) return { error: "6 haneli kodu girin." };
+
+  const supabase = await createSupabaseServer();
+  // Sürüme göre tip 'email' veya 'signup' olabilir; ikisini de dene.
+  let res = await supabase.auth.verifyOtp({ email, token, type: "email" });
+  if (res.error) res = await supabase.auth.verifyOtp({ email, token, type: "signup" });
+  if (res.error) return { error: res.error.message };
+  if (res.data.user) await ensureUserRow(res.data.user);
+  redirect("/hesabim");
 }
 
 /** Google ile giriş — OAuth sağlayıcısına yönlendirir. */
