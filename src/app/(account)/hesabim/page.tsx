@@ -16,7 +16,7 @@ export default async function AccountPage() {
     (user.user_metadata?.full_name as string | undefined) || user.email;
 
   const cards = [
-    { href: "/siparislerim", label: t.auth.orders, emoji: "📦", soon: true },
+    { href: "/siparislerim", label: t.auth.orders, emoji: "📦", soon: false },
     { href: "/favorilerim", label: t.auth.favorites, emoji: "♥", soon: false },
     { href: "/adreslerim", label: t.auth.addresses, emoji: "📍", soon: false },
     { href: "/ilanlarim", label: t.auth.listings, emoji: "🚲", soon: true },

@@ -182,6 +182,8 @@ const tr = {
     welcome: "Hoş geldin",
     comingSoon: "Yakında",
     panelIntro: "Hesap bilgilerini ve siparişlerini buradan yönet.",
+    ordersEmpty: "Henüz siparişiniz yok",
+    ordersEmptyHint: "Siparişleriniz burada listelenecek.",
     verifyTitle: "E-postanı doğrula",
     sentTo: "Doğrulama e-postası gönderildi:",
     verifyHint:
@@ -384,6 +386,8 @@ const en: typeof tr = {
     welcome: "Welcome",
     comingSoon: "Coming soon",
     panelIntro: "Manage your account details and orders here.",
+    ordersEmpty: "No orders yet",
+    ordersEmptyHint: "Your orders will appear here.",
     verifyTitle: "Verify your email",
     sentTo: "Verification email sent to:",
     verifyHint:

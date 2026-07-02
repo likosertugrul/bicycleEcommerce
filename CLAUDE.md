@@ -40,7 +40,7 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 - `prisma/schema.prisma` · `prisma/seed.ts`
 
 ## Aktif Sprint
-**Sprint 2 — Auth, Sepet & Kullanıcı (devam ediyor):** Sepet ✓, Favoriler ✓, i18n (TR/EN) ✓, Auth ✓ (e-posta/şifre + e-posta doğrulama; Google ertelendi), **Adres yönetimi ✓** (`/adreslerim`, CRUD + varsayılan). Kalan: siparişlerim/ilanlarım (şu an "Yakında" — gerçek veri Sprint 3+ ile). Sprint 0/1 tamam.
+**Sprint 2 — Auth, Sepet & Kullanıcı: TAMAM.** Sepet ✓, Favoriler ✓, i18n (TR/EN) ✓, Auth ✓ (e-posta/şifre + doğrulama; Google ertelendi), Adres yönetimi ✓ (ülke kodu + uzunluk doğrulama), Siparişlerim ✓ (iskelet/boş durum — gerçek veri Sprint 3 ile). Sprint 0/1 tamam. **Sırada: Sprint 3 — Sipariş & Ödeme** (createOrder, iyzico, /odeme, webhook). Not: İlanlarım Sprint 4 (Bisikletini Sat).
 
 ## Auth (Supabase, @supabase/ssr)
 - Client'lar: `src/lib/supabase/{server,client,middleware}.ts`. `src/middleware.ts` her istekte oturumu tazeler.
