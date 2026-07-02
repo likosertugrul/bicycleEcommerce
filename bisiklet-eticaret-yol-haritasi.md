@@ -412,7 +412,9 @@ CREATE TABLE wishlist_items (
 
 İki haftalık sprint'ler önerilir. Aşağıdaki süreler tek bir geliştirici (siz + ben) varsayımıyladır; ekip varsa hızlanır.
 
-> **UYGULAMA DURUMU (güncel):** Sprint 0 ✅ ve Sprint 1 ~%85 tamamlandı. Ayrıntılı güncel durum + kalan işler `CLAUDE.md > Bilinen Eksikler` bölümünde. Not: Next.js 16 + Prisma 7 kuruldu (planda 15'ti), hosting Vercel yerine **Cloudflare Workers** (OpenNext) — deploy şimdilik parkta, yerel geliştirme aktif.
+> **UYGULAMA DURUMU (güncel):** Sprint 0 ✅, Sprint 1 ~%85 ✅, **Sprint 2 ✅** (Auth + Sepet + Favoriler + Adres + i18n). Ayrıntı `CLAUDE.md`'de. Next.js 16 + Prisma 7, hosting Cloudflare Workers (deploy parkta, yerel geliştirme aktif).
+>
+> **⚠️ UYGULAMA SIRASI DEĞİŞTİ (kullanıcı kararı):** Ödeme/Sipariş (Sprint 3) **sona ertelendi**. Yeni sıra: **Sprint 5 (Admin paneli) → Sprint 4 (Bisikletini Sat) → Sprint 3 (Ödeme)**. Aşağıdaki sprint numaraları orijinal plan; yürütme sırası bu nottaki gibidir.
 
 ### Sprint 0 — Kurulum & Temel (≈ 3-4 gün)
 - [x] Next.js + TypeScript + Tailwind projesi (shadcn/ui henüz yok)

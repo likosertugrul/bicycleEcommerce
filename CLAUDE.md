@@ -40,7 +40,12 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 - `prisma/schema.prisma` · `prisma/seed.ts`
 
 ## Aktif Sprint
-**Sprint 2 — Auth, Sepet & Kullanıcı: TAMAM.** Sepet ✓, Favoriler ✓, i18n (TR/EN) ✓, Auth ✓ (e-posta/şifre + doğrulama; Google ertelendi), Adres yönetimi ✓ (ülke kodu + uzunluk doğrulama), Siparişlerim ✓ (iskelet/boş durum — gerçek veri Sprint 3 ile). Sprint 0/1 tamam. **Sırada: Sprint 3 — Sipariş & Ödeme** (createOrder, iyzico, /odeme, webhook). Not: İlanlarım Sprint 4 (Bisikletini Sat).
+**Sprint 2 — Auth, Sepet & Kullanıcı: TAMAM.** Sepet ✓, Favoriler ✓, i18n (TR/EN) ✓, Auth ✓, Adres yönetimi ✓, Siparişlerim ✓ (iskelet). Sprint 0/1 tamam.
+
+**SIRA DEĞİŞTİ (kullanıcı kararı):** Ödeme (Sprint 3) **ertelendi**. Yeni sıra:
+1. **Admin paneli (Sprint 5) — KURULDU.** `/admin` (yalnızca `role=ADMIN`; `requireAdmin` guard, `src/server/admin.ts`). Dashboard (sayılar), ürün CRUD (`/admin/urunler` liste + `yeni` + `[id]` düzenle; `src/server/admin-product-actions.ts`; slug otomatik `src/lib/slug.ts`; kapak görseli URL ile; fiyat TL girilir kuruşa çevrilir), sipariş listesi (iskelet). Admin arayüzü Türkçe (i18n dışı). Kullanıcıyı admin yapmak: `prisma.user.update role=ADMIN`. Hesabım'da admine "Admin Paneli" linki çıkar.
+2. Bisikletini Sat (Sprint 4) — ilan formu + admin onayı + ürüne dönüştürme.
+3. Ödeme (Sprint 3) — en sona (createOrder, iyzico, webhook).
 
 ## Auth (Supabase, @supabase/ssr)
 - Client'lar: `src/lib/supabase/{server,client,middleware}.ts`. `src/middleware.ts` her istekte oturumu tazeler.

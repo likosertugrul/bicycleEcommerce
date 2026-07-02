@@ -3,6 +3,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getT } from "@/lib/locale";
 import { getAuthUser } from "@/server/auth";
+import { isAdmin } from "@/server/admin";
 import { signOut } from "@/server/auth-actions";
 
 export const metadata: Metadata = { title: "Hesabım", robots: { index: false } };
@@ -11,6 +12,7 @@ export const dynamic = "force-dynamic";
 export default async function AccountPage() {
   const [t, user] = await Promise.all([getT(), getAuthUser()]);
   if (!user) redirect("/giris");
+  const admin = await isAdmin();
 
   const name =
     (user.user_metadata?.full_name as string | undefined) || user.email;
@@ -31,14 +33,24 @@ export default async function AccountPage() {
           </h1>
           <p className="mt-1 text-sm text-slate-500">{t.auth.panelIntro}</p>
         </div>
-        <form action={signOut}>
-          <button
-            type="submit"
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
-          >
-            {t.auth.signOut}
-          </button>
-        </form>
+        <div className="flex gap-2">
+          {admin && (
+            <Link
+              href="/admin"
+              className="rounded-lg bg-slate-900 px-4 py-2 text-sm font-medium text-white hover:bg-slate-800"
+            >
+              Admin Paneli
+            </Link>
+          )}
+          <form action={signOut}>
+            <button
+              type="submit"
+              className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium text-slate-600 hover:bg-slate-50"
+            >
+              {t.auth.signOut}
+            </button>
+          </form>
+        </div>
       </div>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-2">
