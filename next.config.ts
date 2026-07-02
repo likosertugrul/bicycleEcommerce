@@ -7,12 +7,12 @@ const nextConfig: NextConfig = {
   // OpenNext esbuild "Could not resolve pg-cloudflare" hatası veriyor.
   serverExternalPackages: ["pg", "pg-cloudflare"],
   images: {
-    // Yer tutucu görseller kendi ürettiğimiz güvenli SVG'ler (public/placeholders).
-    // Gerçek görsellere (Supabase Storage) geçince remotePatterns eklenecek.
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // Örnek — Supabase Storage bağlanınca aç:
-    // remotePatterns: [{ protocol: "https", hostname: "*.supabase.co" }],
+    // Admin herhangi bir görsel URL'i girebildiği için tüm https host'larına
+    // izin veriyoruz. (Küçük dükkan için pratik; ileride Supabase Storage'a
+    // geçilince daraltılabilir.)
+    remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
 };
 
