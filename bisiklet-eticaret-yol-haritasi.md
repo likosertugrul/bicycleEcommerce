@@ -412,20 +412,22 @@ CREATE TABLE wishlist_items (
 
 İki haftalık sprint'ler önerilir. Aşağıdaki süreler tek bir geliştirici (siz + ben) varsayımıyladır; ekip varsa hızlanır.
 
+> **UYGULAMA DURUMU (güncel):** Sprint 0 ✅ ve Sprint 1 ~%85 tamamlandı. Ayrıntılı güncel durum + kalan işler `CLAUDE.md > Bilinen Eksikler` bölümünde. Not: Next.js 16 + Prisma 7 kuruldu (planda 15'ti), hosting Vercel yerine **Cloudflare Workers** (OpenNext) — deploy şimdilik parkta, yerel geliştirme aktif.
+
 ### Sprint 0 — Kurulum & Temel (≈ 3-4 gün)
-- [ ] Next.js + TypeScript + Tailwind + shadcn/ui projesi
-- [ ] Supabase projesi, Prisma kurulumu, ilk migration (Bölüm 3 şeması)
-- [ ] ESLint/Prettier, klasör yapısı, env yönetimi
-- [ ] CI (Vercel preview deploy)
-- **Çıktı:** Boş ama derlenir, deploy edilir iskelet.
+- [x] Next.js + TypeScript + Tailwind projesi (shadcn/ui henüz yok)
+- [x] Supabase projesi, Prisma kurulumu, ilk migration (Bölüm 3 şeması)
+- [x] ESLint, klasör yapısı, env yönetimi (Prettier eklenmedi)
+- [~] CI — Cloudflare (Vercel değil); şimdilik parkta
+- **Çıktı:** Boş ama derlenir, deploy edilir iskelet. ✅
 
 ### Sprint 1 — Katalog & Vitrin (MVP çekirdeği) (≈ 2 hafta)
-- [ ] Kategori + ürün listeleme sayfaları (ISR)
-- [ ] Ürün detay sayfası (galeri, teknik özellikler, 2. el alanları)
-- [ ] Temel filtreleme (tür, durum, fiyat aralığı) — URL parametreli SSR
-- [ ] Görsel yükleme (Supabase Storage) + next/image optimizasyonu
-- [ ] SEO temeli: `generateMetadata`, JSON-LD, `sitemap.ts`, `robots.ts`
-- **Çıktı:** Ürünler gezilebilir, aranabilir, Google'a hazır vitrin.
+- [x] Ürün listeleme sayfası + filtre (kategori ayrı route yerine `?tur=` filtresiyle)
+- [x] Ürün detay sayfası (teknik özellikler, 2. el alanları) — [~] galeri: yalnızca tek kapak
+- [x] Temel filtreleme (tür, durum, fiyat + kadro, marka, arama, sıralama) — URL parametreli
+- [ ] **Görsel yükleme (Supabase Storage)** — YAPILMADI; şu an `public/placeholders/*.svg`
+- [x] SEO temeli: `generateMetadata`, JSON-LD, `sitemap.ts`, `robots.ts`
+- **Çıktı:** Ürünler gezilebilir, aranabilir, Google'a hazır vitrin. ✅ (görsel altyapısı hariç)
 
 ### Sprint 2 — Auth, Sepet & Kullanıcı (≈ 2 hafta)
 - [ ] Supabase Auth (kayıt/giriş, oturum middleware)

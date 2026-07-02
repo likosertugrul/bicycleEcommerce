@@ -63,9 +63,19 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 - [ ] Supabase Storage (gerçek görsel yükleme), RLS politikaları
 - [ ] shadcn/ui
 
+## Bilinen Eksikler — Sprint 0 & 1 (sonra dönülecek)
+Sprint 1 fonksiyonel olarak ~%85 bitti; aşağıdakiler ertelendi:
+- [ ] **Görsel yükleme (Supabase Storage)** — şu an `public/placeholders/*.svg`. Gerçek görsel yükleme altyapısı yok (admin/Sprint 5 ile birlikte anlamlı).
+- [ ] **Çoklu görsel galerisi** — ürün detayında sadece tek kapak gösteriliyor; `images[]` şemada var ama thumbnail'lı galeri arayüzü yok.
+- [ ] **Ayrı kategori sayfaları** (`/kategori/[slug]`) — kurulmadı; kategoriler `?tur=dag` filtresiyle çözülüyor. SEO için ayrı route ileride eklenebilir.
+- [ ] **ISR** — deploy sorunları için tüm DB sayfaları `force-dynamic`'e alındı. Güvenilir build var + R2 incremental cache ile ISR geri açılabilir.
+- [ ] **Deploy (Cloudflare)** — parkta. Dönünce tek iş: `lib/prisma.ts`'i runtime-koşullu (Node ↔ workerd/edge + istek başına) yapmak. Diğer 3 düzeltme (force-dynamic, serverExternalPackages, pg-cloudflare) `main`'de hazır. `lib/prisma.ts` şu an YEREL (Node) sürümünde; bu haliyle push edilmemeli.
+- Sprint 0'da CI dışında eksik yok; env + şema + seed tamam.
+
 ## Notlar
 - Placeholder bisiklet görselleri harici AI modeliyle üretilip eklenecek (yol haritası Bölüm 5). 2. el gerçek ilanlarda AI görsel yok.
 - Büyük yol haritasını bu dosyaya kopyalama; `@bisiklet-eticaret-yol-haritasi.md` ile referansla.
+- **Dil seçimi:** header'da `LanguageSelector` (popüler diller, cookie: `lang`) eklendi — şimdilik yalnızca tercih/`<html lang>`; gerçek içerik çevirisi (i18n) ayrı iş (yol haritası 6.1 açık kararı).
 
 ## Compact talimatı
 Compact yaparken şunları koru: alınan mimari/şema kararları, değişen dosyalar ve ne değiştiği, aktif görev durumu ve sıradaki adımlar, çözülen hatalar.

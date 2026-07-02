@@ -2,6 +2,7 @@ import Link from "next/link";
 import { site } from "@/lib/site";
 import { CartBadge } from "@/components/cart-badge";
 import { WishlistBadge } from "@/components/wishlist-badge";
+import { LanguageSelector } from "@/components/language-selector";
 
 export function SiteHeader() {
   return (
@@ -31,6 +32,7 @@ export function SiteHeader() {
           >
             Ara
           </Link>
+          <LanguageSelector />
           <WishlistBadge />
           <CartBadge />
         </div>
