@@ -44,7 +44,7 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 
 **SIRA DEĞİŞTİ (kullanıcı kararı):** Ödeme (Sprint 3) **ertelendi**. Yeni sıra:
 1. **Admin paneli (Sprint 5) — KURULDU.** `/admin` (yalnızca `role=ADMIN`; `requireAdmin` guard, `src/server/admin.ts`). Dashboard (sayılar), ürün CRUD (`/admin/urunler` liste + `yeni` + `[id]` düzenle; `src/server/admin-product-actions.ts`; slug otomatik `src/lib/slug.ts`; kapak görseli URL ile; fiyat TL girilir kuruşa çevrilir), sipariş listesi (iskelet). Admin arayüzü Türkçe (i18n dışı). Kullanıcıyı admin yapmak: `prisma.user.update role=ADMIN`. Hesabım'da admine "Admin Paneli" linki çıkar.
-2. Bisikletini Sat (Sprint 4) — ilan formu + admin onayı + ürüne dönüştürme.
+2. **Bisikletini Sat (Sprint 4) — KURULDU.** `/bisikletini-sat` (giriş şart) → `Listing` PENDING (`src/server/listing-actions.ts createListing`). `/ilanlarim` kullanıcı ilanları (durum + dükkan notu). Admin `/admin/ilanlar`: onayla/reddet(not)/**ürüne dönüştür** (Listing→Product USED/CONSUMER stok 1, `convertedProductId` bağlanır, admin fiyat için ürün düzenlemeye yönlendirilir). Görsel şimdilik URL ile (Storage upload sonra). Data: `src/server/listings.ts`.
 3. Ödeme (Sprint 3) — en sona (createOrder, iyzico, webhook).
 
 ## Auth (Supabase, @supabase/ssr)

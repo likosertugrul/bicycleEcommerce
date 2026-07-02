@@ -21,7 +21,7 @@ export default async function AccountPage() {
     { href: "/siparislerim", label: t.auth.orders, emoji: "📦", soon: false },
     { href: "/favorilerim", label: t.auth.favorites, emoji: "♥", soon: false },
     { href: "/adreslerim", label: t.auth.addresses, emoji: "📍", soon: false },
-    { href: "/ilanlarim", label: t.auth.listings, emoji: "🚲", soon: true },
+    { href: "/ilanlarim", label: t.auth.listings, emoji: "🚲", soon: false },
   ];
 
   return (

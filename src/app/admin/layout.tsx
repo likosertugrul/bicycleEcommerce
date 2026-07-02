@@ -7,6 +7,7 @@ export const dynamic = "force-dynamic";
 const NAV = [
   { href: "/admin", label: "Panel", emoji: "📊" },
   { href: "/admin/urunler", label: "Ürünler", emoji: "🚲" },
+  { href: "/admin/ilanlar", label: "İlanlar", emoji: "📝" },
   { href: "/admin/siparisler", label: "Siparişler", emoji: "📦" },
 ];
 

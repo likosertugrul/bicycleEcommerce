@@ -159,6 +159,25 @@ const tr = {
     submit: "İncelemeye Gönder",
     demoNote:
       "Bu form şu an demo aşamasındadır; gönderim backend'e henüz bağlanmadı.",
+    loginRequired: "İlan vermek için giriş yapmalısın.",
+    loginCta: "Giriş Yap",
+    imageUrl: "Fotoğraf URL (opsiyonel)",
+    wheelSizeField: "Jant (inç)",
+    titleRequired: "Lütfen ilan başlığını gir.",
+  },
+  listings: {
+    title: "İlanlarım",
+    empty: "Henüz ilan vermediniz.",
+    newListing: "Bisikletini Sat",
+    asking: "İstenen fiyat",
+    shopNote: "Dükkan notu",
+    viewProduct: "Yayındaki ürünü gör",
+    status: {
+      PENDING: "İnceleniyor",
+      APPROVED: "Onaylandı",
+      REJECTED: "Reddedildi",
+      PUBLISHED: "Yayında",
+    },
   },
   auth: {
     signIn: "Giriş Yap",
@@ -363,6 +382,25 @@ const en: typeof tr = {
     submit: "Submit for Review",
     demoNote:
       "This form is currently a demo; submissions aren't wired to the backend yet.",
+    loginRequired: "You must sign in to submit a listing.",
+    loginCta: "Sign In",
+    imageUrl: "Photo URL (optional)",
+    wheelSizeField: "Wheel (inch)",
+    titleRequired: "Please enter a listing title.",
+  },
+  listings: {
+    title: "My Listings",
+    empty: "You haven't submitted any listings yet.",
+    newListing: "Sell Your Bike",
+    asking: "Asking price",
+    shopNote: "Shop note",
+    viewProduct: "View published product",
+    status: {
+      PENDING: "Under review",
+      APPROVED: "Approved",
+      REJECTED: "Rejected",
+      PUBLISHED: "Published",
+    },
   },
   auth: {
     signIn: "Sign In",
