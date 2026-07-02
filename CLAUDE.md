@@ -40,7 +40,13 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 - `prisma/schema.prisma` · `prisma/seed.ts`
 
 ## Aktif Sprint
-**Sprint 2 — Auth, Sepet & Kullanıcı (devam ediyor):** Sepet ✓. Kalan: Supabase Auth (kayıt/giriş, middleware), adres yönetimi, kullanıcı paneli (siparişlerim, favoriler). Sprint 0 + Sprint 1 (Katalog/Vitrin) tamam; **canlıda çalışıyor** (Cloudflare Workers, https://bisiklet.likosertugrul.com).
+**Sprint 2 — Auth, Sepet & Kullanıcı (devam ediyor):** Sepet ✓, Favoriler ✓, i18n (TR/EN) ✓, **Auth ✓ (e-posta/şifre + Google)**. Kalan: adres yönetimi, siparişlerim/ilanlarım (şu an "Yakında"). Sprint 0/1 tamam.
+
+## Auth (Supabase, @supabase/ssr)
+- Client'lar: `src/lib/supabase/{server,client,middleware}.ts`. `src/middleware.ts` her istekte oturumu tazeler.
+- Aksiyonlar: `src/server/auth-actions.ts` (signInWithPassword / signUpWithPassword / signInWithGoogle / signOut). Yardımcı: `src/server/auth.ts` (`getAuthUser`, `ensureUserRow` → auth kullanıcısını `public.users`'a upsert).
+- Sayfalar: `(account)/giris`, `(account)/kayit`, `(account)/hesabim` (korumalı). OAuth dönüşü: `src/app/auth/callback/route.ts`. Header'da `AccountMenu` (giriş yoksa "Giriş", varsa "Hesabım").
+- **Kullanıcı tarafı gereken kurulum:** Supabase Auth URL Config (Site URL=localhost:3000, redirect `localhost:3000/**`), yerel test için "Confirm email" KAPALI; Google için Google Cloud OAuth istemcisi + Supabase Google provider (redirect: `https://fsuwkbtpaukfrkmrzmob.supabase.co/auth/v1/callback`).
 
 ## Mevcut Durum
 - **Canlı deploy:** GitHub `main`'e push → Cloudflare Workers (OpenNext) otomatik build+deploy. `pg` sürücüsü Workers'ta `nodejs_compat` ile çalışıyor.
