@@ -1,44 +1,39 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
+import { LANG_COOKIE, LOCALES, isLocale, type Locale } from "@/lib/i18n";
 
-// Şimdilik yalnızca TR + EN (cookie `lang` + <html lang>). Diğer diller ve
-// gerçek içerik çevirisi (i18n) o adıma gelince eklenecek.
-const LANGUAGES = [
-  { code: "tr", label: "Türkçe", flag: "🇹🇷" },
-  { code: "en", label: "English", flag: "🇬🇧" },
-] as const;
+const LABELS: Record<Locale, { label: string; flag: string }> = {
+  tr: { label: "Türkçe", flag: "🇹🇷" },
+  en: { label: "English", flag: "🇬🇧" },
+};
 
-const COOKIE = "lang";
-
-function readLang(): string {
+function readLang(): Locale {
   if (typeof document === "undefined") return "tr";
-  const m = document.cookie.split("; ").find((c) => c.startsWith(`${COOKIE}=`));
-  return m?.split("=")[1] ?? "tr";
+  const m = document.cookie.split("; ").find((c) => c.startsWith(`${LANG_COOKIE}=`));
+  const v = m?.split("=")[1];
+  return isLocale(v) ? v : "tr";
+}
+
+// Modül seviyesinde DOM yazımı (React immutability kuralı dışında).
+function persistLang(code: Locale) {
+  document.cookie = `${LANG_COOKIE}=${code}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
+  document.documentElement.lang = code;
 }
 
 export function LanguageSelector() {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState("tr");
+  const [lang, setLang] = useState<Locale>("tr");
   const ref = useRef<HTMLDivElement>(null);
-  const mounted = useRef(false);
 
-  // Mount: kaydedilmiş dili benimse (yalnızca client — hydration uyumu için).
+  // Mount: kaydedilmiş dili benimse (client-only, hydration uyumu için).
   useEffect(() => {
     const saved = readLang();
     // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only cookie okuması
     if (saved !== "tr") setLang(saved);
   }, []);
-
-  // Dil değişince <html lang/dir> güncelle ve cookie'ye yaz (side-effect: effect'te).
-  useEffect(() => {
-    document.documentElement.lang = lang;
-    if (mounted.current) {
-      document.cookie = `${COOKIE}=${lang}; path=/; max-age=${60 * 60 * 24 * 365}; samesite=lax`;
-    } else {
-      mounted.current = true;
-    }
-  }, [lang]);
 
   // Dışarı tıklayınca kapat.
   useEffect(() => {
@@ -50,7 +45,15 @@ export function LanguageSelector() {
     return () => document.removeEventListener("mousedown", onDown);
   }, [open]);
 
-  const active = LANGUAGES.find((l) => l.code === lang) ?? LANGUAGES[0];
+  function choose(code: Locale) {
+    setOpen(false);
+    if (code === lang) return;
+    setLang(code);
+    persistLang(code);
+    router.refresh(); // sunucu bileşenlerini yeni dille yeniden render et
+  }
+
+  const active = LABELS[lang];
 
   return (
     <div ref={ref} className="relative">
@@ -59,12 +62,12 @@ export function LanguageSelector() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Dil seçimi"
+        aria-label="Dil seçimi / Language"
         className="flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100"
       >
         <span aria-hidden className="text-base">🌐</span>
         <span className="hidden sm:inline">{active.flag}</span>
-        <span className="uppercase">{active.code}</span>
+        <span className="uppercase">{lang}</span>
       </button>
 
       {open && (
@@ -72,23 +75,20 @@ export function LanguageSelector() {
           role="listbox"
           className="absolute right-0 z-50 mt-2 w-44 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-lg"
         >
-          {LANGUAGES.map((l) => (
-            <li key={l.code}>
+          {LOCALES.map((code) => (
+            <li key={code}>
               <button
                 type="button"
                 role="option"
-                aria-selected={l.code === lang}
-                onClick={() => {
-                  setLang(l.code);
-                  setOpen(false);
-                }}
+                aria-selected={code === lang}
+                onClick={() => choose(code)}
                 className={`flex w-full items-center gap-2.5 px-3 py-2 text-left text-sm hover:bg-slate-50 ${
-                  l.code === lang ? "font-semibold text-emerald-700" : "text-slate-700"
+                  code === lang ? "font-semibold text-emerald-700" : "text-slate-700"
                 }`}
               >
-                <span aria-hidden className="text-base">{l.flag}</span>
-                {l.label}
-                {l.code === lang && <span className="ml-auto text-emerald-600">✓</span>}
+                <span aria-hidden className="text-base">{LABELS[code].flag}</span>
+                {LABELS[code].label}
+                {code === lang && <span className="ml-auto text-emerald-600">✓</span>}
               </button>
             </li>
           ))}

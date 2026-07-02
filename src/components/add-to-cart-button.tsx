@@ -6,9 +6,11 @@ import { addToCart } from "@/server/cart-actions";
 export function AddToCartButton({
   productId,
   disabled,
+  labels,
 }: {
   productId: string;
   disabled?: boolean;
+  labels: { addToCart: string; adding: string; added: string };
 }) {
   const [pending, startTransition] = useTransition();
   const [added, setAdded] = useState(false);
@@ -30,7 +32,7 @@ export function AddToCartButton({
       disabled={disabled || pending}
       className="rounded-full bg-emerald-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
     >
-      {pending ? "Ekleniyor…" : added ? "Sepete eklendi ✓" : "Sepete Ekle"}
+      {pending ? labels.adding : added ? labels.added : labels.addToCart}
     </button>
   );
 }

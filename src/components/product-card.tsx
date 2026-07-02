@@ -1,14 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/types";
-import {
-  BIKE_TYPE_LABELS,
-  CONDITION_LABELS,
-} from "@/lib/types";
+import type { Dictionary } from "@/lib/i18n";
 import { formatPrice, discountPercent } from "@/lib/format";
 import { FavoriteButton } from "@/components/favorite-button";
 
-export function ProductCard({ product }: { product: Product }) {
+export function ProductCard({
+  product,
+  t,
+}: {
+  product: Product;
+  t: Dictionary;
+}) {
   const cover = product.images.find((i) => i.isCover) ?? product.images[0];
   const discount = discountPercent(product.priceCents, product.compareAtCents);
 
@@ -35,7 +38,7 @@ export function ProductCard({ product }: { product: Product }) {
                 : "bg-emerald-100 text-emerald-800"
             }`}
           >
-            {CONDITION_LABELS[product.condition]}
+            {t.condition[product.condition]}
           </span>
           {discount && (
             <span className="rounded-full bg-rose-600 px-2 py-0.5 text-xs font-semibold text-white">
@@ -45,7 +48,7 @@ export function ProductCard({ product }: { product: Product }) {
         </div>
         {product.isPlaceholder && (
           <span className="absolute bottom-2 right-2 rounded bg-black/50 px-1.5 py-0.5 text-[10px] text-white">
-            Temsili görsel
+            {t.card.placeholder}
           </span>
         )}
         <div className="absolute right-2 top-2">
@@ -55,15 +58,15 @@ export function ProductCard({ product }: { product: Product }) {
 
       <div className="flex flex-1 flex-col p-4">
         <span className="text-xs font-medium text-emerald-600">
-          {BIKE_TYPE_LABELS[product.bikeType]} · {product.brand}
+          {t.bikeType[product.bikeType]} · {product.brand}
         </span>
         <h3 className="mt-1 line-clamp-2 font-semibold text-slate-900 group-hover:text-emerald-700">
           {product.title}
         </h3>
         <div className="mt-1 flex flex-wrap gap-x-3 text-xs text-slate-500">
-          {product.frameSize && <span>Kadro {product.frameSize}</span>}
-          {product.wheelSize && <span>{product.wheelSize}″ jant</span>}
-          {product.gearCount ? <span>{product.gearCount} vites</span> : null}
+          {product.frameSize && <span>{t.card.frame} {product.frameSize}</span>}
+          {product.wheelSize && <span>{product.wheelSize}″ {t.card.wheel}</span>}
+          {product.gearCount ? <span>{product.gearCount} {t.card.gears}</span> : null}
         </div>
 
         <div className="mt-auto flex items-end gap-2 pt-3">

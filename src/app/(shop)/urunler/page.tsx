@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getProducts, getBrands } from "@/server/products";
+import { getT } from "@/lib/locale";
 import { parseFilters } from "@/lib/search-params";
 import { ProductCard } from "@/components/product-card";
 import { ProductFilters } from "@/components/product-filters";
@@ -11,34 +12,34 @@ export const metadata: Metadata = {
     "Sıfır ve 2. el bisiklet kataloğu. Tür, durum, kadro boyu, marka ve fiyata göre filtreleyin.",
 };
 
-const SORT_OPTIONS = [
-  { value: "", label: "En Yeni" },
-  { value: "fiyat-artan", label: "Fiyat: Artan" },
-  { value: "fiyat-azalan", label: "Fiyat: Azalan" },
-];
-
 export default async function ProductsPage({
   searchParams,
 }: PageProps<"/urunler">) {
   const sp = await searchParams;
   const filters = parseFilters(sp);
-  const [products, brands] = await Promise.all([
+  const [t, products, brands] = await Promise.all([
+    getT(),
     getProducts(filters),
     getBrands(),
   ]);
 
   const currentSort = Array.isArray(sp.sirala) ? sp.sirala[0] : sp.sirala ?? "";
+  const sortOptions = [
+    { value: "", label: t.list.sortNewest },
+    { value: "fiyat-artan", label: t.list.sortPriceAsc },
+    { value: "fiyat-azalan", label: t.list.sortPriceDesc },
+  ];
 
   return (
     <div className="mx-auto max-w-6xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-slate-900">Tüm Bisikletler</h1>
+      <h1 className="text-2xl font-bold text-slate-900">{t.list.title}</h1>
       <p className="mt-1 text-sm text-slate-500">
-        {products.length} ürün bulundu
+        {t.list.productsFound(products.length)}
       </p>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[280px_1fr]">
         <aside className="lg:sticky lg:top-24 lg:self-start">
-          <ProductFilters searchParams={sp} brands={brands} />
+          <ProductFilters searchParams={sp} brands={brands} t={t} />
         </aside>
 
         <section>
@@ -56,13 +57,13 @@ export default async function ProductsPage({
                 ) : null;
               },
             )}
-            <label className="text-slate-500">Sırala:</label>
+            <label className="text-slate-500">{t.list.sort}</label>
             <select
               name="sirala"
               defaultValue={currentSort}
               className="rounded-lg border border-slate-300 px-3 py-1.5 outline-none focus:border-emerald-500"
             >
-              {SORT_OPTIONS.map((o) => (
+              {sortOptions.map((o) => (
                 <option key={o.value} value={o.value}>
                   {o.label}
                 </option>
@@ -72,19 +73,18 @@ export default async function ProductsPage({
               type="submit"
               className="rounded-lg border border-slate-300 px-3 py-1.5 font-medium text-slate-600 hover:bg-slate-50"
             >
-              Uygula
+              {t.list.apply}
             </button>
           </form>
 
           {products.length === 0 ? (
             <div className="rounded-xl border border-dashed border-slate-300 p-12 text-center text-slate-500">
-              Bu filtrelere uygun bisiklet bulunamadı. Filtreleri
-              gevşetmeyi deneyin.
+              {t.list.empty}
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {products.map((product) => (
-                <ProductCard key={product.id} product={product} />
+                <ProductCard key={product.id} product={product} t={t} />
               ))}
             </div>
           )}

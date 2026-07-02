@@ -5,8 +5,8 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { getCart } from "@/server/cart";
 import { setQuantity, removeFromCart, clearCart } from "@/server/cart-actions";
+import { getT } from "@/lib/locale";
 import { formatPrice } from "@/lib/format";
-import { CONDITION_LABELS } from "@/lib/types";
 
 export const metadata: Metadata = {
   title: "Sepet",
@@ -14,28 +14,26 @@ export const metadata: Metadata = {
 };
 
 export default async function CartPage() {
-  const cart = await getCart();
+  const [t, cart] = await Promise.all([getT(), getCart()]);
 
   return (
     <>
-      <SiteHeader />
+      <SiteHeader t={t} />
       <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
-        <h1 className="text-2xl font-bold text-slate-900">Sepetim</h1>
+        <h1 className="text-2xl font-bold text-slate-900">{t.cart.title}</h1>
 
         {cart.items.length === 0 ? (
           <div className="mt-10 flex flex-col items-center text-center">
             <span aria-hidden className="text-5xl">🛒</span>
             <p className="mt-4 text-lg font-semibold text-slate-900">
-              Sepetiniz boş
+              {t.cart.empty}
             </p>
-            <p className="mt-1 text-slate-500">
-              Beğendiğiniz bisikletleri sepete ekleyerek başlayın.
-            </p>
+            <p className="mt-1 text-slate-500">{t.cart.emptyHint}</p>
             <Link
               href="/urunler"
               className="mt-6 rounded-full bg-emerald-600 px-6 py-3 font-semibold text-white hover:bg-emerald-700"
             >
-              Bisikletleri Keşfet
+              {t.cart.explore}
             </Link>
           </div>
         ) : (
@@ -69,7 +67,7 @@ export default async function CartPage() {
                           {item.title}
                         </Link>
                         <p className="mt-0.5 text-xs text-slate-500">
-                          {CONDITION_LABELS[item.condition]} · birim{" "}
+                          {t.condition[item.condition]} · {t.cart.unit}{" "}
                           {formatPrice(item.unitCents)}
                         </p>
                       </div>
@@ -77,9 +75,8 @@ export default async function CartPage() {
                         <button
                           type="submit"
                           className="text-sm text-slate-400 hover:text-rose-600"
-                          aria-label="Ürünü sepetten çıkar"
                         >
-                          Kaldır
+                          {t.cart.remove}
                         </button>
                       </form>
                     </div>
@@ -97,7 +94,7 @@ export default async function CartPage() {
                           <button
                             type="submit"
                             className="h-8 w-8 rounded-lg border border-slate-300 text-lg leading-none text-slate-600 hover:bg-slate-50"
-                            aria-label="Azalt"
+                            aria-label="−"
                           >
                             −
                           </button>
@@ -116,7 +113,7 @@ export default async function CartPage() {
                             type="submit"
                             disabled={item.quantity >= item.stock}
                             className="h-8 w-8 rounded-lg border border-slate-300 text-lg leading-none text-slate-600 hover:bg-slate-50 disabled:opacity-40"
-                            aria-label="Artır"
+                            aria-label="+"
                           >
                             +
                           </button>
@@ -133,21 +130,19 @@ export default async function CartPage() {
 
             {/* Özet */}
             <aside className="h-fit rounded-xl border border-slate-200 p-5 lg:sticky lg:top-24">
-              <h2 className="font-semibold text-slate-900">Sipariş Özeti</h2>
+              <h2 className="font-semibold text-slate-900">{t.cart.summary}</h2>
               <dl className="mt-4 space-y-2 text-sm">
                 <div className="flex justify-between">
-                  <dt className="text-slate-500">Ara Toplam</dt>
-                  <dd className="font-medium">
-                    {formatPrice(cart.subtotalCents)}
-                  </dd>
+                  <dt className="text-slate-500">{t.cart.subtotal}</dt>
+                  <dd className="font-medium">{formatPrice(cart.subtotalCents)}</dd>
                 </div>
                 <div className="flex justify-between">
-                  <dt className="text-slate-500">Kargo</dt>
-                  <dd className="text-slate-500">Ödeme adımında</dd>
+                  <dt className="text-slate-500">{t.cart.shipping}</dt>
+                  <dd className="text-slate-500">{t.cart.shippingAtCheckout}</dd>
                 </div>
               </dl>
               <div className="mt-4 flex justify-between border-t border-slate-200 pt-4">
-                <span className="font-semibold">Toplam</span>
+                <span className="font-semibold">{t.cart.total}</span>
                 <span className="text-xl font-extrabold text-slate-900">
                   {formatPrice(cart.subtotalCents)}
                 </span>
@@ -158,10 +153,10 @@ export default async function CartPage() {
                 disabled
                 className="mt-5 w-full cursor-not-allowed rounded-full bg-emerald-600 px-4 py-3 font-semibold text-white opacity-60"
               >
-                Ödemeye Geç
+                {t.cart.checkout}
               </button>
               <p className="mt-2 text-center text-xs text-slate-400">
-                Ödeme adımı Sprint 3&apos;te (iyzico) eklenecek.
+                {t.cart.checkoutNote}
               </p>
 
               <form action={clearCart} className="mt-4 text-center">
@@ -169,14 +164,14 @@ export default async function CartPage() {
                   type="submit"
                   className="text-sm text-slate-400 hover:text-rose-600"
                 >
-                  Sepeti boşalt
+                  {t.cart.clear}
                 </button>
               </form>
             </aside>
           </div>
         )}
       </main>
-      <SiteFooter />
+      <SiteFooter t={t} />
     </>
   );
 }

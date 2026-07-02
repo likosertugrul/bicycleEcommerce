@@ -7,9 +7,11 @@ import { readFavIdsFromDocument } from "@/lib/wishlist-cookie";
 export function FavoriteButton({
   productId,
   variant = "full",
+  labels,
 }: {
   productId: string;
   variant?: "full" | "icon";
+  labels?: { fav: string; faved: string };
 }) {
   const [fav, setFav] = useState(false);
   const [, startTransition] = useTransition();
@@ -60,7 +62,7 @@ export function FavoriteButton({
           : "border-slate-300 text-slate-700 hover:bg-slate-50"
       }`}
     >
-      {fav ? "♥ Favoride" : "♡ Favori"}
+      {fav ? `♥ ${labels?.faved ?? "Favoride"}` : `♡ ${labels?.fav ?? "Favori"}`}
     </button>
   );
 }

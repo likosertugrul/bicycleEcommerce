@@ -6,7 +6,7 @@ import { readFavIdsFromDocument } from "@/lib/wishlist-cookie";
 
 // Favori adedini cookie'den okur (non-httpOnly); "wishlist:updated" olayında
 // ve sekmeye dönüldüğünde tazeler. Ürün sayfaları statik kalır.
-export function WishlistBadge() {
+export function WishlistBadge({ label }: { label: string }) {
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ export function WishlistBadge() {
   return (
     <Link
       href="/favorilerim"
-      aria-label="Favorilerim"
+      aria-label={label}
       className="relative flex h-10 w-10 items-center justify-center rounded-full text-xl text-slate-600 transition-colors hover:bg-slate-100 hover:text-rose-600"
     >
       <span aria-hidden>♡</span>

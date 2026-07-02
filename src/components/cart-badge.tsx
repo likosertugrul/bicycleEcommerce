@@ -5,7 +5,7 @@ import Link from "next/link";
 
 // Sepet adedini /api/cart'tan çeker; "cart:updated" olayında ve sekmeye
 // dönüldüğünde tazeler. Böylece ürün sayfaları statik kalır (layout cookie okumaz).
-export function CartBadge() {
+export function CartBadge({ label }: { label: string }) {
   const [count, setCount] = useState<number | null>(null);
 
   useEffect(() => {
@@ -34,7 +34,7 @@ export function CartBadge() {
       href="/sepet"
       className="relative rounded-full bg-emerald-600 px-4 py-2 text-sm font-semibold text-white transition-colors hover:bg-emerald-700"
     >
-      Sepet
+      {label}
       {count != null && count > 0 && (
         <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1 text-xs font-bold text-white">
           {count}

@@ -13,14 +13,8 @@ export type BikeType =
 
 export type SellerType = "SHOP" | "CONSUMER";
 
-export const BIKE_TYPE_LABELS: Record<BikeType, string> = {
-  MOUNTAIN: "Dağ",
-  ROAD: "Yol",
-  CITY: "Şehir",
-  ELECTRIC: "Elektrikli",
-  KIDS: "Çocuk",
-  GRAVEL: "Gravel",
-};
+// Kullanıcıya görünen tür/durum etiketleri artık i18n sözlüğünde (src/lib/i18n.ts):
+// t.bikeType[...] ve t.condition[...]. Buradaki eşlemeler yalnızca slug/enum içindir.
 
 // URL slug'ları ↔ enum eşlemesi (filtre linkleri için)
 export const BIKE_TYPE_SLUGS: Record<string, BikeType> = {
@@ -39,11 +33,6 @@ export const BIKE_TYPE_TO_SLUG: Record<BikeType, string> = {
   ELECTRIC: "elektrikli",
   KIDS: "cocuk",
   GRAVEL: "gravel",
-};
-
-export const CONDITION_LABELS: Record<ProductCondition, string> = {
-  NEW: "Sıfır",
-  USED: "2. El",
 };
 
 export interface ProductImage {

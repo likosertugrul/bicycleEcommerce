@@ -3,15 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getRelatedProducts } from "@/server/products";
+import { getT } from "@/lib/locale";
 import { ProductCard } from "@/components/product-card";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { FavoriteButton } from "@/components/favorite-button";
 import { formatPrice, discountPercent } from "@/lib/format";
-import {
-  BIKE_TYPE_LABELS,
-  BIKE_TYPE_TO_SLUG,
-  CONDITION_LABELS,
-} from "@/lib/types";
+import { BIKE_TYPE_TO_SLUG } from "@/lib/types";
 import { site } from "@/lib/site";
 
 // Ürün detay — runtime'da render (build ortamı DB'ye bağlanmasın diye).
@@ -45,6 +42,7 @@ export default async function ProductDetailPage({
   const product = await getProductBySlug(slug);
   if (!product) notFound();
 
+  const t = await getT();
   const cover = product.images.find((i) => i.isCover) ?? product.images[0];
   const discount = discountPercent(product.priceCents, product.compareAtCents);
   const related = await getRelatedProducts(product);
@@ -82,15 +80,15 @@ export default async function ProductDetailPage({
 
       {/* Breadcrumb */}
       <nav className="mb-6 flex flex-wrap gap-1 text-sm text-slate-500">
-        <Link href="/" className="hover:text-emerald-600">Ana Sayfa</Link>
+        <Link href="/" className="hover:text-emerald-600">{t.detail.home}</Link>
         <span>/</span>
-        <Link href="/urunler" className="hover:text-emerald-600">Bisikletler</Link>
+        <Link href="/urunler" className="hover:text-emerald-600">{t.detail.bikes}</Link>
         <span>/</span>
         <Link
           href={`/urunler?tur=${BIKE_TYPE_TO_SLUG[product.bikeType]}`}
           className="hover:text-emerald-600"
         >
-          {BIKE_TYPE_LABELS[product.bikeType]}
+          {t.bikeType[product.bikeType]}
         </Link>
         <span>/</span>
         <span className="text-slate-700">{product.title}</span>
@@ -112,7 +110,7 @@ export default async function ProductDetailPage({
             )}
             {product.isPlaceholder && (
               <span className="absolute bottom-3 right-3 rounded bg-black/50 px-2 py-1 text-xs text-white">
-                Temsili görsel
+                {t.card.placeholder}
               </span>
             )}
           </div>
@@ -128,10 +126,10 @@ export default async function ProductDetailPage({
                   : "bg-emerald-100 text-emerald-800"
               }`}
             >
-              {CONDITION_LABELS[product.condition]}
+              {t.condition[product.condition]}
             </span>
             <span className="text-sm font-medium text-emerald-600">
-              {BIKE_TYPE_LABELS[product.bikeType]} · {product.brand}
+              {t.bikeType[product.bikeType]} · {product.brand}
             </span>
           </div>
 
@@ -150,7 +148,7 @@ export default async function ProductDetailPage({
             )}
             {discount && (
               <span className="rounded-full bg-rose-600 px-2 py-0.5 text-sm font-semibold text-white">
-                %{discount} indirim
+                %{discount} {t.detail.discount}
               </span>
             )}
           </div>
@@ -158,33 +156,44 @@ export default async function ProductDetailPage({
           <p className="mt-2 text-sm">
             {inStock ? (
               <span className="font-medium text-emerald-600">
-                ✓ Stokta ({product.stock} adet)
+                {t.detail.inStock(product.stock)}
               </span>
             ) : (
-              <span className="font-medium text-rose-600">Tükendi</span>
+              <span className="font-medium text-rose-600">{t.detail.outOfStock}</span>
             )}
           </p>
 
           <p className="mt-4 text-slate-600">{product.description}</p>
 
           <div className="mt-6 flex flex-wrap gap-3">
-            <AddToCartButton productId={product.id} disabled={!inStock} />
-            <FavoriteButton productId={product.id} />
+            <AddToCartButton
+              productId={product.id}
+              disabled={!inStock}
+              labels={{
+                addToCart: t.detail.addToCart,
+                adding: t.detail.adding,
+                added: t.detail.added,
+              }}
+            />
+            <FavoriteButton
+              productId={product.id}
+              labels={{ fav: t.detail.fav, faved: t.detail.faved }}
+            />
           </div>
 
           {/* Teknik özellikler */}
           <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-3 border-t border-slate-200 pt-6 text-sm">
-            <Spec label="Kadro Boyu" value={product.frameSize} />
+            <Spec label={t.detail.frameSize} value={product.frameSize} />
             <Spec
-              label="Jant Çapı"
+              label={t.detail.wheel}
               value={product.wheelSize ? `${product.wheelSize}″` : null}
             />
             <Spec
-              label="Vites"
+              label={t.detail.gears}
               value={product.gearCount ? `${product.gearCount}` : null}
             />
-            <Spec label="Fren" value={product.brakeType} />
-            <Spec label="Renk" value={product.color} />
+            <Spec label={t.detail.brake} value={product.brakeType} />
+            <Spec label={t.detail.color} value={product.color} />
             {product.specs.map((s) => (
               <Spec key={s.key} label={s.key} value={s.value} />
             ))}
@@ -193,23 +202,21 @@ export default async function ProductDetailPage({
           {/* 2. El özel alanları */}
           {product.condition === "USED" && (
             <div className="mt-6 rounded-xl border border-amber-200 bg-amber-50 p-5">
-              <h2 className="font-semibold text-amber-900">
-                2. El Durum Bilgisi
-              </h2>
+              <h2 className="font-semibold text-amber-900">{t.detail.usedInfo}</h2>
               <dl className="mt-3 grid grid-cols-2 gap-x-6 gap-y-2 text-sm text-amber-900">
-                <Spec label="Kullanım" value={product.usageLevel} />
+                <Spec label={t.detail.usage} value={product.usageLevel} />
                 <Spec
-                  label="Üretim Yılı"
+                  label={t.detail.year}
                   value={product.manufactureYear?.toString() ?? null}
                 />
                 <Spec
-                  label="Kilometre"
+                  label={t.detail.mileage}
                   value={product.mileageKm ? `${product.mileageKm} km` : null}
                 />
               </dl>
               {product.cosmeticNotes && (
                 <p className="mt-3 text-sm text-amber-900">
-                  <span className="font-medium">Kozmetik notlar: </span>
+                  <span className="font-medium">{t.detail.cosmeticNotes}: </span>
                   {product.cosmeticNotes}
                 </p>
               )}
@@ -221,10 +228,10 @@ export default async function ProductDetailPage({
       {/* Benzer ürünler */}
       {related.length > 0 && (
         <section className="mt-16">
-          <h2 className="text-xl font-bold text-slate-900">Benzer Bisikletler</h2>
+          <h2 className="text-xl font-bold text-slate-900">{t.detail.related}</h2>
           <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p) => (
-              <ProductCard key={p.id} product={p} />
+              <ProductCard key={p.id} product={p} t={t} />
             ))}
           </div>
         </section>
