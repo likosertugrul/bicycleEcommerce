@@ -1,28 +1,14 @@
-import { PrismaClient } from "@prisma/client";
+// Cloudflare Workers: WASM sorgu derleyicisini modül olarak yükleyen "edge"
+// client'ı kullan. Varsayılan (@prisma/client) Node yolunda
+// `new WebAssembly.Module(bytes)` çağırıyor; Workers bunu yasaklıyor.
+import { PrismaClient } from "@prisma/client/edge";
 import { PrismaPg } from "@prisma/adapter-pg";
 
-// Prisma 7: Postgres'e driver adapter (pg) ile bağlanılır.
-// DATABASE_URL = Supabase transaction pooler (port 6543, pgbouncer).
-// Dev'de hot-reload sırasında çoklu bağlantıyı önlemek için global singleton.
-const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
-};
-
-function createPrisma() {
-  const adapter = new PrismaPg({
-    connectionString: process.env.DATABASE_URL,
-  });
-  return new PrismaClient({
-    adapter,
-    log:
-      process.env.NODE_ENV === "development"
-        ? ["error", "warn"]
-        : ["error"],
-  });
-}
-
-export const prisma = globalForPrisma.prisma ?? createPrisma();
-
-if (process.env.NODE_ENV !== "production") {
-  globalForPrisma.prisma = prisma;
+// ÖNEMLİ: Workers'ta bir isteğin soketi başka bir istekte kullanılamaz
+// ("Cannot perform I/O on behalf of a different request" / hang). Bu yüzden
+// global singleton KULLANMIYORUZ; her çağrıda taze client/bağlantı üretiyoruz.
+// pgbouncer (transaction pooler) kısa ömürlü bağlantıları verimli yönetir.
+export function getPrisma(): PrismaClient {
+  const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+  return new PrismaClient({ adapter });
 }

@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { WISHLIST_COOKIE, parseFavIds } from "@/lib/wishlist-cookie";
 
 const COOKIE_MAX_AGE = 60 * 60 * 24 * 90; // 90 gün
@@ -37,6 +37,7 @@ export async function toggleFavorite(productId: string): Promise<boolean> {
     return false;
   }
   // Eklemeden önce ürünün gerçekten var/aktif olduğunu doğrula.
+  const prisma = getPrisma();
   const exists = await prisma.product.findFirst({
     where: { id: productId, isActive: true },
     select: { id: true },

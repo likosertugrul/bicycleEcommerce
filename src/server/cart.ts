@@ -1,6 +1,6 @@
 import "server-only";
 import { cookies } from "next/headers";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import type { ProductCondition } from "@/lib/types";
 
 // Sepet cookie'de yalnızca {productId, quantity} tutar — FİYAT ASLA burada tutulmaz.
@@ -66,6 +66,7 @@ export async function getCart(): Promise<CartView> {
   const lines = await getCartLines();
   if (lines.length === 0) return { items: [], count: 0, subtotalCents: 0 };
 
+  const prisma = getPrisma();
   const products = await prisma.product.findMany({
     where: { id: { in: lines.map((l) => l.productId) }, isActive: true },
     include: { images: { orderBy: { position: "asc" }, take: 1 } },

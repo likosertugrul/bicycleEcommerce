@@ -1,6 +1,6 @@
 import "server-only";
 import type { Prisma } from "@prisma/client";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import type {
   BikeType,
   Product,
@@ -101,6 +101,7 @@ function buildOrderBy(
 export async function getProducts(
   filters: ProductFilters = {},
 ): Promise<Product[]> {
+  const prisma = getPrisma();
   const rows = await prisma.product.findMany({
     where: buildWhere(filters),
     orderBy: buildOrderBy(filters.sort),
@@ -112,6 +113,7 @@ export async function getProducts(
 /** Verilen ID'lerdeki aktif ürünler (favoriler için). Sıra: verilen id sırası. */
 export async function getProductsByIds(ids: string[]): Promise<Product[]> {
   if (ids.length === 0) return [];
+  const prisma = getPrisma();
   const rows = await prisma.product.findMany({
     where: { id: { in: ids }, isActive: true },
     include: productInclude,
@@ -125,6 +127,7 @@ export async function getProductsByIds(ids: string[]): Promise<Product[]> {
 
 /** Tek ürün (detay sayfası). */
 export async function getProductBySlug(slug: string): Promise<Product | null> {
+  const prisma = getPrisma();
   const row = await prisma.product.findUnique({
     where: { slug },
     include: productInclude,
@@ -134,6 +137,7 @@ export async function getProductBySlug(slug: string): Promise<Product | null> {
 
 /** Ana sayfa vitrini — öne çıkan ürünler. */
 export async function getFeaturedProducts(limit = 6): Promise<Product[]> {
+  const prisma = getPrisma();
   const rows = await prisma.product.findMany({
     where: { isActive: true },
     orderBy: { createdAt: "desc" },
@@ -148,6 +152,7 @@ export async function getRelatedProducts(
   product: Product,
   limit = 3,
 ): Promise<Product[]> {
+  const prisma = getPrisma();
   const rows = await prisma.product.findMany({
     where: {
       isActive: true,
@@ -162,6 +167,7 @@ export async function getRelatedProducts(
 
 /** sitemap.ts / generateStaticParams için tüm slug'lar. */
 export async function getAllProductSlugs(): Promise<string[]> {
+  const prisma = getPrisma();
   const rows = await prisma.product.findMany({
     where: { isActive: true },
     select: { slug: true },
@@ -171,6 +177,7 @@ export async function getAllProductSlugs(): Promise<string[]> {
 
 /** Filtre çubuğu için mevcut markalar. */
 export async function getBrands(): Promise<string[]> {
+  const prisma = getPrisma();
   const rows = await prisma.product.findMany({
     where: { isActive: true, brand: { not: null } },
     distinct: ["brand"],

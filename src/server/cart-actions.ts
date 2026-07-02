@@ -2,7 +2,7 @@
 
 import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
-import { prisma } from "@/lib/prisma";
+import { getPrisma } from "@/lib/prisma";
 import { CART_COOKIE, getCartLines, type CartLine } from "./cart";
 
 const MAX_QTY_PER_LINE = 10;
@@ -26,6 +26,7 @@ async function writeCart(lines: CartLine[]): Promise<void> {
 
 /** Ürünü sepete ekle (varsa miktarı artır). Stok ve varlık DB'den doğrulanır. */
 export async function addToCart(productId: string, quantity = 1): Promise<void> {
+  const prisma = getPrisma();
   const product = await prisma.product.findFirst({
     where: { id: productId, isActive: true },
     select: { id: true, stock: true },
@@ -56,6 +57,7 @@ export async function setQuantity(
   const qty = Math.floor(quantity);
   if (qty <= 0) return removeFromCart(productId);
 
+  const prisma = getPrisma();
   const product = await prisma.product.findFirst({
     where: { id: productId, isActive: true },
     select: { stock: true },
