@@ -10,6 +10,8 @@ import {
 } from "@/server/address-actions";
 import type { AddressView } from "@/server/addresses";
 import type { Dictionary } from "@/lib/i18n";
+import { PhoneField } from "@/components/phone-field";
+import { formatPhone, isValidPhone } from "@/lib/phone";
 
 type T = Dictionary["address"];
 
@@ -30,17 +32,30 @@ export function AddressBook({
     start(async () => {
       const res = await action();
       if (res.ok) onOk?.();
-      else setError(res.error === "required" ? t.required : "Hata");
+      else
+        setError(
+          res.error === "phone"
+            ? t.invalidPhone
+            : res.error === "required"
+              ? t.required
+              : "Hata",
+        );
     });
   }
 
   function submit(e: React.FormEvent<HTMLFormElement>, id?: string) {
     e.preventDefault();
     const fd = new FormData(e.currentTarget);
+    const dialCode = String(fd.get("dialCode") ?? "+90");
+    const phoneLocal = String(fd.get("phoneLocal") ?? "");
+    if (!isValidPhone(dialCode, phoneLocal)) {
+      setError(t.invalidPhone);
+      return;
+    }
     const input = {
       title: String(fd.get("title") ?? ""),
       recipient: String(fd.get("recipient") ?? ""),
-      phone: String(fd.get("phone") ?? ""),
+      phone: formatPhone(dialCode, phoneLocal),
       city: String(fd.get("city") ?? ""),
       district: String(fd.get("district") ?? ""),
       fullAddress: String(fd.get("fullAddress") ?? ""),
@@ -184,10 +199,10 @@ function AddressForm({
           {t.fRecipient} *
           <input name="recipient" defaultValue={initial?.recipient ?? ""} className={inputCls} />
         </label>
-        <label className="text-sm">
+        <div className="text-sm">
           {t.fPhone} *
-          <input name="phone" type="tel" defaultValue={initial?.phone ?? ""} className={inputCls} />
-        </label>
+          <PhoneField defaultValue={initial?.phone} />
+        </div>
         <label className="text-sm">
           {t.fCity} *
           <input name="city" defaultValue={initial?.city ?? ""} className={inputCls} />

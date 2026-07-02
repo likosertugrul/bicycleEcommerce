@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { getPrisma } from "@/lib/prisma";
 import { getAuthUser, ensureUserRow } from "@/server/auth";
+import { parsePhone, isValidPhone } from "@/lib/phone";
 
 export interface AddressInput {
   title?: string;
@@ -28,21 +29,25 @@ function clean(i: AddressInput) {
   };
 }
 
-function invalid(i: AddressInput): boolean {
-  return (
+function validateInput(i: AddressInput): "required" | "phone" | null {
+  if (
     !i.recipient?.trim() ||
-    !i.phone?.trim() ||
     !i.city?.trim() ||
     !i.district?.trim() ||
     !i.fullAddress?.trim()
-  );
+  )
+    return "required";
+  const { dial, national } = parsePhone(i.phone);
+  if (!isValidPhone(dial, national)) return "phone";
+  return null;
 }
 
 /** Yeni adres ekle (ilk adres otomatik varsayılan). */
 export async function addAddress(input: AddressInput): Promise<AddressResult> {
   const user = await getAuthUser();
   if (!user) return { ok: false, error: "auth" };
-  if (invalid(input)) return { ok: false, error: "required" };
+  const err = validateInput(input);
+  if (err) return { ok: false, error: err };
 
   await ensureUserRow(user);
   const prisma = getPrisma();
@@ -61,7 +66,8 @@ export async function updateAddress(
 ): Promise<AddressResult> {
   const user = await getAuthUser();
   if (!user) return { ok: false, error: "auth" };
-  if (invalid(input)) return { ok: false, error: "required" };
+  const err = validateInput(input);
+  if (err) return { ok: false, error: err };
 
   const prisma = getPrisma();
   await prisma.address.updateMany({
