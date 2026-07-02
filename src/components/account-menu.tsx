@@ -17,6 +17,13 @@ export async function AccountMenu({ t }: { t: Dictionary }) {
     );
   }
 
+  const meta = user.user_metadata ?? {};
+  const displayName =
+    (meta.full_name as string | undefined) ||
+    (meta.name as string | undefined) ||
+    user.email?.split("@")[0] ||
+    t.auth.account;
+
   return (
     <Link
       href="/hesabim"
@@ -24,9 +31,7 @@ export async function AccountMenu({ t }: { t: Dictionary }) {
       className="flex h-9 items-center gap-1.5 rounded-full bg-slate-100 px-3 text-sm font-medium text-slate-700 hover:bg-slate-200"
     >
       <span aria-hidden>👤</span>
-      <span className="hidden sm:inline max-w-28 truncate">
-        {user.email}
-      </span>
+      <span className="hidden sm:inline max-w-28 truncate">{displayName}</span>
     </Link>
   );
 }
