@@ -7,6 +7,9 @@ import { getPrisma } from "@/lib/prisma";
 import { getAuthUser, ensureUserRow } from "@/server/auth";
 import { requireAdmin } from "@/server/admin";
 import { slugify } from "@/lib/slug";
+import { uploadImage } from "@/server/upload";
+import { getCurrency } from "@/lib/locale";
+import { isCurrency, RATES } from "@/lib/currency";
 
 export type ListingState = { error?: string };
 
@@ -29,8 +32,23 @@ export async function createListing(
     ? (btRaw as BikeType)
     : null;
   const wheel = s("wheelSize");
-  const askingTL = s("askingPriceTL");
-  const imageUrl = s("imageUrl");
+  const askingRaw = s("askingPrice");
+
+  // Girilen fiyat, sitedeki seçili para biriminde → TRY kuruşa çevir ve öyle sakla.
+  const curRaw = s("currency");
+  const currency = isCurrency(curRaw) ? curRaw : await getCurrency();
+  const amount = askingRaw ? Number(askingRaw) : null;
+  const askingPriceCents =
+    amount != null && Number.isFinite(amount) && amount > 0
+      ? Math.round((amount / RATES[currency]) * 100)
+      : null;
+
+  let image: string | null;
+  try {
+    image = (await uploadImage(fd.get("imageFile"), "listings")) ?? (s("imageUrl") || null);
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
+  }
 
   await ensureUserRow(user);
   const prisma = getPrisma();
@@ -42,8 +60,8 @@ export async function createListing(
       bikeType,
       frameSize: s("frameSize") || null,
       wheelSize: wheel ? Number(wheel) : null,
-      askingPriceCents: askingTL ? Math.round(Number(askingTL) * 100) : null,
-      images: imageUrl ? [imageUrl] : undefined,
+      askingPriceCents,
+      images: image ? [image] : undefined,
       status: ListingStatus.PENDING,
     },
   });

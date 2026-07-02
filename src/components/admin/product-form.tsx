@@ -116,14 +116,30 @@ export function ProductForm({
         </Field>
       </div>
 
-      <Field label="Kapak Görseli URL">
-        <input
-          name="coverImageUrl"
-          defaultValue={initial?.coverImageUrl}
-          placeholder="/placeholders/mountain-01.svg veya https://..."
-          className={input}
-        />
-      </Field>
+      <div className="rounded-xl border border-slate-200 p-4">
+        <p className="text-sm font-medium text-slate-700">Kapak Görseli</p>
+        <label className="mt-2 block text-sm text-slate-600">
+          Dosya yükle
+          <input
+            name="imageFile"
+            type="file"
+            accept="image/*"
+            className="mt-1 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:px-3 file:py-1.5 file:text-white hover:file:bg-emerald-700"
+          />
+        </label>
+        <label className="mt-3 block text-sm text-slate-600">
+          veya URL gir
+          <input
+            name="coverImageUrl"
+            defaultValue={initial?.coverImageUrl}
+            placeholder="/placeholders/mountain-01.svg veya https://..."
+            className={input}
+          />
+        </label>
+        <p className="mt-1 text-xs text-slate-400">
+          Dosya yüklersen URL yok sayılır. Mevcut görsel korunur (boş bırakırsan).
+        </p>
+      </div>
 
       {condition === "USED" && (
         <div className="grid gap-4 rounded-xl border border-amber-200 bg-amber-50/40 p-4 sm:grid-cols-2">

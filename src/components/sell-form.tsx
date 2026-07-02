@@ -3,6 +3,7 @@
 import { useActionState } from "react";
 import { createListing, type ListingState } from "@/server/listing-actions";
 import type { Dictionary } from "@/lib/i18n";
+import { CURRENCIES, type Currency } from "@/lib/currency";
 
 const TYPES = ["MOUNTAIN", "ROAD", "CITY", "ELECTRIC", "KIDS", "GRAVEL"] as const;
 const input =
@@ -11,17 +12,22 @@ const input =
 export function SellForm({
   sell,
   bikeTypes,
+  currency,
 }: {
   sell: Dictionary["sell"];
   bikeTypes: Dictionary["bikeType"];
+  currency: Currency;
 }) {
   const [state, formAction, pending] = useActionState<ListingState, FormData>(
     createListing,
     {},
   );
+  const symbol =
+    CURRENCIES.find((c) => c.code === currency)?.symbol ?? currency;
 
   return (
     <form action={formAction} className="mt-8 space-y-5 rounded-2xl border border-slate-200 bg-white p-6">
+      <input type="hidden" name="currency" value={currency} />
       <div>
         <label className="block text-sm font-semibold text-slate-900">
           {sell.bikeTitle} *
@@ -49,8 +55,10 @@ export function SellForm({
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-slate-900">{sell.askingPrice}</label>
-        <input name="askingPriceTL" type="number" step="0.01" className={input} />
+        <label className="block text-sm font-semibold text-slate-900">
+          {sell.askingPrice} ({symbol} {currency})
+        </label>
+        <input name="askingPrice" type="number" step="0.01" className={input} />
       </div>
 
       <div>
@@ -59,14 +67,27 @@ export function SellForm({
       </div>
 
       <div>
-        <label className="block text-sm font-semibold text-slate-900">{sell.imageUrl}</label>
-        <input name="imageUrl" placeholder="https://..." className={input} />
+        <label className="block text-sm font-semibold text-slate-900">{sell.photos}</label>
+        <input
+          name="imageFile"
+          type="file"
+          accept="image/*"
+          className="mt-2 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:px-3 file:py-1.5 file:text-white hover:file:bg-emerald-700"
+        />
+        <label className="mt-2 block text-sm text-slate-600">
+          {sell.imageUrl}
+          <input name="imageUrl" placeholder="https://..." className={input} />
+        </label>
         <p className="mt-1 text-xs text-slate-400">{sell.photosNote}</p>
       </div>
 
       {state.error && (
         <p className="rounded-lg bg-rose-50 px-3 py-2 text-sm text-rose-700">
-          {state.error === "title" ? sell.titleRequired : sell.loginRequired}
+          {state.error === "title"
+            ? sell.titleRequired
+            : state.error === "login"
+              ? sell.loginRequired
+              : state.error}
         </p>
       )}
 

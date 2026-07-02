@@ -6,6 +6,7 @@ import { ProductCondition, BikeType, SellerType } from "@prisma/client";
 import { getPrisma } from "@/lib/prisma";
 import { requireAdmin } from "@/server/admin";
 import { slugify } from "@/lib/slug";
+import { uploadImage } from "@/server/upload";
 
 export type AdminFormState = { error?: string };
 
@@ -90,17 +91,24 @@ export async function createProduct(
   if (d.priceCents == null || d.priceCents < 0)
     return { error: "Geçerli bir fiyat girin." };
 
+  const { coverImageUrl, ...fields } = d;
+  let cover: string | null;
+  try {
+    cover = (await uploadImage(formData.get("imageFile"), "products")) ?? coverImageUrl;
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
+  }
+
   const prisma = getPrisma();
   const slug = await uniqueSlug(prisma, slugify(d.title));
-  const { coverImageUrl, ...fields } = d;
   await prisma.product.create({
     data: {
       ...fields,
       priceCents: d.priceCents,
       slug,
       isPlaceholder: false,
-      images: coverImageUrl
-        ? { create: { url: coverImageUrl, alt: d.title, isCover: true, position: 0 } }
+      images: cover
+        ? { create: { url: cover, alt: d.title, isCover: true, position: 0 } }
         : undefined,
     },
   });
@@ -119,25 +127,32 @@ export async function updateProduct(
   if (d.priceCents == null || d.priceCents < 0)
     return { error: "Geçerli bir fiyat girin." };
 
-  const prisma = getPrisma();
   const { coverImageUrl, ...fields } = d;
+  let cover: string | null;
+  try {
+    cover = (await uploadImage(formData.get("imageFile"), "products")) ?? coverImageUrl;
+  } catch (e) {
+    return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
+  }
+
+  const prisma = getPrisma();
   await prisma.product.update({
     where: { id },
     data: { ...fields, priceCents: d.priceCents },
   });
 
-  if (coverImageUrl) {
+  if (cover) {
     const existing = await prisma.productImage.findFirst({
       where: { productId: id, isCover: true },
     });
     if (existing) {
       await prisma.productImage.update({
         where: { id: existing.id },
-        data: { url: coverImageUrl, alt: d.title },
+        data: { url: cover, alt: d.title },
       });
     } else {
       await prisma.productImage.create({
-        data: { productId: id, url: coverImageUrl, alt: d.title, isCover: true, position: 0 },
+        data: { productId: id, url: cover, alt: d.title, isCover: true, position: 0 },
       });
     }
   }

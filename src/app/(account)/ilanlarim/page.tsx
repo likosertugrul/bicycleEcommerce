@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getT } from "@/lib/locale";
+import { getT, getCurrency } from "@/lib/locale";
 import { getAuthUser } from "@/server/auth";
 import { getMyListings } from "@/server/listings";
 import { formatPrice } from "@/lib/format";
@@ -17,7 +17,11 @@ const STATUS_STYLE: Record<string, string> = {
 };
 
 export default async function MyListingsPage() {
-  const [t, user] = await Promise.all([getT(), getAuthUser()]);
+  const [t, currency, user] = await Promise.all([
+    getT(),
+    getCurrency(),
+    getAuthUser(),
+  ]);
   if (!user) redirect("/giris");
   const listings = await getMyListings();
 
@@ -57,7 +61,7 @@ export default async function MyListingsPage() {
                   </div>
                   {l.askingPriceCents != null && (
                     <p className="mt-1 text-sm text-slate-500">
-                      {t.listings.asking}: {formatPrice(l.askingPriceCents)}
+                      {t.listings.asking}: {formatPrice(l.askingPriceCents, currency)}
                     </p>
                   )}
                 </div>

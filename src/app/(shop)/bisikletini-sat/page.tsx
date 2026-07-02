@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getT } from "@/lib/locale";
+import { getT, getCurrency } from "@/lib/locale";
 import { getAuthUser } from "@/server/auth";
 import { SellForm } from "@/components/sell-form";
 
@@ -13,7 +13,11 @@ export const metadata: Metadata = {
 export const dynamic = "force-dynamic";
 
 export default async function SellBikePage() {
-  const [t, user] = await Promise.all([getT(), getAuthUser()]);
+  const [t, currency, user] = await Promise.all([
+    getT(),
+    getCurrency(),
+    getAuthUser(),
+  ]);
 
   return (
     <div className="mx-auto max-w-3xl px-4 py-10">
@@ -25,7 +29,7 @@ export default async function SellBikePage() {
       </div>
 
       {user ? (
-        <SellForm sell={t.sell} bikeTypes={t.bikeType} />
+        <SellForm sell={t.sell} bikeTypes={t.bikeType} currency={currency} />
       ) : (
         <div className="mt-8 flex flex-col items-center rounded-2xl border border-dashed border-slate-300 p-10 text-center">
           <p className="text-slate-600">{t.sell.loginRequired}</p>
