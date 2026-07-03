@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
@@ -49,6 +49,22 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
   const [stock, setStock] = useState(p.stock.toString());
   const [condition, setCondition] = useState(p.condition);
   const [bikeType, setBikeType] = useState(p.bikeType ?? "CITY");
+
+  // Aktif/Pasif — iyimser: tıklayınca anında değişir, sunucu onaylayınca senkron.
+  const [active, setActive] = useState(p.isActive);
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- sunucu doğrusuyla senkron
+    setActive(p.isActive);
+  }, [p.isActive]);
+
+  function toggleActive(next: boolean) {
+    if (next === active) return;
+    setActive(next); // anlık geri bildirim
+    startActive(async () => {
+      await setProductActive(p.id, next);
+      router.refresh(); // istemci prop'unun kesin güncellenmesi için
+    });
+  }
 
   const nextCents = Math.round((parseFloat(price) || 0) * 100);
   const dirty =
@@ -156,11 +172,11 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              if (!p.isActive) startActive(() => setProductActive(p.id, true));
+              toggleActive(true);
             }}
-            aria-pressed={p.isActive}
+            aria-pressed={active}
             className={`rounded-full px-2.5 py-1 font-medium transition-colors ${
-              p.isActive
+              active
                 ? "bg-emerald-500 text-white shadow"
                 : "text-slate-500 hover:text-slate-700"
             }`}
@@ -171,11 +187,11 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              if (p.isActive) startActive(() => setProductActive(p.id, false));
+              toggleActive(false);
             }}
-            aria-pressed={!p.isActive}
+            aria-pressed={!active}
             className={`rounded-full px-2.5 py-1 font-medium transition-colors ${
-              !p.isActive
+              !active
                 ? "bg-slate-500 text-white shadow"
                 : "text-slate-500 hover:text-slate-700"
             }`}
