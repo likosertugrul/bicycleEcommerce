@@ -60,13 +60,33 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
           <button
             type="submit"
             onClick={stop}
-            className={`rounded-full px-2 py-0.5 text-xs font-medium ${
+            role="switch"
+            aria-checked={p.isActive}
+            title={
               p.isActive
-                ? "bg-emerald-100 text-emerald-700"
-                : "bg-slate-200 text-slate-500"
-            }`}
+                ? "Aktif — pasife almak için tıkla"
+                : "Pasif — aktif etmek için tıkla"
+            }
+            className="flex items-center gap-2"
           >
-            {p.isActive ? "Aktif" : "Pasif"}
+            <span
+              className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
+                p.isActive ? "bg-emerald-500" : "bg-slate-300"
+              }`}
+            >
+              <span
+                className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${
+                  p.isActive ? "translate-x-[1.125rem]" : "translate-x-0.5"
+                }`}
+              />
+            </span>
+            <span
+              className={`text-xs font-medium ${
+                p.isActive ? "text-emerald-700" : "text-slate-500"
+              }`}
+            >
+              {p.isActive ? "Aktif" : "Pasif"}
+            </span>
           </button>
         </form>
       </td>
