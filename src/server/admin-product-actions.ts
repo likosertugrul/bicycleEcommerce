@@ -60,8 +60,15 @@ function parse(fd: FormData) {
     cosmeticNotes: s("cosmeticNotes") || null,
     mileageKm: numOrNull("mileageKm"),
     isActive: fd.get("isActive") === "on",
-    coverImageUrl: s("coverImageUrl") || null,
   };
+}
+
+/** Textarea/virgülle ayrılmış URL'leri diziye çevir. */
+function urlLines(v: FormDataEntryValue | null): string[] {
+  return String(v ?? "")
+    .split(/[\n,]+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
 }
 
 async function uniqueSlug(
@@ -91,11 +98,10 @@ export async function createProduct(
   if (d.priceCents == null || d.priceCents < 0)
     return { error: "Geçerli bir fiyat girin." };
 
-  const { coverImageUrl, ...fields } = d;
   let urls: string[];
   try {
     urls = await uploadImages(formData.getAll("imageFiles"), "products");
-    if (coverImageUrl) urls.push(coverImageUrl);
+    urls.push(...urlLines(formData.get("imageUrls")));
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
   }
@@ -104,7 +110,7 @@ export async function createProduct(
   const slug = await uniqueSlug(prisma, slugify(d.title));
   await prisma.product.create({
     data: {
-      ...fields,
+      ...d,
       priceCents: d.priceCents,
       slug,
       isPlaceholder: false,
@@ -135,11 +141,10 @@ export async function updateProduct(
   if (d.priceCents == null || d.priceCents < 0)
     return { error: "Geçerli bir fiyat girin." };
 
-  const { coverImageUrl, ...fields } = d;
   let newUrls: string[];
   try {
     newUrls = await uploadImages(formData.getAll("imageFiles"), "products");
-    if (coverImageUrl) newUrls.push(coverImageUrl);
+    newUrls.push(...urlLines(formData.get("imageUrls")));
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
   }
@@ -147,7 +152,7 @@ export async function updateProduct(
   const prisma = getPrisma();
   await prisma.product.update({
     where: { id },
-    data: { ...fields, priceCents: d.priceCents },
+    data: { ...d, priceCents: d.priceCents },
   });
 
   if (newUrls.length) {
@@ -187,6 +192,34 @@ export async function deleteProductImage(imageId: string): Promise<void> {
     if (next)
       await prisma.productImage.update({ where: { id: next.id }, data: { isCover: true } });
   }
+  revalidatePath(`/admin/urunler/${img.productId}`);
+}
+
+/** Görseli sırada bir sola/sağa taşı (komşuyla yer değiştir). */
+export async function moveProductImage(
+  imageId: string,
+  dir: "left" | "right",
+): Promise<void> {
+  await requireAdmin();
+  const prisma = getPrisma();
+  const img = await prisma.productImage.findUnique({
+    where: { id: imageId },
+    select: { productId: true },
+  });
+  if (!img) return;
+  const siblings = await prisma.productImage.findMany({
+    where: { productId: img.productId },
+    orderBy: { position: "asc" },
+  });
+  const idx = siblings.findIndex((s) => s.id === imageId);
+  const swap = dir === "left" ? idx - 1 : idx + 1;
+  if (idx < 0 || swap < 0 || swap >= siblings.length) return;
+  const a = siblings[idx];
+  const b = siblings[swap];
+  await prisma.$transaction([
+    prisma.productImage.update({ where: { id: a.id }, data: { position: b.position } }),
+    prisma.productImage.update({ where: { id: b.id }, data: { position: a.position } }),
+  ]);
   revalidatePath(`/admin/urunler/${img.productId}`);
 }
 

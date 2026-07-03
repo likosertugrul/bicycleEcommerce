@@ -129,16 +129,17 @@ export function ProductForm({
           />
         </label>
         <label className="mt-3 block text-sm text-slate-600">
-          veya URL ekle
-          <input
-            name="coverImageUrl"
-            placeholder="/placeholders/mountain-01.svg veya https://..."
+          veya URL(ler) ekle — her satıra bir link
+          <textarea
+            name="imageUrls"
+            rows={3}
+            placeholder={"https://.../foto1.jpg\nhttps://.../foto2.jpg"}
             className={input}
           />
         </label>
         <p className="mt-1 text-xs text-slate-400">
-          Seçtiğin görseller eklenir. Kapak yoksa ilki kapak olur. Mevcut
-          görselleri yukarıdan yönetebilirsin.
+          Seçtiğin dosyalar ve URL&apos;ler eklenir. Kapak yoksa ilki kapak olur.
+          Mevcut görselleri yukarıdan yönetebilir/sıralayabilirsin.
         </p>
       </div>
 

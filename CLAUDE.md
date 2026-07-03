@@ -51,7 +51,7 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 - `HeroSlide` modeli. Admin `/admin/slaytlar` CRUD. Ana sayfa: `HeroCarousel` (client, otomatik). **İlk slayt (pozisyon 0) = eski varsayılan hero** (DB'de bir slayt olarak duruyor, admin düzenleyebilir); sonrasında ilan/kampanya slaytları. Yoksa statik hero fallback.
 
 ## Çoklu görsel (ürün + ilan)
-- Ürünlerde `ProductImage` (çoklu, `isCover` + `position`). Admin ürün formu: **çoklu dosya** (`imageFiles`) + URL; düzenleme sayfasında mevcut görseller grid'i (`setCoverImage`/`deleteProductImage`). Ürün detay: `ProductGallery` (ana + thumbnail).
+- Ürünlerde `ProductImage` (çoklu, `isCover` + `position`). Admin ürün formu: **çoklu dosya** (`imageFiles`) + **çoklu URL** (textarea `imageUrls`, satır/virgülle ayrık). Düzenleme sayfasında mevcut görseller grid'i: kapak yap/sil + **sıralama ← → (`moveProductImage`)**. Ürün detay: `ProductGallery` (ana + thumbnail, position sırasında). Hero `HeroCarousel` kayan şerit (translateX).
 - İlan: sell formunda çoklu dosya → `Listing.images` (JSON dizi). Ürüne dönüştürünce tüm görseller `ProductImage` olur.
 - Yükleme: `src/server/upload.ts uploadImages()` → Supabase Storage `images` bucket.
 

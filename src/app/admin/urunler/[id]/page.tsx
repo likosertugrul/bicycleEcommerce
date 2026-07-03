@@ -6,6 +6,7 @@ import {
   updateProduct,
   deleteProductImage,
   setCoverImage,
+  moveProductImage,
 } from "@/server/admin-product-actions";
 import { ProductForm, type ProductFormInitial } from "@/components/admin/product-form";
 
@@ -58,8 +59,11 @@ export default async function EditProductPage({
           <p className="mb-2 text-sm font-medium text-slate-700">
             Mevcut Görseller ({p.images.length})
           </p>
+          <p className="mb-2 text-xs text-slate-400">
+            Sıralamayı ← → ile değiştir; ilk sıradaki (kapak) ana görseldir.
+          </p>
           <div className="flex flex-wrap gap-3">
-            {p.images.map((img) => (
+            {p.images.map((img, i) => (
               <div key={img.id} className="w-28">
                 <div className="relative aspect-square overflow-hidden rounded-lg border border-slate-200 bg-slate-100">
                   <Image src={img.url} alt="" fill sizes="112px" className="object-cover" />
@@ -68,6 +72,26 @@ export default async function EditProductPage({
                       Kapak
                     </span>
                   )}
+                </div>
+                <div className="mt-1 flex items-center justify-center gap-1">
+                  <form action={moveProductImage.bind(null, img.id, "left")}>
+                    <button
+                      disabled={i === 0}
+                      className="rounded border border-slate-300 px-1.5 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-30"
+                      aria-label="Sola taşı"
+                    >
+                      ←
+                    </button>
+                  </form>
+                  <form action={moveProductImage.bind(null, img.id, "right")}>
+                    <button
+                      disabled={i === p.images.length - 1}
+                      className="rounded border border-slate-300 px-1.5 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-30"
+                      aria-label="Sağa taşı"
+                    >
+                      →
+                    </button>
+                  </form>
                 </div>
                 <div className="mt-1 flex justify-between text-xs">
                   {!img.isCover ? (
