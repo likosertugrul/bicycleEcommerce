@@ -9,7 +9,7 @@ import { FavoriteButton } from "@/components/favorite-button";
 export function ProductCard({
   product,
   t,
-  currency = "TRY",
+  currency = "USD",
 }: {
   product: Product;
   t: Dictionary;

@@ -1,34 +1,19 @@
-// Para birimi seçimi. Fiyatlar DB'de kuruş/TRY saklanır; gösterimde dönüştürülür.
-// NOT: kurlar YAKLAŞIK ve statiktir; ileride canlı bir kur API'sine bağlanabilir.
-
-export type Currency = "TRY" | "USD" | "EUR" | "GBP";
+// Site tek para birimi: USD. Fiyatlar DB'de USD cent olarak saklanır.
+export type Currency = "USD";
 export const CURRENCIES: { code: Currency; symbol: string; flag: string }[] = [
-  { code: "TRY", symbol: "₺", flag: "🇹🇷" },
   { code: "USD", symbol: "$", flag: "🇺🇸" },
-  { code: "EUR", symbol: "€", flag: "🇪🇺" },
-  { code: "GBP", symbol: "£", flag: "🇬🇧" },
 ];
 
-export const DEFAULT_CURRENCY: Currency = "TRY";
+export const DEFAULT_CURRENCY: Currency = "USD";
 export const CURRENCY_COOKIE = "cur";
 
-// 1 TRY → hedef birim (yaklaşık).
-export const RATES: Record<Currency, number> = {
-  TRY: 1,
-  USD: 0.025,
-  EUR: 0.023,
-  GBP: 0.02,
-};
+// USD taban; dönüşüm yok.
+export const RATES: Record<Currency, number> = { USD: 1 };
 
-const LOCALES: Record<Currency, string> = {
-  TRY: "tr-TR",
-  USD: "en-US",
-  EUR: "de-DE",
-  GBP: "en-GB",
-};
+const LOCALES: Record<Currency, string> = { USD: "en-US" };
 
 export function isCurrency(v: string | undefined | null): v is Currency {
-  return v === "TRY" || v === "USD" || v === "EUR" || v === "GBP";
+  return v === "USD";
 }
 
 export function localeFor(c: Currency): string {

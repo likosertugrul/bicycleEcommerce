@@ -105,10 +105,10 @@ export function ProductForm({
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Field label="Fiyat (₺) *">
+        <Field label="Fiyat ($) *">
           <input name="priceTL" type="number" step="0.01" defaultValue={initial?.priceTL} required className={input} />
         </Field>
-        <Field label="Eski Fiyat (₺)">
+        <Field label="Eski Fiyat ($)">
           <input name="compareTL" type="number" step="0.01" defaultValue={initial?.compareTL} className={input} />
         </Field>
         <Field label="Stok">

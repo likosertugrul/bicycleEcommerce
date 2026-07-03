@@ -12,12 +12,11 @@ export function formatPrice(
   currency: Currency = DEFAULT_CURRENCY,
 ): string {
   const amount = (cents / 100) * RATES[currency];
-  const fractionDigits = currency === "TRY" ? 0 : 2;
   return new Intl.NumberFormat(localeFor(currency), {
     style: "currency",
     currency,
-    minimumFractionDigits: fractionDigits,
-    maximumFractionDigits: fractionDigits,
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
   }).format(amount);
 }
 
