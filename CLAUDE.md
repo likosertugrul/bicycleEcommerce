@@ -48,8 +48,12 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 3. Ödeme (Sprint 3) — en sona (createOrder, iyzico, webhook).
 
 ## Ana sayfa hero slider (admin yönetir)
-- `HeroSlide` modeli (migration `hero_slides`). Admin `/admin/slaytlar` CRUD (başlık, alt metin, buton metni/link, görsel dosya/URL, sıra, yayında). `src/server/slides.ts` + `slide-actions.ts`.
-- Ana sayfa: aktif slayt varsa `HeroCarousel` (client, otomatik dönen, ok+nokta); yoksa varsayılan statik hero. Slaytlar bisiklet **veya** kampanya olabilir (ctaHref serbest).
+- `HeroSlide` modeli. Admin `/admin/slaytlar` CRUD. Ana sayfa: `HeroCarousel` (client, otomatik). **İlk slayt (pozisyon 0) = eski varsayılan hero** (DB'de bir slayt olarak duruyor, admin düzenleyebilir); sonrasında ilan/kampanya slaytları. Yoksa statik hero fallback.
+
+## Çoklu görsel (ürün + ilan)
+- Ürünlerde `ProductImage` (çoklu, `isCover` + `position`). Admin ürün formu: **çoklu dosya** (`imageFiles`) + URL; düzenleme sayfasında mevcut görseller grid'i (`setCoverImage`/`deleteProductImage`). Ürün detay: `ProductGallery` (ana + thumbnail).
+- İlan: sell formunda çoklu dosya → `Listing.images` (JSON dizi). Ürüne dönüştürünce tüm görseller `ProductImage` olur.
+- Yükleme: `src/server/upload.ts uploadImages()` → Supabase Storage `images` bucket.
 
 ## Auth (Supabase, @supabase/ssr)
 - Client'lar: `src/lib/supabase/{server,client,middleware}.ts`. `src/middleware.ts` her istekte oturumu tazeler.

@@ -33,3 +33,16 @@ export async function uploadImage(
 
   return supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
 }
+
+/** Birden fazla dosyayı yükler; başarılı URL'leri sırayla döner. */
+export async function uploadImages(
+  files: FormDataEntryValue[],
+  folder: string,
+): Promise<string[]> {
+  const urls: string[] = [];
+  for (const f of files) {
+    const url = await uploadImage(f, folder);
+    if (url) urls.push(url);
+  }
+  return urls;
+}

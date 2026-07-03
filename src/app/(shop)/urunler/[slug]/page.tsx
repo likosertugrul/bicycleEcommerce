@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductBySlug, getRelatedProducts } from "@/server/products";
 import { getT, getCurrency } from "@/lib/locale";
 import { ProductCard } from "@/components/product-card";
+import { ProductGallery } from "@/components/product-gallery";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { FavoriteButton } from "@/components/favorite-button";
 import { formatPrice, discountPercent } from "@/lib/format";
@@ -43,7 +43,6 @@ export default async function ProductDetailPage({
   if (!product) notFound();
 
   const [t, currency] = await Promise.all([getT(), getCurrency()]);
-  const cover = product.images.find((i) => i.isCover) ?? product.images[0];
   const discount = discountPercent(product.priceCents, product.compareAtCents);
   const related = await getRelatedProducts(product);
   const inStock = product.stock > 0;
@@ -96,25 +95,11 @@ export default async function ProductDetailPage({
 
       <div className="grid gap-8 md:grid-cols-2">
         {/* Galeri */}
-        <div>
-          <div className="relative aspect-4/3 overflow-hidden rounded-2xl border border-slate-200 bg-slate-100">
-            {cover && (
-              <Image
-                src={cover.url}
-                alt={cover.alt}
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 50vw"
-                className="object-cover"
-              />
-            )}
-            {product.isPlaceholder && (
-              <span className="absolute bottom-3 right-3 rounded bg-black/50 px-2 py-1 text-xs text-white">
-                {t.card.placeholder}
-              </span>
-            )}
-          </div>
-        </div>
+        <ProductGallery
+          images={product.images}
+          isPlaceholder={product.isPlaceholder}
+          placeholderLabel={t.card.placeholder}
+        />
 
         {/* Bilgi */}
         <div>

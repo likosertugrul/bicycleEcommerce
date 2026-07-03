@@ -6,7 +6,7 @@ import { ProductCondition, BikeType, SellerType } from "@prisma/client";
 import { getPrisma } from "@/lib/prisma";
 import { requireAdmin } from "@/server/admin";
 import { slugify } from "@/lib/slug";
-import { uploadImage } from "@/server/upload";
+import { uploadImages } from "@/server/upload";
 
 export type AdminFormState = { error?: string };
 
@@ -92,9 +92,10 @@ export async function createProduct(
     return { error: "Geçerli bir fiyat girin." };
 
   const { coverImageUrl, ...fields } = d;
-  let cover: string | null;
+  let urls: string[];
   try {
-    cover = (await uploadImage(formData.get("imageFile"), "products")) ?? coverImageUrl;
+    urls = await uploadImages(formData.getAll("imageFiles"), "products");
+    if (coverImageUrl) urls.push(coverImageUrl);
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
   }
@@ -107,8 +108,15 @@ export async function createProduct(
       priceCents: d.priceCents,
       slug,
       isPlaceholder: false,
-      images: cover
-        ? { create: { url: cover, alt: d.title, isCover: true, position: 0 } }
+      images: urls.length
+        ? {
+            create: urls.map((url, i) => ({
+              url,
+              alt: d.title,
+              isCover: i === 0,
+              position: i,
+            })),
+          }
         : undefined,
     },
   });
@@ -128,9 +136,10 @@ export async function updateProduct(
     return { error: "Geçerli bir fiyat girin." };
 
   const { coverImageUrl, ...fields } = d;
-  let cover: string | null;
+  let newUrls: string[];
   try {
-    cover = (await uploadImage(formData.get("imageFile"), "products")) ?? coverImageUrl;
+    newUrls = await uploadImages(formData.getAll("imageFiles"), "products");
+    if (coverImageUrl) newUrls.push(coverImageUrl);
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
   }
@@ -141,23 +150,63 @@ export async function updateProduct(
     data: { ...fields, priceCents: d.priceCents },
   });
 
-  if (cover) {
-    const existing = await prisma.productImage.findFirst({
+  if (newUrls.length) {
+    const existingCount = await prisma.productImage.count({ where: { productId: id } });
+    const coverCount = await prisma.productImage.count({
       where: { productId: id, isCover: true },
     });
-    if (existing) {
-      await prisma.productImage.update({
-        where: { id: existing.id },
-        data: { url: cover, alt: d.title },
-      });
-    } else {
-      await prisma.productImage.create({
-        data: { productId: id, url: cover, alt: d.title, isCover: true, position: 0 },
-      });
-    }
+    await prisma.productImage.createMany({
+      data: newUrls.map((url, i) => ({
+        productId: id,
+        url,
+        alt: d.title,
+        isCover: coverCount === 0 && i === 0,
+        position: existingCount + i,
+      })),
+    });
   }
   revalidatePath("/admin/urunler");
   redirect("/admin/urunler");
+}
+
+/** Ürün görselini sil (kapaksa sıradakini kapak yap). */
+export async function deleteProductImage(imageId: string): Promise<void> {
+  await requireAdmin();
+  const prisma = getPrisma();
+  const img = await prisma.productImage.findUnique({
+    where: { id: imageId },
+    select: { productId: true, isCover: true },
+  });
+  if (!img) return;
+  await prisma.productImage.delete({ where: { id: imageId } });
+  if (img.isCover) {
+    const next = await prisma.productImage.findFirst({
+      where: { productId: img.productId },
+      orderBy: { position: "asc" },
+    });
+    if (next)
+      await prisma.productImage.update({ where: { id: next.id }, data: { isCover: true } });
+  }
+  revalidatePath(`/admin/urunler/${img.productId}`);
+}
+
+/** Görseli kapak yap (diğerlerini kaldır). */
+export async function setCoverImage(imageId: string): Promise<void> {
+  await requireAdmin();
+  const prisma = getPrisma();
+  const img = await prisma.productImage.findUnique({
+    where: { id: imageId },
+    select: { productId: true },
+  });
+  if (!img) return;
+  await prisma.$transaction([
+    prisma.productImage.updateMany({
+      where: { productId: img.productId },
+      data: { isCover: false },
+    }),
+    prisma.productImage.update({ where: { id: imageId }, data: { isCover: true } }),
+  ]);
+  revalidatePath(`/admin/urunler/${img.productId}`);
 }
 
 export async function deleteProduct(id: string): Promise<void> {

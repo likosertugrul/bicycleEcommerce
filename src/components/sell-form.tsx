@@ -69,9 +69,10 @@ export function SellForm({
       <div>
         <label className="block text-sm font-semibold text-slate-900">{sell.photos}</label>
         <input
-          name="imageFile"
+          name="imageFiles"
           type="file"
           accept="image/*"
+          multiple
           className="mt-2 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:px-3 file:py-1.5 file:text-white hover:file:bg-emerald-700"
         />
         <label className="mt-2 block text-sm text-slate-600">

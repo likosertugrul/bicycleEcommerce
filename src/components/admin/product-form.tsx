@@ -117,27 +117,28 @@ export function ProductForm({
       </div>
 
       <div className="rounded-xl border border-slate-200 p-4">
-        <p className="text-sm font-medium text-slate-700">Kapak Görseli</p>
+        <p className="text-sm font-medium text-slate-700">Görsel Ekle</p>
         <label className="mt-2 block text-sm text-slate-600">
-          Dosya yükle
+          Dosya yükle (birden fazla seçebilirsin)
           <input
-            name="imageFile"
+            name="imageFiles"
             type="file"
             accept="image/*"
+            multiple
             className="mt-1 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:px-3 file:py-1.5 file:text-white hover:file:bg-emerald-700"
           />
         </label>
         <label className="mt-3 block text-sm text-slate-600">
-          veya URL gir
+          veya URL ekle
           <input
             name="coverImageUrl"
-            defaultValue={initial?.coverImageUrl}
             placeholder="/placeholders/mountain-01.svg veya https://..."
             className={input}
           />
         </label>
         <p className="mt-1 text-xs text-slate-400">
-          Dosya yüklersen URL yok sayılır. Mevcut görsel korunur (boş bırakırsan).
+          Seçtiğin görseller eklenir. Kapak yoksa ilki kapak olur. Mevcut
+          görselleri yukarıdan yönetebilirsin.
         </p>
       </div>
 

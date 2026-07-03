@@ -7,7 +7,7 @@ import { getPrisma } from "@/lib/prisma";
 import { getAuthUser, ensureUserRow } from "@/server/auth";
 import { requireAdmin } from "@/server/admin";
 import { slugify } from "@/lib/slug";
-import { uploadImage } from "@/server/upload";
+import { uploadImages } from "@/server/upload";
 import { getCurrency } from "@/lib/locale";
 import { isCurrency, RATES } from "@/lib/currency";
 
@@ -43,9 +43,11 @@ export async function createListing(
       ? Math.round((amount / RATES[currency]) * 100)
       : null;
 
-  let image: string | null;
+  let images: string[];
   try {
-    image = (await uploadImage(fd.get("imageFile"), "listings")) ?? (s("imageUrl") || null);
+    images = await uploadImages(fd.getAll("imageFiles"), "listings");
+    const url = s("imageUrl");
+    if (url) images.push(url);
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
   }
@@ -61,7 +63,7 @@ export async function createListing(
       frameSize: s("frameSize") || null,
       wheelSize: wheel ? Number(wheel) : null,
       askingPriceCents,
-      images: image ? [image] : undefined,
+      images: images.length ? images : undefined,
       status: ListingStatus.PENDING,
     },
   });
@@ -126,8 +128,15 @@ export async function convertToProduct(id: string): Promise<void> {
       stock: 1,
       isActive: true,
       isPlaceholder: false,
-      images: images[0]
-        ? { create: { url: images[0], alt: listing.title, isCover: true, position: 0 } }
+      images: images.length
+        ? {
+            create: images.map((url, i) => ({
+              url,
+              alt: listing.title,
+              isCover: i === 0,
+              position: i,
+            })),
+          }
         : undefined,
     },
   });
