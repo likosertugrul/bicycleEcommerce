@@ -30,7 +30,7 @@ export function AddToCartButton({
       type="button"
       onClick={handleClick}
       disabled={disabled || pending}
-      className="rounded-full bg-emerald-600 px-8 py-3 font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+      className="rounded-full bg-emerald-600 px-8 py-3 font-semibold text-white transition-all hover:bg-emerald-700 hover:shadow-lg hover:shadow-emerald-600/25 active:scale-95 disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100"
     >
       {pending ? labels.adding : added ? labels.added : labels.addToCart}
     </button>

@@ -64,13 +64,19 @@ export default async function HomePage() {
       <section className="mx-auto max-w-6xl px-4 py-14">
         <h2 className="text-2xl font-bold text-slate-900">{t.home.categories}</h2>
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-6">
-          {CATEGORIES.map(({ type, emoji }) => (
+          {CATEGORIES.map(({ type, emoji }, idx) => (
             <Link
               key={type}
               href={`/urunler?tur=${BIKE_TYPE_TO_SLUG[type]}`}
-              className="flex flex-col items-center gap-2 rounded-xl border border-slate-200 bg-white p-5 text-center transition-colors hover:border-emerald-400 hover:bg-emerald-50"
+              style={{ animationDelay: `${idx * 50}ms` }}
+              className="group flex animate-fade-in-up flex-col items-center gap-2 rounded-xl border border-slate-200 bg-white p-5 text-center transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400 hover:bg-emerald-50 hover:shadow-md"
             >
-              <span aria-hidden className="text-3xl">{emoji}</span>
+              <span
+                aria-hidden
+                className="text-3xl transition-transform duration-300 group-hover:-rotate-6 group-hover:scale-110"
+              >
+                {emoji}
+              </span>
               <span className="text-sm font-medium text-slate-700">
                 {t.bikeType[type]}
               </span>
@@ -91,8 +97,8 @@ export default async function HomePage() {
           </Link>
         </div>
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {featured.map((product) => (
-            <ProductCard key={product.id} product={product} t={t} currency={currency} />
+          {featured.map((product, idx) => (
+            <ProductCard key={product.id} product={product} t={t} currency={currency} index={idx} />
           ))}
         </div>
       </section>

@@ -28,7 +28,10 @@ export function WishlistBadge({ label }: { label: string }) {
     >
       <span aria-hidden>♡</span>
       {count != null && count > 0 && (
-        <span className="absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1 text-xs font-bold text-white">
+        <span
+          key={count}
+          className="animate-pop absolute -right-0.5 -top-0.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1 text-xs font-bold text-white"
+        >
           {count}
         </span>
       )}

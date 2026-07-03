@@ -44,7 +44,10 @@ export function FavoriteButton({
         aria-pressed={fav}
         className="flex h-9 w-9 items-center justify-center rounded-full bg-white/90 text-lg shadow-sm backdrop-blur transition-colors hover:bg-white"
       >
-        <span className={fav ? "text-rose-600" : "text-slate-400"}>
+        <span
+          key={fav ? "on" : "off"}
+          className={fav ? "animate-heart text-rose-600" : "text-slate-400"}
+        >
           {fav ? "♥" : "♡"}
         </span>
       </button>

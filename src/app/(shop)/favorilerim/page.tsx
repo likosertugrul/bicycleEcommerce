@@ -56,8 +56,8 @@ export default async function WishlistPage() {
         </div>
       ) : (
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {products.map((product) => (
-            <ProductCard key={product.id} product={product} t={t} currency={currency} />
+          {products.map((product, idx) => (
+            <ProductCard key={product.id} product={product} t={t} currency={currency} index={idx} />
           ))}
         </div>
       )}

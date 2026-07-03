@@ -36,7 +36,10 @@ export function CartBadge({ label }: { label: string }) {
     >
       {label}
       {count != null && count > 0 && (
-        <span className="absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1 text-xs font-bold text-white">
+        <span
+          key={count}
+          className="animate-pop absolute -right-1.5 -top-1.5 flex h-5 min-w-5 items-center justify-center rounded-full bg-rose-600 px-1 text-xs font-bold text-white"
+        >
           {count}
         </span>
       )}

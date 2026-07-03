@@ -38,7 +38,7 @@ export function HeroCarousel({ slides }: { slides: SlideView[] }) {
                 {s.ctaHref && (
                   <Link
                     href={s.ctaHref}
-                    className="mt-8 inline-block rounded-full bg-white px-6 py-3 font-semibold text-emerald-700 transition-colors hover:bg-emerald-50"
+                    className="mt-8 inline-block rounded-full bg-white px-6 py-3 font-semibold text-emerald-700 shadow-lg shadow-emerald-900/20 transition-all hover:bg-emerald-50 hover:shadow-xl active:scale-95"
                   >
                     {s.ctaLabel || "İncele"}
                   </Link>

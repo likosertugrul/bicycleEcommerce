@@ -215,8 +215,8 @@ export default async function ProductDetailPage({
         <section className="mt-16">
           <h2 className="text-xl font-bold text-slate-900">{t.detail.related}</h2>
           <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {related.map((p) => (
-              <ProductCard key={p.id} product={p} t={t} currency={currency} />
+            {related.map((p, idx) => (
+              <ProductCard key={p.id} product={p} t={t} currency={currency} index={idx} />
             ))}
           </div>
         </section>
