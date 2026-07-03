@@ -4,6 +4,7 @@ import { useActionState } from "react";
 import { createListing, type ListingState } from "@/server/listing-actions";
 import type { Dictionary } from "@/lib/i18n";
 import { CURRENCIES, type Currency } from "@/lib/currency";
+import { ImageUrlList } from "@/components/image-url-list";
 
 const TYPES = ["MOUNTAIN", "ROAD", "CITY", "ELECTRIC", "KIDS", "GRAVEL"] as const;
 const input =
@@ -75,10 +76,9 @@ export function SellForm({
           multiple
           className="mt-2 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:px-3 file:py-1.5 file:text-white hover:file:bg-emerald-700"
         />
-        <label className="mt-2 block text-sm text-slate-600">
-          {sell.imageUrl}
-          <input name="imageUrl" placeholder="https://..." className={input} />
-        </label>
+        <div className="mt-2">
+          <ImageUrlList name="imageUrls" label={sell.imageUrl} />
+        </div>
         <p className="mt-1 text-xs text-slate-400">{sell.photosNote}</p>
       </div>
 

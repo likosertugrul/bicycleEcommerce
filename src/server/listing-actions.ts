@@ -46,8 +46,16 @@ export async function createListing(
   let images: string[];
   try {
     images = await uploadImages(fd.getAll("imageFiles"), "listings");
-    const url = s("imageUrl");
-    if (url) images.push(url);
+    images.push(
+      ...fd
+        .getAll("imageUrls")
+        .flatMap((v) =>
+          String(v)
+            .split(/[\n,]+/)
+            .map((x) => x.trim())
+            .filter(Boolean),
+        ),
+    );
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
   }

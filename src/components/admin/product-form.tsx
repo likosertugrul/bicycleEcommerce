@@ -2,6 +2,7 @@
 
 import { useActionState, useState } from "react";
 import type { AdminFormState } from "@/server/admin-product-actions";
+import { ImageUrlList } from "@/components/image-url-list";
 
 export interface ProductFormInitial {
   title: string;
@@ -128,18 +129,12 @@ export function ProductForm({
             className="mt-1 block w-full text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-emerald-600 file:px-3 file:py-1.5 file:text-white hover:file:bg-emerald-700"
           />
         </label>
-        <label className="mt-3 block text-sm text-slate-600">
-          veya URL(ler) ekle — her satıra bir link
-          <textarea
-            name="imageUrls"
-            rows={3}
-            placeholder={"https://.../foto1.jpg\nhttps://.../foto2.jpg"}
-            className={input}
-          />
-        </label>
+        <div className="mt-3">
+          <ImageUrlList name="imageUrls" label="veya URL ile ekle (tek tek)" />
+        </div>
         <p className="mt-1 text-xs text-slate-400">
-          Seçtiğin dosyalar ve URL&apos;ler eklenir. Kapak yoksa ilki kapak olur.
-          Mevcut görselleri yukarıdan yönetebilir/sıralayabilirsin.
+          Seçtiğin dosyalar ve eklediğin URL&apos;ler kaydedince eklenir. Kapak
+          yoksa ilki kapak olur. Mevcut görselleri yukarıdan sıralayabilirsin.
         </p>
       </div>
 

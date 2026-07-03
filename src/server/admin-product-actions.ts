@@ -101,7 +101,7 @@ export async function createProduct(
   let urls: string[];
   try {
     urls = await uploadImages(formData.getAll("imageFiles"), "products");
-    urls.push(...urlLines(formData.get("imageUrls")));
+    urls.push(...formData.getAll("imageUrls").flatMap(urlLines));
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
   }
@@ -144,7 +144,7 @@ export async function updateProduct(
   let newUrls: string[];
   try {
     newUrls = await uploadImages(formData.getAll("imageFiles"), "products");
-    newUrls.push(...urlLines(formData.get("imageUrls")));
+    newUrls.push(...formData.getAll("imageUrls").flatMap(urlLines));
   } catch (e) {
     return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
   }
