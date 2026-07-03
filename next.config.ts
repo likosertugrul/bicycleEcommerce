@@ -6,6 +6,11 @@ const nextConfig: NextConfig = {
   // pg-cloudflare (CloudflareSocket) sürücüsü için gerekli — aksi halde
   // OpenNext esbuild "Could not resolve pg-cloudflare" hatası veriyor.
   serverExternalPackages: ["pg", "pg-cloudflare"],
+  // Görsel yükleme Server Action üzerinden geçtiği için gövde limitini yükselt
+  // (varsayılan 1MB). Birden fazla fotoğrafa izin ver.
+  experimental: {
+    serverActions: { bodySizeLimit: "25mb" },
+  },
   images: {
     dangerouslyAllowSVG: true,
     contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
