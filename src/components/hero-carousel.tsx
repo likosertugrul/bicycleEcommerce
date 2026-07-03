@@ -29,16 +29,22 @@ export function HeroCarousel({ slides }: { slides: SlideView[] }) {
           <div key={s.id} className="w-full shrink-0">
             <div className="mx-auto flex min-h-[420px] max-w-6xl items-center px-12 md:min-h-[460px] md:px-16">
               <div className="w-full md:w-1/2">
-                <h2 className="max-w-xl text-3xl font-extrabold leading-tight md:text-5xl">
+                <h2 className="animate-fade-in-up max-w-xl text-3xl font-extrabold leading-tight md:text-5xl">
                   {s.title}
                 </h2>
                 {s.subtitle && (
-                  <p className="mt-4 max-w-lg text-emerald-100">{s.subtitle}</p>
+                  <p
+                    style={{ animationDelay: "120ms" }}
+                    className="animate-fade-in-up mt-4 max-w-lg text-emerald-100"
+                  >
+                    {s.subtitle}
+                  </p>
                 )}
                 {s.ctaHref && (
                   <Link
                     href={s.ctaHref}
-                    className="mt-8 inline-block rounded-full bg-white px-6 py-3 font-semibold text-emerald-700 shadow-lg shadow-emerald-900/20 transition-all hover:bg-emerald-50 hover:shadow-xl active:scale-95"
+                    style={{ animationDelay: "240ms" }}
+                    className="animate-fade-in-up mt-8 inline-block rounded-full bg-white px-6 py-3 font-semibold text-emerald-700 shadow-lg shadow-emerald-900/20 transition-all hover:bg-emerald-50 hover:shadow-xl active:scale-95"
                   >
                     {s.ctaLabel || "İncele"}
                   </Link>

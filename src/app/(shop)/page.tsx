@@ -4,6 +4,7 @@ import { getActiveSlides } from "@/server/slides";
 import { getT, getCurrency } from "@/lib/locale";
 import { ProductCard } from "@/components/product-card";
 import { HeroCarousel } from "@/components/hero-carousel";
+import { Reveal } from "@/components/reveal";
 import { BIKE_TYPE_TO_SLUG, type BikeType } from "@/lib/types";
 
 // Ana sayfa — runtime'da render (Cloudflare build ortamı DB'ye erişmesin diye).
@@ -103,14 +104,14 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Güven bandı */}
+      {/* Güven bandı — scroll ile belirir */}
       <section className="mx-auto mt-14 max-w-6xl px-4">
         <div className="grid gap-4 rounded-2xl bg-slate-50 p-6 sm:grid-cols-3">
-          {t.home.trust.map((item) => (
-            <div key={item.t}>
+          {t.home.trust.map((item, idx) => (
+            <Reveal key={item.t} delay={idx * 120}>
               <h3 className="font-semibold text-slate-900">{item.t}</h3>
               <p className="mt-1 text-sm text-slate-500">{item.d}</p>
-            </div>
+            </Reveal>
           ))}
         </div>
       </section>

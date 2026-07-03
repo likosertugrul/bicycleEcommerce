@@ -12,12 +12,12 @@ const nextConfig: NextConfig = {
     serverActions: { bodySizeLimit: "25mb" },
   },
   images: {
+    // Admin/kullanıcı rastgele görsel URL'i girebildiği için optimizer katmanını
+    // devre dışı bırakıyoruz — görseller doğrudan (native) yüklenir. Daha
+    // güvenilir (optimizer host/format sorunları yaşanmaz) ve Cloudflare Images
+    // maliyeti olmaz. Görseller zaten çoğunlukla dış CDN'lerden geliyor.
+    unoptimized: true,
     dangerouslyAllowSVG: true,
-    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
-    // Admin herhangi bir görsel URL'i girebildiği için tüm https host'larına
-    // izin veriyoruz. (Küçük dükkan için pratik; ileride Supabase Storage'a
-    // geçilince daraltılabilir.)
-    remotePatterns: [{ protocol: "https", hostname: "**" }],
   },
 };
 
