@@ -42,7 +42,9 @@ const input =
 export function AdminProductRow({ p }: { p: AdminRowProduct }) {
   const router = useRouter();
   const [pending, start] = useTransition();
-  const [price, setPrice] = useState((p.priceCents / 100).toString());
+  const [price, setPrice] = useState(
+    p.priceCents ? (p.priceCents / 100).toString() : "",
+  );
   const [stock, setStock] = useState(p.stock.toString());
   const [condition, setCondition] = useState(p.condition);
   const [bikeType, setBikeType] = useState(p.bikeType ?? "CITY");
@@ -119,9 +121,11 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
             type="number"
             step="0.01"
             min="0"
+            placeholder="0.00"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
             onClick={stop}
+            onFocus={(e) => e.target.select()}
             className={`${input} w-24`}
           />
         </div>
@@ -135,6 +139,7 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
           value={stock}
           onChange={(e) => setStock(e.target.value)}
           onClick={stop}
+          onFocus={(e) => e.target.select()}
           className={`${input} w-16`}
         />
       </td>
