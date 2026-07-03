@@ -34,7 +34,13 @@ export function Reveal({
       { threshold: 0.15, rootMargin: "0px 0px -40px 0px" },
     );
     io.observe(el);
-    return () => io.disconnect();
+    // Güvenlik ağı: gözlemci hiç tetiklenmezse (ör. arka plan sekmesi) içerik
+    // gizli kalmasın — kısa süre sonra yine göster.
+    const fallback = setTimeout(() => setShown(true), 1500);
+    return () => {
+      io.disconnect();
+      clearTimeout(fallback);
+    };
   }, []);
 
   return (

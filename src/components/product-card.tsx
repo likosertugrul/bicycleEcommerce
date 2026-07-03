@@ -10,20 +10,17 @@ export function ProductCard({
   product,
   t,
   currency = "USD",
-  index = 0,
 }: {
   product: Product;
   t: Dictionary;
   currency?: Currency;
-  index?: number;
 }) {
   const discount = discountPercent(product.priceCents, product.compareAtCents);
 
   return (
     <Link
       href={`/urunler/${product.slug}`}
-      style={{ animationDelay: `${Math.min(index, 10) * 55}ms` }}
-      className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-200/70 animate-fade-in-up"
+      className="group flex h-full flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-all duration-300 hover:-translate-y-1 hover:shadow-lg hover:shadow-slate-200/70"
     >
       <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
         <ProductCardImage images={product.images} title={product.title} />

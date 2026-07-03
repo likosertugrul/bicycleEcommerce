@@ -3,6 +3,7 @@ import { getProducts, getBrands } from "@/server/products";
 import { getT, getCurrency } from "@/lib/locale";
 import { parseFilters } from "@/lib/search-params";
 import { ProductCard } from "@/components/product-card";
+import { Reveal } from "@/components/reveal";
 import { ProductFilters } from "@/components/product-filters";
 
 // Filtreli liste — SSR (dinamik parametreler, taze sonuç).
@@ -85,7 +86,9 @@ export default async function ProductsPage({
           ) : (
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-3">
               {products.map((product, idx) => (
-                <ProductCard key={product.id} product={product} t={t} currency={currency} index={idx} />
+                <Reveal key={product.id} delay={(idx % 3) * 80} className="h-full">
+                  <ProductCard product={product} t={t} currency={currency} />
+                </Reveal>
               ))}
             </div>
           )}

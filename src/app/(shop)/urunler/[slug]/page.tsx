@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { getProductBySlug, getRelatedProducts } from "@/server/products";
 import { getT, getCurrency } from "@/lib/locale";
 import { ProductCard } from "@/components/product-card";
+import { Reveal } from "@/components/reveal";
 import { ProductGallery } from "@/components/product-gallery";
 import { AddToCartButton } from "@/components/add-to-cart-button";
 import { FavoriteButton } from "@/components/favorite-button";
@@ -216,7 +217,9 @@ export default async function ProductDetailPage({
           <h2 className="text-xl font-bold text-slate-900">{t.detail.related}</h2>
           <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {related.map((p, idx) => (
-              <ProductCard key={p.id} product={p} t={t} currency={currency} index={idx} />
+              <Reveal key={p.id} delay={(idx % 3) * 80} className="h-full">
+                <ProductCard product={p} t={t} currency={currency} />
+              </Reveal>
             ))}
           </div>
         </section>

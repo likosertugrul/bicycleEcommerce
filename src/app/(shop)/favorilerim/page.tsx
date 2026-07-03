@@ -4,6 +4,7 @@ import { getWishlist } from "@/server/wishlist";
 import { clearWishlist } from "@/server/wishlist-actions";
 import { getT, getCurrency } from "@/lib/locale";
 import { ProductCard } from "@/components/product-card";
+import { Reveal } from "@/components/reveal";
 
 export const metadata: Metadata = {
   title: "Favorilerim",
@@ -57,7 +58,9 @@ export default async function WishlistPage() {
       ) : (
         <div className="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
           {products.map((product, idx) => (
-            <ProductCard key={product.id} product={product} t={t} currency={currency} index={idx} />
+            <Reveal key={product.id} delay={(idx % 3) * 80} className="h-full">
+              <ProductCard product={product} t={t} currency={currency} />
+            </Reveal>
           ))}
         </div>
       )}
