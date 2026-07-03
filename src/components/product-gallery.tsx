@@ -17,7 +17,9 @@ export function ProductGallery({
     (a, b) => Number(b.isCover) - Number(a.isCover),
   );
   const [active, setActive] = useState(0);
+  const count = ordered.length;
   const main = ordered[active] ?? ordered[0];
+  const go = (n: number) => setActive(((n % count) + count) % count);
 
   return (
     <div>
@@ -31,6 +33,26 @@ export function ProductGallery({
             sizes="(max-width: 768px) 100vw, 50vw"
             className="object-cover"
           />
+        )}
+        {count > 1 && (
+          <>
+            <button
+              type="button"
+              onClick={() => go(active - 1)}
+              aria-label="Önceki görsel"
+              className="absolute left-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-lg text-slate-800 backdrop-blur hover:bg-white"
+            >
+              ‹
+            </button>
+            <button
+              type="button"
+              onClick={() => go(active + 1)}
+              aria-label="Sonraki görsel"
+              className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-lg text-slate-800 backdrop-blur hover:bg-white"
+            >
+              ›
+            </button>
+          </>
         )}
         {isPlaceholder && (
           <span className="absolute bottom-3 right-3 rounded bg-black/50 px-2 py-1 text-xs text-white">

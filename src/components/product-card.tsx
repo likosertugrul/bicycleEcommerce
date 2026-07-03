@@ -1,10 +1,10 @@
-import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/lib/types";
 import type { Dictionary } from "@/lib/i18n";
 import { formatPrice, discountPercent } from "@/lib/format";
 import type { Currency } from "@/lib/currency";
 import { FavoriteButton } from "@/components/favorite-button";
+import { ProductCardImage } from "@/components/product-card-image";
 
 export function ProductCard({
   product,
@@ -15,7 +15,6 @@ export function ProductCard({
   t: Dictionary;
   currency?: Currency;
 }) {
-  const cover = product.images.find((i) => i.isCover) ?? product.images[0];
   const discount = discountPercent(product.priceCents, product.compareAtCents);
 
   return (
@@ -24,16 +23,8 @@ export function ProductCard({
       className="group flex flex-col overflow-hidden rounded-xl border border-slate-200 bg-white transition-shadow hover:shadow-md"
     >
       <div className="relative aspect-4/3 overflow-hidden bg-slate-100">
-        {cover && (
-          <Image
-            src={cover.url}
-            alt={cover.alt}
-            fill
-            sizes="(max-width: 768px) 100vw, 33vw"
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-        )}
-        <div className="absolute left-2 top-2 flex gap-1.5">
+        <ProductCardImage images={product.images} title={product.title} />
+        <div className="absolute left-2 top-2 z-10 flex gap-1.5">
           <span
             className={`rounded-full px-2 py-0.5 text-xs font-semibold ${
               product.condition === "USED"
@@ -54,7 +45,7 @@ export function ProductCard({
             {t.card.placeholder}
           </span>
         )}
-        <div className="absolute right-2 top-2">
+        <div className="absolute right-2 top-2 z-10">
           <FavoriteButton productId={product.id} variant="icon" />
         </div>
       </div>
