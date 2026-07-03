@@ -47,6 +47,10 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 2. **Bisikletini Sat (Sprint 4) — KURULDU.** `/bisikletini-sat` (giriş şart) → `Listing` PENDING (`src/server/listing-actions.ts createListing`). `/ilanlarim` kullanıcı ilanları (durum + dükkan notu). Admin `/admin/ilanlar`: onayla/reddet(not)/**ürüne dönüştür** (Listing→Product USED/CONSUMER stok 1, `convertedProductId` bağlanır, admin fiyat için ürün düzenlemeye yönlendirilir). Görsel şimdilik URL ile (Storage upload sonra). Data: `src/server/listings.ts`.
 3. Ödeme (Sprint 3) — en sona (createOrder, iyzico, webhook).
 
+## Ana sayfa hero slider (admin yönetir)
+- `HeroSlide` modeli (migration `hero_slides`). Admin `/admin/slaytlar` CRUD (başlık, alt metin, buton metni/link, görsel dosya/URL, sıra, yayında). `src/server/slides.ts` + `slide-actions.ts`.
+- Ana sayfa: aktif slayt varsa `HeroCarousel` (client, otomatik dönen, ok+nokta); yoksa varsayılan statik hero. Slaytlar bisiklet **veya** kampanya olabilir (ctaHref serbest).
+
 ## Auth (Supabase, @supabase/ssr)
 - Client'lar: `src/lib/supabase/{server,client,middleware}.ts`. `src/middleware.ts` her istekte oturumu tazeler.
 - Aksiyonlar: `src/server/auth-actions.ts` (signInWithPassword / signUpWithPassword / signInWithGoogle / signOut). Yardımcı: `src/server/auth.ts` (`getAuthUser`, `ensureUserRow` → auth kullanıcısını `public.users`'a upsert).

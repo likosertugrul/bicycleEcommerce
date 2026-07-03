@@ -1,7 +1,9 @@
 import Link from "next/link";
 import { getFeaturedProducts } from "@/server/products";
+import { getActiveSlides } from "@/server/slides";
 import { getT, getCurrency } from "@/lib/locale";
 import { ProductCard } from "@/components/product-card";
+import { HeroCarousel } from "@/components/hero-carousel";
 import { BIKE_TYPE_TO_SLUG, type BikeType } from "@/lib/types";
 
 // Ana sayfa — runtime'da render (Cloudflare build ortamı DB'ye erişmesin diye).
@@ -18,40 +20,45 @@ const CATEGORIES: { type: BikeType; emoji: string }[] = [
 ];
 
 export default async function HomePage() {
-  const [t, currency, featured] = await Promise.all([
+  const [t, currency, featured, slides] = await Promise.all([
     getT(),
     getCurrency(),
     getFeaturedProducts(6),
+    getActiveSlides(),
   ]);
 
   return (
     <div>
-      {/* Hero */}
-      <section className="bg-gradient-to-br from-emerald-600 to-emerald-800 text-white">
-        <div className="mx-auto max-w-6xl px-4 py-20 md:py-28">
-          <p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
-            {t.home.badge}
-          </p>
-          <h1 className="mt-3 max-w-2xl text-4xl font-extrabold leading-tight md:text-5xl">
-            {t.home.heroTitle}
-          </h1>
-          <p className="mt-4 max-w-xl text-emerald-100">{t.home.heroSubtitle}</p>
-          <div className="mt-8 flex flex-wrap gap-3">
-            <Link
-              href="/urunler"
-              className="rounded-full bg-white px-6 py-3 font-semibold text-emerald-700 hover:bg-emerald-50 transition-colors"
-            >
-              {t.home.explore}
-            </Link>
-            <Link
-              href="/bisikletini-sat"
-              className="rounded-full border border-white/40 px-6 py-3 font-semibold text-white hover:bg-white/10 transition-colors"
-            >
-              {t.home.sell}
-            </Link>
+      {/* Hero — admin slaytları varsa slider, yoksa varsayılan */}
+      {slides.length > 0 ? (
+        <HeroCarousel slides={slides} />
+      ) : (
+        <section className="bg-gradient-to-br from-emerald-600 to-emerald-800 text-white">
+          <div className="mx-auto max-w-6xl px-4 py-20 md:py-28">
+            <p className="text-sm font-semibold uppercase tracking-wide text-emerald-200">
+              {t.home.badge}
+            </p>
+            <h1 className="mt-3 max-w-2xl text-4xl font-extrabold leading-tight md:text-5xl">
+              {t.home.heroTitle}
+            </h1>
+            <p className="mt-4 max-w-xl text-emerald-100">{t.home.heroSubtitle}</p>
+            <div className="mt-8 flex flex-wrap gap-3">
+              <Link
+                href="/urunler"
+                className="rounded-full bg-white px-6 py-3 font-semibold text-emerald-700 hover:bg-emerald-50 transition-colors"
+              >
+                {t.home.explore}
+              </Link>
+              <Link
+                href="/bisikletini-sat"
+                className="rounded-full border border-white/40 px-6 py-3 font-semibold text-white hover:bg-white/10 transition-colors"
+              >
+                {t.home.sell}
+              </Link>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Kategoriler */}
       <section className="mx-auto max-w-6xl px-4 py-14">

@@ -324,3 +324,19 @@ model WishlistItem {
   @@unique([userId, productId])
   @@map("wishlist_items")
 }
+
+// ============ HERO SLIDES (ana sayfa slider — admin yönetir) ============
+model HeroSlide {
+  id        String   @id @default(uuid()) @db.Uuid
+  title     String
+  subtitle  String?
+  imageUrl  String?  @map("image_url")
+  ctaLabel  String?  @map("cta_label")
+  ctaHref   String?  @map("cta_href")
+  isActive  Boolean  @default(true) @map("is_active")
+  position  Int      @default(0)
+  createdAt DateTime @default(now()) @map("created_at")
+
+  @@index([isActive, position])
+  @@map("hero_slides")
+}
