@@ -32,8 +32,8 @@ export default async function AdminProductsPage() {
               <th className="p-3 font-medium">Durum/Tür</th>
               <th className="p-3 font-medium">Fiyat</th>
               <th className="p-3 font-medium">Stok</th>
-              <th className="p-3 font-medium">Aktif</th>
-              <th className="p-3 font-medium">İşlem</th>
+              <th className="p-3 font-medium">Durum</th>
+              <th className="w-[120px] p-3 text-right font-medium">İşlem</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">

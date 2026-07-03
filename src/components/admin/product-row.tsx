@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import {
   deleteProduct,
-  toggleActive,
+  setProductActive,
   quickUpdateProduct,
 } from "@/server/admin-product-actions";
 import { ConfirmButton } from "@/components/confirm-button";
@@ -42,6 +42,7 @@ const input =
 export function AdminProductRow({ p }: { p: AdminRowProduct }) {
   const router = useRouter();
   const [pending, start] = useTransition();
+  const [activePending, startActive] = useTransition();
   const [price, setPrice] = useState(
     p.priceCents ? (p.priceCents / 100).toString() : "",
   );
@@ -144,46 +145,49 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
         />
       </td>
 
-      {/* Aktif toggle */}
-      <td className="p-3">
-        <form action={toggleActive.bind(null, p.id)}>
+      {/* Aktif/Pasif segmented radio */}
+      <td className="p-3" onClick={stop}>
+        <div
+          className={`inline-flex rounded-full border border-slate-200 bg-slate-50 p-0.5 text-xs ${
+            activePending ? "opacity-60" : ""
+          }`}
+        >
           <button
-            type="submit"
-            onClick={stop}
-            role="switch"
-            aria-checked={p.isActive}
-            title={
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!p.isActive) startActive(() => setProductActive(p.id, true));
+            }}
+            aria-pressed={p.isActive}
+            className={`rounded-full px-2.5 py-1 font-medium transition-colors ${
               p.isActive
-                ? "Aktif — pasife almak için tıkla"
-                : "Pasif — aktif etmek için tıkla"
-            }
-            className="flex items-center gap-2"
+                ? "bg-emerald-500 text-white shadow"
+                : "text-slate-500 hover:text-slate-700"
+            }`}
           >
-            <span
-              className={`relative inline-flex h-5 w-9 shrink-0 items-center rounded-full transition-colors ${
-                p.isActive ? "bg-emerald-500" : "bg-slate-300"
-              }`}
-            >
-              <span
-                className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white shadow transition-transform ${
-                  p.isActive ? "translate-x-[1.125rem]" : "translate-x-0.5"
-                }`}
-              />
-            </span>
-            <span
-              className={`text-xs font-medium ${
-                p.isActive ? "text-emerald-700" : "text-slate-500"
-              }`}
-            >
-              {p.isActive ? "Aktif" : "Pasif"}
-            </span>
+            Aktif
           </button>
-        </form>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              if (p.isActive) startActive(() => setProductActive(p.id, false));
+            }}
+            aria-pressed={!p.isActive}
+            className={`rounded-full px-2.5 py-1 font-medium transition-colors ${
+              !p.isActive
+                ? "bg-slate-500 text-white shadow"
+                : "text-slate-500 hover:text-slate-700"
+            }`}
+          >
+            Pasif
+          </button>
+        </div>
       </td>
 
-      {/* İşlem: Kaydet (değişiklik varsa) + Sil */}
-      <td className="p-3">
-        <div className="flex items-center gap-3">
+      {/* İşlem: sabit genişlik — Kaydet çıkınca liste kaymaz */}
+      <td className="w-[120px] p-3">
+        <div className="flex items-center justify-end gap-3">
           {dirty && (
             <button
               type="button"

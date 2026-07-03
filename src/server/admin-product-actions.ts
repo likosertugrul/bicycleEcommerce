@@ -276,6 +276,17 @@ export async function quickUpdateProduct(
   revalidatePath("/admin/urunler");
 }
 
+// Belirli duruma ayarla (segmented radio için).
+export async function setProductActive(
+  id: string,
+  active: boolean,
+): Promise<void> {
+  await requireAdmin();
+  const prisma = getPrisma();
+  await prisma.product.update({ where: { id }, data: { isActive: active } });
+  revalidatePath("/admin/urunler");
+}
+
 export async function toggleActive(id: string): Promise<void> {
   await requireAdmin();
   const prisma = getPrisma();
