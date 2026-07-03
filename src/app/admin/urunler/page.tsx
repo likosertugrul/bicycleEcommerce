@@ -25,7 +25,7 @@ export default async function AdminProductsPage() {
       </p>
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[880px] text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 text-left text-slate-500">
             <tr>
               <th className="p-3 font-medium">Ürün</th>

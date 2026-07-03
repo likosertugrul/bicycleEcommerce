@@ -164,7 +164,7 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
       {/* Aktif/Pasif segmented radio */}
       <td className="p-3" onClick={stop}>
         <div
-          className={`inline-flex rounded-full border border-slate-200 bg-slate-50 p-0.5 text-xs ${
+          className={`inline-flex w-max shrink-0 whitespace-nowrap rounded-full border border-slate-200 bg-slate-50 p-0.5 text-xs ${
             activePending ? "opacity-60" : ""
           }`}
         >
