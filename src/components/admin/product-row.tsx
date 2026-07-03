@@ -73,7 +73,11 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
         <form action={deleteProduct.bind(null, p.id)}>
           <button
             type="submit"
-            onClick={stop}
+            onClick={(e) => {
+              e.stopPropagation();
+              if (!confirm(`"${p.title}" ürününü silmek istediğine emin misin?`))
+                e.preventDefault();
+            }}
             className="font-medium text-slate-400 hover:text-rose-600"
           >
             Sil
