@@ -249,6 +249,33 @@ export async function deleteProduct(id: string): Promise<void> {
   revalidatePath("/admin/urunler");
 }
 
+// Listeden hızlı düzenleme: fiyat/stok/durum/tür.
+export async function quickUpdateProduct(
+  id: string,
+  data: { priceCents: number; stock: number; condition: string; bikeType: string },
+): Promise<void> {
+  await requireAdmin();
+  const prisma = getPrisma();
+  const condition = (Object.values(ProductCondition) as string[]).includes(
+    data.condition,
+  )
+    ? (data.condition as ProductCondition)
+    : ProductCondition.NEW;
+  const bikeType = (Object.values(BikeType) as string[]).includes(data.bikeType)
+    ? (data.bikeType as BikeType)
+    : BikeType.CITY;
+  await prisma.product.update({
+    where: { id },
+    data: {
+      priceCents: Math.max(0, Math.round(data.priceCents)),
+      stock: Math.max(0, Math.round(data.stock)),
+      condition,
+      bikeType,
+    },
+  });
+  revalidatePath("/admin/urunler");
+}
+
 export async function toggleActive(id: string): Promise<void> {
   await requireAdmin();
   const prisma = getPrisma();
