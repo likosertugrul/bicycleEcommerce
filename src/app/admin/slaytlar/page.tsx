@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { getAdminSlides } from "@/server/slides";
 import { deleteSlide, toggleSlide } from "@/server/slide-actions";
+import { ConfirmButton } from "@/components/confirm-button";
 
 export const dynamic = "force-dynamic";
 
@@ -57,9 +58,14 @@ export default async function AdminSlidesPage() {
                 <Link href={`/admin/slaytlar/${s.id}`} className="font-medium text-emerald-600 hover:text-emerald-700">
                   Düzenle
                 </Link>
-                <form action={deleteSlide.bind(null, s.id)}>
-                  <button type="submit" className="font-medium text-slate-400 hover:text-rose-600">Sil</button>
-                </form>
+                <ConfirmButton
+                  action={deleteSlide.bind(null, s.id)}
+                  title="Slaytı sil"
+                  message={`"${s.title}" slaytını silmek istediğine emin misin?`}
+                  className="font-medium text-slate-400 hover:text-rose-600"
+                >
+                  Sil
+                </ConfirmButton>
               </div>
             </li>
           ))}

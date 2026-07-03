@@ -12,6 +12,7 @@ import type { AddressView } from "@/server/addresses";
 import type { Dictionary } from "@/lib/i18n";
 import { PhoneField } from "@/components/phone-field";
 import { formatPhone, isValidPhone } from "@/lib/phone";
+import { ConfirmButton } from "@/components/confirm-button";
 
 type T = Dictionary["address"];
 
@@ -132,16 +133,16 @@ export function AddressBook({
                 >
                   {t.edit}
                 </button>
-                <button
-                  type="button"
-                  disabled={pending}
-                  onClick={() => {
-                    if (confirm(t.confirmDelete)) run(() => deleteAddress(a.id));
-                  }}
+                <ConfirmButton
+                  action={() => deleteAddress(a.id)}
+                  title={t.delete}
+                  message={t.confirmDelete}
+                  confirmLabel={t.delete}
+                  cancelLabel={t.cancel}
                   className="font-medium text-slate-400 hover:text-rose-600"
                 >
                   {t.delete}
-                </button>
+                </ConfirmButton>
               </div>
             </li>
           ),

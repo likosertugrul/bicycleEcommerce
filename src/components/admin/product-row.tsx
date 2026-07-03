@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { deleteProduct, toggleActive } from "@/server/admin-product-actions";
 import { formatPrice } from "@/lib/format";
+import { ConfirmButton } from "@/components/confirm-button";
 
 const COND: Record<string, string> = { NEW: "Sıfır", USED: "2. El" };
 const TYPE: Record<string, string> = {
@@ -70,19 +71,15 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
         </form>
       </td>
       <td className="p-3">
-        <form action={deleteProduct.bind(null, p.id)}>
-          <button
-            type="submit"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (!confirm(`"${p.title}" ürününü silmek istediğine emin misin?`))
-                e.preventDefault();
-            }}
-            className="font-medium text-slate-400 hover:text-rose-600"
-          >
-            Sil
-          </button>
-        </form>
+        <ConfirmButton
+          action={deleteProduct.bind(null, p.id)}
+          stopPropagation
+          title="Ürünü sil"
+          message={`"${p.title}" ürününü silmek istediğine emin misin?`}
+          className="font-medium text-slate-400 hover:text-rose-600"
+        >
+          Sil
+        </ConfirmButton>
       </td>
     </tr>
   );

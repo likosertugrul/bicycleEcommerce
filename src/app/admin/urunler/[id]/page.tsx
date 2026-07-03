@@ -9,6 +9,7 @@ import {
   moveProductImage,
 } from "@/server/admin-product-actions";
 import { ProductForm, type ProductFormInitial } from "@/components/admin/product-form";
+import { ConfirmButton } from "@/components/confirm-button";
 
 export const dynamic = "force-dynamic";
 
@@ -103,11 +104,14 @@ export default async function EditProductPage({
                   ) : (
                     <span className="text-slate-400">—</span>
                   )}
-                  <form action={deleteProductImage.bind(null, img.id)}>
-                    <button className="font-medium text-slate-400 hover:text-rose-600">
-                      Sil
-                    </button>
-                  </form>
+                  <ConfirmButton
+                    action={deleteProductImage.bind(null, img.id)}
+                    title="Görseli sil"
+                    message="Bu görseli silmek istediğine emin misin?"
+                    className="font-medium text-slate-400 hover:text-rose-600"
+                  >
+                    Sil
+                  </ConfirmButton>
                 </div>
               </div>
             ))}
