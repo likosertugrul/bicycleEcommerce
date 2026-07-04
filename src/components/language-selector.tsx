@@ -2,18 +2,24 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LANG_COOKIE, LOCALES, isLocale, type Locale } from "@/lib/i18n";
+import {
+  DEFAULT_LOCALE,
+  LANG_COOKIE,
+  LOCALES,
+  isLocale,
+  type Locale,
+} from "@/lib/i18n";
 
 const LABELS: Record<Locale, { label: string; flag: string }> = {
   tr: { label: "Türkçe", flag: "🇹🇷" },
-  en: { label: "English", flag: "🇬🇧" },
+  en: { label: "English", flag: "🇺🇸" },
 };
 
 function readLang(): Locale {
-  if (typeof document === "undefined") return "tr";
+  if (typeof document === "undefined") return DEFAULT_LOCALE;
   const m = document.cookie.split("; ").find((c) => c.startsWith(`${LANG_COOKIE}=`));
   const v = m?.split("=")[1];
-  return isLocale(v) ? v : "tr";
+  return isLocale(v) ? v : DEFAULT_LOCALE;
 }
 
 // Modül seviyesinde DOM yazımı (React immutability kuralı dışında).
@@ -25,14 +31,14 @@ function persistLang(code: Locale) {
 export function LanguageSelector() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
-  const [lang, setLang] = useState<Locale>("tr");
+  const [lang, setLang] = useState<Locale>(DEFAULT_LOCALE);
   const ref = useRef<HTMLDivElement>(null);
 
   // Mount: kaydedilmiş dili benimse (client-only, hydration uyumu için).
   useEffect(() => {
     const saved = readLang();
     // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only cookie okuması
-    if (saved !== "tr") setLang(saved);
+    if (saved !== DEFAULT_LOCALE) setLang(saved);
   }, []);
 
   // Dışarı tıklayınca kapat.
@@ -62,7 +68,7 @@ export function LanguageSelector() {
         onClick={() => setOpen((v) => !v)}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-label="Dil seçimi / Language"
+        aria-label="Language"
         className="flex items-center gap-1.5 rounded-full px-2.5 py-1.5 text-sm font-medium text-slate-600 transition-colors hover:bg-slate-100"
       >
         <span aria-hidden className="text-base">🌐</span>
