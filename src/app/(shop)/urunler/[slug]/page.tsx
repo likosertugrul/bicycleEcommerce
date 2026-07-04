@@ -85,7 +85,7 @@ export default async function ProductDetailPage({
         <Link href="/urunler" className="hover:text-emerald-600">{t.detail.bikes}</Link>
         <span>/</span>
         <Link
-          href={`/urunler?tur=${BIKE_TYPE_TO_SLUG[product.bikeType]}`}
+          href={`/kategori/${BIKE_TYPE_TO_SLUG[product.bikeType]}`}
           className="hover:text-emerald-600"
         >
           {t.bikeType[product.bikeType]}

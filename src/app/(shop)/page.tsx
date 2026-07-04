@@ -68,7 +68,7 @@ export default async function HomePage() {
           {CATEGORIES.map(({ type, emoji }, idx) => (
             <Reveal key={type} delay={idx * 60} className="h-full">
               <Link
-                href={`/urunler?tur=${BIKE_TYPE_TO_SLUG[type]}`}
+                href={`/kategori/${BIKE_TYPE_TO_SLUG[type]}`}
                 className="group flex h-full flex-col items-center gap-2 rounded-xl border border-slate-200 bg-white p-5 text-center transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400 hover:bg-emerald-50 hover:shadow-md"
               >
                 <span

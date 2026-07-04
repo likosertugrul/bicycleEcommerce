@@ -16,10 +16,10 @@ export function SiteFooter({ t }: { t: Dictionary }) {
         <div>
           <h3 className="text-sm font-semibold text-slate-900">{t.footer.categories}</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-500">
-            <li><Link href="/urunler?tur=dag" className="hover:text-emerald-600">{t.footer.mountain}</Link></li>
-            <li><Link href="/urunler?tur=yol" className="hover:text-emerald-600">{t.footer.road}</Link></li>
-            <li><Link href="/urunler?tur=sehir" className="hover:text-emerald-600">{t.footer.city}</Link></li>
-            <li><Link href="/urunler?tur=elektrikli" className="hover:text-emerald-600">{t.footer.electric}</Link></li>
+            <li><Link href="/kategori/dag" className="hover:text-emerald-600">{t.footer.mountain}</Link></li>
+            <li><Link href="/kategori/yol" className="hover:text-emerald-600">{t.footer.road}</Link></li>
+            <li><Link href="/kategori/sehir" className="hover:text-emerald-600">{t.footer.city}</Link></li>
+            <li><Link href="/kategori/elektrikli" className="hover:text-emerald-600">{t.footer.electric}</Link></li>
           </ul>
         </div>
 
@@ -27,9 +27,11 @@ export function SiteFooter({ t }: { t: Dictionary }) {
           <h3 className="text-sm font-semibold text-slate-900">{t.footer.corporate}</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-500">
             <li><Link href="/bisikletini-sat" className="hover:text-emerald-600">{t.footer.sell}</Link></li>
-            <li><span className="opacity-60">{t.footer.about}</span></li>
-            <li><span className="opacity-60">{t.footer.contact}</span></li>
-            <li><span className="opacity-60">{t.footer.privacy}</span></li>
+            <li><Link href="/gizlilik" className="hover:text-emerald-600">Gizlilik &amp; KVKK</Link></li>
+            <li><Link href="/mesafeli-satis" className="hover:text-emerald-600">Mesafeli Satış</Link></li>
+            <li><Link href="/iptal-iade" className="hover:text-emerald-600">İptal &amp; İade</Link></li>
+            <li><Link href="/kullanim-sartlari" className="hover:text-emerald-600">Kullanım Şartları</Link></li>
+            <li><Link href="/cerez-politikasi" className="hover:text-emerald-600">Çerez Politikası</Link></li>
           </ul>
         </div>
 
