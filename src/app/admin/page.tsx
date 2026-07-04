@@ -7,17 +7,17 @@ export default async function AdminDashboard() {
   const s = await getAdminStats();
 
   const cards = [
-    { label: "Toplam Ürün", value: s.total, href: "/admin/urunler" },
-    { label: "Aktif Ürün", value: s.active, href: "/admin/urunler" },
-    { label: "2. El Ürün", value: s.used, href: "/admin/urunler" },
-    { label: "Düşük Stok (≤2)", value: s.lowStock, href: "/admin/urunler", warn: s.lowStock > 0 },
-    { label: "Sipariş", value: s.orders, href: "/admin/siparisler" },
+    { label: "Total Products", value: s.total, href: "/admin/urunler" },
+    { label: "Active Products", value: s.active, href: "/admin/urunler" },
+    { label: "Used Products", value: s.used, href: "/admin/urunler" },
+    { label: "Low Stock (≤2)", value: s.lowStock, href: "/admin/urunler", warn: s.lowStock > 0 },
+    { label: "Orders", value: s.orders, href: "/admin/siparisler" },
   ];
 
   return (
     <div className="p-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold text-slate-900">Panel</h1>
+        <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
         <Link
           href="/admin/urunler/yeni"
           className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"

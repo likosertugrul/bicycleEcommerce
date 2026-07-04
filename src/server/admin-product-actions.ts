@@ -94,16 +94,16 @@ export async function createProduct(
 ): Promise<AdminFormState> {
   await requireAdmin();
   const d = parse(formData);
-  if (!d.title) return { error: "Başlık zorunlu." };
+  if (!d.title) return { error: "Title is required." };
   if (d.priceCents == null || d.priceCents < 0)
-    return { error: "Geçerli bir fiyat girin." };
+    return { error: "Enter a valid price." };
 
   let urls: string[];
   try {
     urls = await uploadImages(formData.getAll("imageFiles"), "products");
     urls.push(...formData.getAll("imageUrls").flatMap(urlLines));
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
+    return { error: e instanceof Error ? e.message : "Image upload failed." };
   }
 
   const prisma = getPrisma();
@@ -137,16 +137,16 @@ export async function updateProduct(
 ): Promise<AdminFormState> {
   await requireAdmin();
   const d = parse(formData);
-  if (!d.title) return { error: "Başlık zorunlu." };
+  if (!d.title) return { error: "Title is required." };
   if (d.priceCents == null || d.priceCents < 0)
-    return { error: "Geçerli bir fiyat girin." };
+    return { error: "Enter a valid price." };
 
   let newUrls: string[];
   try {
     newUrls = await uploadImages(formData.getAll("imageFiles"), "products");
     newUrls.push(...formData.getAll("imageUrls").flatMap(urlLines));
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
+    return { error: e instanceof Error ? e.message : "Image upload failed." };
   }
 
   const prisma = getPrisma();

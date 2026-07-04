@@ -12,7 +12,7 @@ const geistSans = Geist({
 export const metadata: Metadata = {
   metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} — Sıfır & 2. El Bisiklet`,
+    default: `${site.name} — New & Used Bikes`,
     template: `%s | ${site.name}`,
   },
   description: site.description,

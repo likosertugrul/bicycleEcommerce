@@ -46,7 +46,7 @@ export function HeroCarousel({ slides }: { slides: SlideView[] }) {
                     style={{ animationDelay: "240ms" }}
                     className="animate-fade-in-up mt-8 inline-block rounded-full bg-white px-6 py-3 font-semibold text-emerald-700 shadow-lg shadow-emerald-900/20 transition-all hover:bg-emerald-50 hover:shadow-xl active:scale-95"
                   >
-                    {s.ctaLabel || "İncele"}
+                    {s.ctaLabel || "Shop now"}
                   </Link>
                 )}
               </div>
@@ -73,7 +73,7 @@ export function HeroCarousel({ slides }: { slides: SlideView[] }) {
           <button
             type="button"
             onClick={() => go(i - 1)}
-            aria-label="Önceki"
+            aria-label="Previous"
             className="absolute left-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 text-white backdrop-blur hover:bg-white/30"
           >
             ‹
@@ -81,7 +81,7 @@ export function HeroCarousel({ slides }: { slides: SlideView[] }) {
           <button
             type="button"
             onClick={() => go(i + 1)}
-            aria-label="Sonraki"
+            aria-label="Next"
             className="absolute right-3 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/20 p-2 text-white backdrop-blur hover:bg-white/30"
           >
             ›

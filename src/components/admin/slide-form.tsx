@@ -24,33 +24,33 @@ export function SlideForm({
   return (
     <form action={formAction} className="max-w-2xl space-y-5">
       <label className="block text-sm font-medium text-slate-700">
-        Başlık *
+        Title *
         <input name="title" defaultValue={initial?.title} required className={input} />
       </label>
       <label className="block text-sm font-medium text-slate-700">
-        Alt Metin
+        Subtitle
         <input name="subtitle" defaultValue={initial?.subtitle ?? ""} className={input} />
       </label>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <label className="block text-sm font-medium text-slate-700">
-          Buton Metni
-          <input name="ctaLabel" defaultValue={initial?.ctaLabel ?? ""} placeholder="İncele" className={input} />
+          Button Text
+          <input name="ctaLabel" defaultValue={initial?.ctaLabel ?? ""} placeholder="Shop now" className={input} />
         </label>
         <label className="block text-sm font-medium text-slate-700">
-          Buton Linki
-          <input name="ctaHref" defaultValue={initial?.ctaHref ?? ""} placeholder="/urunler/... veya https://..." className={input} />
+          Button Link
+          <input name="ctaHref" defaultValue={initial?.ctaHref ?? ""} placeholder="/urunler/... or https://..." className={input} />
         </label>
         <label className="block text-sm font-medium text-slate-700">
-          Sıra
+          Order
           <input name="position" type="number" defaultValue={initial?.position ?? 0} className={input} />
         </label>
       </div>
 
       <div className="rounded-xl border border-slate-200 p-4">
-        <p className="text-sm font-medium text-slate-700">Görsel (bisiklet/kampanya)</p>
+        <p className="text-sm font-medium text-slate-700">Image (bike/campaign)</p>
         <label className="mt-2 block text-sm text-slate-600">
-          Dosya yükle
+          Upload file
           <input
             name="imageFile"
             type="file"
@@ -59,14 +59,14 @@ export function SlideForm({
           />
         </label>
         <label className="mt-3 block text-sm text-slate-600">
-          veya URL
+          or URL
           <input name="imageUrl" defaultValue={initial?.imageUrl ?? ""} placeholder="https://..." className={input} />
         </label>
       </div>
 
       <label className="flex items-center gap-2 text-sm">
         <input type="checkbox" name="isActive" defaultChecked={initial?.isActive ?? true} className="h-4 w-4" />
-        Yayında (ana sayfada göster)
+        Published (show on home)
       </label>
 
       {state.error && (

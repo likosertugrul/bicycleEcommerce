@@ -42,7 +42,7 @@ export function ProductCardImage({
           <button
             type="button"
             onClick={(e) => go(e, i - 1)}
-            aria-label="Önceki görsel"
+            aria-label="Previous image"
             className="absolute left-1.5 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/70 text-slate-800 backdrop-blur hover:bg-white"
           >
             ‹
@@ -50,7 +50,7 @@ export function ProductCardImage({
           <button
             type="button"
             onClick={(e) => go(e, i + 1)}
-            aria-label="Sonraki görsel"
+            aria-label="Next image"
             className="absolute right-1.5 top-1/2 z-10 flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-full bg-white/70 text-slate-800 backdrop-blur hover:bg-white"
           >
             ›

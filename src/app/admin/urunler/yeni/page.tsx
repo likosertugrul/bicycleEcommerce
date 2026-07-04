@@ -13,8 +13,8 @@ export default function NewProductPage() {
         </Link>{" "}
         / Yeni
       </nav>
-      <h1 className="mb-6 text-2xl font-bold text-slate-900">Yeni Ürün</h1>
-      <ProductForm action={createProduct} submitLabel="Oluştur" />
+      <h1 className="mb-6 text-2xl font-bold text-slate-900">New Product</h1>
+      <ProductForm action={createProduct} submitLabel="Create" />
     </div>
   );
 }

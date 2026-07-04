@@ -27,13 +27,13 @@ export async function createSlide(
 ): Promise<SlideFormState> {
   await requireAdmin();
   const d = parse(formData);
-  if (!d.title) return { error: "Başlık zorunlu." };
+  if (!d.title) return { error: "Title is required." };
 
   let image: string | null;
   try {
     image = (await uploadImage(formData.get("imageFile"), "slides")) ?? d.imageUrl;
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
+    return { error: e instanceof Error ? e.message : "Image upload failed." };
   }
 
   const prisma = getPrisma();
@@ -60,13 +60,13 @@ export async function updateSlide(
 ): Promise<SlideFormState> {
   await requireAdmin();
   const d = parse(formData);
-  if (!d.title) return { error: "Başlık zorunlu." };
+  if (!d.title) return { error: "Title is required." };
 
   let image: string | null;
   try {
     image = (await uploadImage(formData.get("imageFile"), "slides")) ?? d.imageUrl;
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Görsel yüklenemedi." };
+    return { error: e instanceof Error ? e.message : "Image upload failed." };
   }
 
   const prisma = getPrisma();

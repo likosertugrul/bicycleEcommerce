@@ -11,10 +11,10 @@ import { formatPrice } from "@/lib/format";
 export const dynamic = "force-dynamic";
 
 const STATUS: Record<string, string> = {
-  PENDING: "İnceleniyor",
-  APPROVED: "Onaylandı",
-  REJECTED: "Reddedildi",
-  PUBLISHED: "Yayında",
+  PENDING: "In Review",
+  APPROVED: "Approved",
+  REJECTED: "Rejected",
+  PUBLISHED: "Published",
 };
 const STATUS_STYLE: Record<string, string> = {
   PENDING: "bg-amber-100 text-amber-800",
@@ -29,13 +29,12 @@ export default async function AdminListingsPage() {
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold text-slate-900">
-        İlanlar <span className="text-base font-normal text-slate-400">({listings.length})</span>
+         Listings <span className="text-base font-normal text-slate-400">({listings.length})</span>
       </h1>
 
       {listings.length === 0 ? (
         <div className="mt-6 rounded-xl border border-dashed border-slate-300 p-12 text-center text-slate-500">
-          Henüz ilan yok. Kullanıcılar “Bisikletini Sat” ile gönderdiğinde
-          burada listelenecek.
+          No listings yet. They appear here when users submit via “Sell Your Bike”.
         </div>
       ) : (
         <ul className="mt-6 space-y-4">
@@ -57,13 +56,13 @@ export default async function AdminListingsPage() {
                   <p className="mt-0.5 text-xs text-slate-400">{l.userEmail}</p>
                   <p className="mt-1 text-sm text-slate-600">
                     {l.bikeType ?? "—"} · {l.frameSize ?? "—"}
-                    {l.askingPriceCents != null ? ` · İstenen: ${formatPrice(l.askingPriceCents)}` : ""}
+                    {l.askingPriceCents != null ? `  · Asking: ${formatPrice(l.askingPriceCents)}` : ""}
                   </p>
                   {l.description && (
                     <p className="mt-1 text-sm text-slate-500 line-clamp-2">{l.description}</p>
                   )}
                   {l.adminNote && (
-                    <p className="mt-1 text-sm text-rose-600">Not: {l.adminNote}</p>
+                    <p className="mt-1 text-sm text-rose-600">Note: {l.adminNote}</p>
                   )}
                 </div>
               </div>
@@ -75,31 +74,31 @@ export default async function AdminListingsPage() {
                     href={`/admin/urunler/${l.convertedProductId}`}
                     className="mt-3 inline-block text-sm font-medium text-emerald-600 hover:text-emerald-700"
                   >
-                    Ürünü düzenle →
+                    Edit product →
                   </Link>
                 )
               ) : (
                 <div className="mt-3 flex flex-wrap items-center gap-2">
                   <form action={convertToProduct.bind(null, l.id)}>
                     <button className="rounded-lg bg-emerald-600 px-3 py-1.5 text-sm font-semibold text-white hover:bg-emerald-700">
-                      Ürüne Dönüştür
+                      Convert to Product
                     </button>
                   </form>
                   {l.status === "PENDING" && (
                     <form action={approveListing.bind(null, l.id)}>
                       <button className="rounded-lg border border-slate-300 px-3 py-1.5 text-sm font-medium text-slate-700 hover:bg-slate-50">
-                        Onayla
+                        Approve
                       </button>
                     </form>
                   )}
                   <form action={rejectListing.bind(null, l.id)} className="flex items-center gap-2">
                     <input
                       name="note"
-                      placeholder="Red sebebi (ops.)"
+                      placeholder="Rejection reason (opt.)"
                       className="rounded-lg border border-slate-300 px-2 py-1.5 text-sm outline-none focus:border-emerald-500"
                     />
                     <button className="rounded-lg border border-rose-300 px-3 py-1.5 text-sm font-medium text-rose-600 hover:bg-rose-50">
-                      Reddet
+                      Reject
                     </button>
                   </form>
                 </div>

@@ -7,17 +7,17 @@ function normalizeUrl(raw: string | undefined): string {
 }
 
 export const site = {
-  name: "Bisiklet Dünyası",
-  shortName: "Bisiklet",
+  name: "Bike World",
+  shortName: "Bike World",
   description:
-    "Sıfır ve 2. el bisikletler — dağ, yol, şehir, elektrikli, çocuk ve gravel. Yerel dükkanınızdan güvenli alışveriş, mağazadan teslim veya kargo.",
-  // Prod'da NEXT_PUBLIC_SITE_URL ile override edilir.
+    "New and used bikes — mountain, road, city, electric, kids and gravel. Shop safely from your local store with pickup or shipping.",
+  // Overridden in prod with NEXT_PUBLIC_SITE_URL.
   url: normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL),
-  phone: "0850 000 00 00",
+  phone: "(555) 000-0000",
   nav: [
-    { href: "/urunler", label: "Tüm Bisikletler" },
-    { href: "/urunler?durum=sifir", label: "Sıfır" },
-    { href: "/urunler?durum=2el", label: "2. El" },
-    { href: "/bisikletini-sat", label: "Bisikletini Sat" },
+    { href: "/urunler", label: "All Bikes" },
+    { href: "/urunler?durum=sifir", label: "New" },
+    { href: "/urunler?durum=2el", label: "Used" },
+    { href: "/bisikletini-sat", label: "Sell Your Bike" },
   ],
 } as const;

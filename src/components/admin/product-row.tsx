@@ -11,15 +11,15 @@ import {
 import { ConfirmButton } from "@/components/confirm-button";
 
 const CONDITIONS: [string, string][] = [
-  ["NEW", "Sıfır"],
-  ["USED", "2. El"],
+  ["NEW", "New"],
+  ["USED", "Used"],
 ];
 const TYPES: [string, string][] = [
-  ["MOUNTAIN", "Dağ"],
-  ["ROAD", "Yol"],
-  ["CITY", "Şehir"],
-  ["ELECTRIC", "Elektrikli"],
-  ["KIDS", "Çocuk"],
+  ["MOUNTAIN", "Mountain"],
+  ["ROAD", "Road"],
+  ["CITY", "City"],
+  ["ELECTRIC", "Electric"],
+  ["KIDS", "Kids"],
   ["GRAVEL", "Gravel"],
 ];
 
@@ -180,9 +180,7 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
                 ? "bg-emerald-500 text-white shadow"
                 : "text-slate-500 hover:text-slate-700"
             }`}
-          >
-            Aktif
-          </button>
+          >Active</button>
           <button
             type="button"
             onClick={(e) => {
@@ -195,9 +193,7 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
                 ? "bg-slate-500 text-white shadow"
                 : "text-slate-500 hover:text-slate-700"
             }`}
-          >
-            Pasif
-          </button>
+          >Inactive</button>
         </div>
       </td>
 
@@ -211,18 +207,16 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
               disabled={pending}
               className="rounded bg-emerald-600 px-2.5 py-1 text-xs font-semibold text-white hover:bg-emerald-700 disabled:opacity-60"
             >
-              {pending ? "…" : "Kaydet"}
+              {pending ? "…" : "Save"}
             </button>
           )}
           <ConfirmButton
             action={deleteProduct.bind(null, p.id)}
             stopPropagation
-            title="Ürünü sil"
-            message={`"${p.title}" ürününü silmek istediğine emin misin?`}
+            title="Delete product"
+            message={`Delete "${p.title}"? This cannot be undone.`}
             className="font-medium text-slate-400 hover:text-rose-600"
-          >
-            Sil
-          </ConfirmButton>
+          >Delete</ConfirmButton>
         </div>
       </td>
     </tr>

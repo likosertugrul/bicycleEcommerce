@@ -18,7 +18,7 @@ export default async function EditSlidePage({
       <nav className="mb-2 text-sm text-slate-500">
         <Link href="/admin/slaytlar" className="hover:text-emerald-600">Slaytlar</Link> / {slide.title}
       </nav>
-      <h1 className="mb-6 text-2xl font-bold text-slate-900">Slaytı Düzenle</h1>
+      <h1 className="mb-6 text-2xl font-bold text-slate-900">Edit Slide</h1>
       <SlideForm action={updateSlide.bind(null, id)} initial={slide} submitLabel="Kaydet" />
     </div>
   );

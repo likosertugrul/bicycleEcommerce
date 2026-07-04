@@ -49,19 +49,19 @@ export default async function EditProductPage({
     <div className="p-6">
       <nav className="mb-2 text-sm text-slate-500">
         <Link href="/admin/urunler" className="hover:text-emerald-600">
-          Ürünler
+          Products
         </Link>{" "}
         / {p.title}
       </nav>
-      <h1 className="mb-6 text-2xl font-bold text-slate-900">Ürünü Düzenle</h1>
+      <h1 className="mb-6 text-2xl font-bold text-slate-900">Edit Product</h1>
 
       {p.images.length > 0 && (
         <div className="mb-6 max-w-2xl">
           <p className="mb-2 text-sm font-medium text-slate-700">
-            Mevcut Görseller ({p.images.length})
+            Current Images ({p.images.length})
           </p>
           <p className="mb-2 text-xs text-slate-400">
-            Sıralamayı ← → ile değiştir; ilk sıradaki (kapak) ana görseldir.
+            Reorder with ← →; the first (cover) is the main image.
           </p>
           <div className="flex flex-wrap gap-3">
             {p.images.map((img, i) => (
@@ -79,7 +79,7 @@ export default async function EditProductPage({
                     <button
                       disabled={i === 0}
                       className="rounded border border-slate-300 px-1.5 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-30"
-                      aria-label="Sola taşı"
+                      aria-label="Move left"
                     >
                       ←
                     </button>
@@ -88,7 +88,7 @@ export default async function EditProductPage({
                     <button
                       disabled={i === p.images.length - 1}
                       className="rounded border border-slate-300 px-1.5 text-sm text-slate-600 hover:bg-slate-50 disabled:opacity-30"
-                      aria-label="Sağa taşı"
+                      aria-label="Move right"
                     >
                       →
                     </button>
@@ -106,8 +106,8 @@ export default async function EditProductPage({
                   )}
                   <ConfirmButton
                     action={deleteProductImage.bind(null, img.id)}
-                    title="Görseli sil"
-                    message="Bu görseli silmek istediğine emin misin?"
+                    title="Delete image"
+                    message="Delete this image?"
                     className="font-medium text-slate-400 hover:text-rose-600"
                   >
                     Sil

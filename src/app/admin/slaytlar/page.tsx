@@ -13,24 +13,23 @@ export default async function AdminSlidesPage() {
     <div className="p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-900">
-          Ana Sayfa Slaytları{" "}
+          Home Slides{" "}
           <span className="text-base font-normal text-slate-400">({slides.length})</span>
         </h1>
         <Link
           href="/admin/slaytlar/yeni"
           className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
         >
-          + Yeni Slayt
+          + New Slide
         </Link>
       </div>
       <p className="mt-1 text-sm text-slate-500">
-        Yayındaki slaytlar ana sayfadaki büyük alanda sırayla döner. Hiç yoksa
-        varsayılan tanıtım gösterilir.
+        Active slides rotate in the hero on the home page. If none, a default hero is shown.
       </p>
 
       {slides.length === 0 ? (
         <div className="mt-6 rounded-xl border border-dashed border-slate-300 p-12 text-center text-slate-500">
-          Henüz slayt yok. “Yeni Slayt” ile bir bisiklet veya kampanya ekleyin.
+          No slides yet. Add a bike or campaign with “New Slide”.
         </div>
       ) : (
         <ul className="mt-6 space-y-3">
@@ -42,7 +41,7 @@ export default async function AdminSlidesPage() {
               <div className="min-w-0 flex-1">
                 <div className="font-medium text-slate-900">{s.title}</div>
                 {s.subtitle && <div className="truncate text-sm text-slate-500">{s.subtitle}</div>}
-                <div className="text-xs text-slate-400">Sıra: {s.position}{s.ctaHref ? ` · ${s.ctaHref}` : ""}</div>
+                <div className="text-xs text-slate-400">Order: {s.position}{s.ctaHref ? ` · ${s.ctaHref}` : ""}</div>
               </div>
               <form action={toggleSlide.bind(null, s.id)}>
                 <button
@@ -51,20 +50,20 @@ export default async function AdminSlidesPage() {
                     s.isActive ? "bg-emerald-100 text-emerald-700" : "bg-slate-200 text-slate-500"
                   }`}
                 >
-                  {s.isActive ? "Yayında" : "Gizli"}
+                  {s.isActive ? "Active" : "Hidden"}
                 </button>
               </form>
               <div className="flex gap-3 text-sm">
                 <Link href={`/admin/slaytlar/${s.id}`} className="font-medium text-emerald-600 hover:text-emerald-700">
-                  Düzenle
+                  Edit
                 </Link>
                 <ConfirmButton
                   action={deleteSlide.bind(null, s.id)}
-                  title="Slaytı sil"
-                  message={`"${s.title}" slaytını silmek istediğine emin misin?`}
+                  title="Delete slide"
+                  message={`Delete "${s.title}"? This cannot be undone.`}
                   className="font-medium text-slate-400 hover:text-rose-600"
                 >
-                  Sil
+                  Delete
                 </ConfirmButton>
               </div>
             </li>

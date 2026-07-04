@@ -11,29 +11,29 @@ export default async function AdminProductsPage() {
     <div className="p-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-900">
-          Ürünler <span className="text-base font-normal text-slate-400">({products.length})</span>
+           Products <span className="text-base font-normal text-slate-400">({products.length})</span>
         </h1>
         <Link
           href="/admin/urunler/yeni"
           className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
         >
-          + Yeni Ürün
+          + New Product
         </Link>
       </div>
       <p className="mt-1 text-sm text-slate-500">
-        Düzenlemek için ürün satırına tıkla.
+        Click a row to edit.
       </p>
 
       <div className="mt-4 overflow-x-auto rounded-xl border border-slate-200 bg-white">
         <table className="w-full min-w-[880px] text-sm">
           <thead className="border-b border-slate-200 bg-slate-50 text-left text-slate-500">
             <tr>
-              <th className="p-3 font-medium">Ürün</th>
-              <th className="p-3 font-medium">Durum/Tür</th>
-              <th className="p-3 font-medium">Fiyat</th>
-              <th className="p-3 font-medium">Stok</th>
-              <th className="p-3 font-medium">Durum</th>
-              <th className="w-[120px] p-3 text-right font-medium">İşlem</th>
+              <th className="p-3 font-medium">Product</th>
+              <th className="p-3 font-medium">Condition/Type</th>
+              <th className="p-3 font-medium">Price</th>
+              <th className="p-3 font-medium">Stock</th>
+              <th className="p-3 font-medium">Status</th>
+              <th className="w-[120px] p-3 text-right font-medium">Actions</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-slate-100">

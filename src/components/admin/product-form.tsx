@@ -28,11 +28,11 @@ export interface ProductFormInitial {
 
 const BIKE_TYPES: { v: string; l: string }[] = [
   { v: "", l: "—" },
-  { v: "MOUNTAIN", l: "Dağ" },
-  { v: "ROAD", l: "Yol" },
-  { v: "CITY", l: "Şehir" },
-  { v: "ELECTRIC", l: "Elektrikli" },
-  { v: "KIDS", l: "Çocuk" },
+  { v: "MOUNTAIN", l: "Mountain" },
+  { v: "ROAD", l: "Road" },
+  { v: "CITY", l: "City" },
+  { v: "ELECTRIC", l: "Electric" },
+  { v: "KIDS", l: "Kids" },
   { v: "GRAVEL", l: "Gravel" },
 ];
 
@@ -58,69 +58,69 @@ export function ProductForm({
 
   return (
     <form action={formAction} className="max-w-2xl space-y-5">
-      <Field label="Başlık *">
+      <Field label="Title *">
         <input name="title" defaultValue={initial?.title} required className={input} />
       </Field>
 
-      <Field label="Açıklama">
+      <Field label="Description">
         <textarea name="description" rows={3} defaultValue={initial?.description} className={input} />
       </Field>
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Field label="Marka">
+        <Field label="Brand">
           <input name="brand" defaultValue={initial?.brand} className={input} />
         </Field>
-        <Field label="Durum">
+        <Field label="Condition">
           <select
             name="condition"
             value={condition}
             onChange={(e) => setCondition(e.target.value as "NEW" | "USED")}
             className={input}
           >
-            <option value="NEW">Sıfır</option>
-            <option value="USED">2. El</option>
+            <option value="NEW">New</option>
+            <option value="USED">Used</option>
           </select>
         </Field>
-        <Field label="Tür">
+        <Field label="Type">
           <select name="bikeType" defaultValue={initial?.bikeType ?? ""} className={input}>
             {BIKE_TYPES.map((b) => (
               <option key={b.v} value={b.v}>{b.l}</option>
             ))}
           </select>
         </Field>
-        <Field label="Renk">
+        <Field label="Color">
           <input name="color" defaultValue={initial?.color} className={input} />
         </Field>
-        <Field label="Kadro Boyu">
+        <Field label="Frame Size">
           <input name="frameSize" defaultValue={initial?.frameSize} placeholder="M" className={input} />
         </Field>
-        <Field label="Jant (inç)">
+        <Field label="Wheel (in)">
           <input name="wheelSize" type="number" step="0.5" defaultValue={initial?.wheelSize} className={input} />
         </Field>
-        <Field label="Vites">
+        <Field label="Gears">
           <input name="gearCount" type="number" defaultValue={initial?.gearCount} className={input} />
         </Field>
-        <Field label="Fren">
+        <Field label="Brake">
           <input name="brakeType" defaultValue={initial?.brakeType} className={input} />
         </Field>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-3">
-        <Field label="Fiyat ($) *">
+        <Field label="Price ($) *">
           <input name="priceTL" type="number" step="0.01" defaultValue={initial?.priceTL} required className={input} />
         </Field>
-        <Field label="Eski Fiyat ($)">
+        <Field label="Compare-at ($)">
           <input name="compareTL" type="number" step="0.01" defaultValue={initial?.compareTL} className={input} />
         </Field>
-        <Field label="Stok">
+        <Field label="Stock">
           <input name="stock" type="number" defaultValue={initial?.stock ?? "0"} className={input} />
         </Field>
       </div>
 
       <div className="rounded-xl border border-slate-200 p-4">
-        <p className="text-sm font-medium text-slate-700">Görsel Ekle</p>
+        <p className="text-sm font-medium text-slate-700">Add Images</p>
         <label className="mt-2 block text-sm text-slate-600">
-          Dosya yükle (birden fazla seçebilirsin)
+          Upload files (multiple allowed)
           <input
             name="imageFiles"
             type="file"
@@ -130,26 +130,25 @@ export function ProductForm({
           />
         </label>
         <div className="mt-3">
-          <ImageUrlList name="imageUrls" label="veya URL ile ekle (tek tek)" />
+          <ImageUrlList name="imageUrls" label="or add by URL (one at a time)" />
         </div>
         <p className="mt-1 text-xs text-slate-400">
-          Seçtiğin dosyalar ve eklediğin URL&apos;ler kaydedince eklenir. Kapak
-          yoksa ilki kapak olur. Mevcut görselleri yukarıdan sıralayabilirsin.
+          Selected files and added URLs are saved on submit. If no cover is set, the first image becomes the cover. Reorder existing images above.
         </p>
       </div>
 
       {condition === "USED" && (
         <div className="grid gap-4 rounded-xl border border-amber-200 bg-amber-50/40 p-4 sm:grid-cols-2">
-          <Field label="Kullanım Durumu">
-            <input name="usageLevel" defaultValue={initial?.usageLevel} placeholder="Az Kullanılmış" className={input} />
+          <Field label="Usage Level">
+            <input name="usageLevel" defaultValue={initial?.usageLevel} placeholder="Lightly used" className={input} />
           </Field>
-          <Field label="Üretim Yılı">
+          <Field label="Year">
             <input name="manufactureYear" type="number" defaultValue={initial?.manufactureYear} className={input} />
           </Field>
-          <Field label="Kilometre">
+          <Field label="Mileage (km)">
             <input name="mileageKm" type="number" defaultValue={initial?.mileageKm} className={input} />
           </Field>
-          <Field label="Kozmetik Notlar">
+          <Field label="Cosmetic Notes">
             <input name="cosmeticNotes" defaultValue={initial?.cosmeticNotes} className={input} />
           </Field>
         </div>
@@ -157,7 +156,7 @@ export function ProductForm({
 
       <label className="flex items-center gap-2 text-sm">
         <input type="checkbox" name="isActive" defaultChecked={initial?.isActive ?? true} className="h-4 w-4" />
-        Yayında (aktif)
+        Published (active)
       </label>
 
       {state.error && (

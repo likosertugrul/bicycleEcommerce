@@ -20,7 +20,7 @@ export default async function AdminOrderPage({
   return (
     <div className="p-6">
       <Link href="/admin/siparisler" className="text-sm text-emerald-700 hover:underline">
-        ← Siparişler
+        ← Orders
       </Link>
 
       <div className="mt-3 flex flex-wrap items-center gap-3">
@@ -29,7 +29,7 @@ export default async function AdminOrderPage({
           {st.label}
         </span>
         <span className="text-sm text-slate-400">
-          {new Date(order.createdAt).toLocaleString("tr-TR")}
+          {new Date(order.createdAt).toLocaleString("en-US")}
         </span>
       </div>
 
@@ -37,7 +37,7 @@ export default async function AdminOrderPage({
         {/* Sol: ürünler + teslimat */}
         <div className="space-y-4">
           <div className="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 className="font-semibold text-slate-900">Ürünler</h2>
+            <h2 className="font-semibold text-slate-900">Items</h2>
             <ul className="mt-3 space-y-2 text-sm">
               {order.items.map((it, i) => (
                 <li key={i} className="flex justify-between gap-3">
@@ -53,28 +53,28 @@ export default async function AdminOrderPage({
             </ul>
             <dl className="mt-4 space-y-1 border-t border-slate-100 pt-3 text-sm">
               <div className="flex justify-between">
-                <dt className="text-slate-500">Ara toplam</dt>
+                <dt className="text-slate-500">Subtotal</dt>
                 <dd>{formatPrice(order.subtotalCents)}</dd>
               </div>
               <div className="flex justify-between">
-                <dt className="text-slate-500">Kargo</dt>
+                <dt className="text-slate-500">Shipping</dt>
                 <dd>{formatPrice(order.shippingCents)}</dd>
               </div>
               <div className="flex justify-between text-base font-bold">
-                <dt>Toplam</dt>
+                <dt>Total</dt>
                 <dd>{formatPrice(order.totalCents)}</dd>
               </div>
             </dl>
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-white p-5 text-sm">
-            <h2 className="font-semibold text-slate-900">Teslimat & İletişim</h2>
+            <h2 className="font-semibold text-slate-900">Fulfillment & Contact</h2>
             <p className="mt-2 text-slate-600">
-              Yöntem: {order.fulfillment === "PICKUP" ? "Mağazadan teslim" : "Kargo"}
+              Method: {order.fulfillment === "PICKUP" ? "Store pickup" : "Shipping"}
             </p>
             {(order.guestEmail || order.guestPhone) && (
               <p className="text-slate-600">
-                Misafir: {order.guestEmail} {order.guestPhone ? `· ${order.guestPhone}` : ""}
+                Guest: {order.guestEmail} {order.guestPhone ? `· ${order.guestPhone}` : ""}
               </p>
             )}
             {addr && (
@@ -91,7 +91,7 @@ export default async function AdminOrderPage({
         {/* Sağ: durum yönetimi */}
         <aside className="space-y-4">
           <div className="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 className="font-semibold text-slate-900">Durumu Değiştir</h2>
+            <h2 className="font-semibold text-slate-900">Change Status</h2>
             <div className="mt-3 flex flex-wrap gap-2">
               {ORDER_STATUS_ORDER.map((s) => {
                 const info = ORDER_STATUS[s];
@@ -116,20 +116,18 @@ export default async function AdminOrderPage({
           </div>
 
           <div className="rounded-xl border border-slate-200 bg-white p-5">
-            <h2 className="font-semibold text-slate-900">Kargo Takip Kodu</h2>
+            <h2 className="font-semibold text-slate-900">Tracking Code</h2>
             <form action={setTrackingCode.bind(null, order.id)} className="mt-3 flex gap-2">
               <input
                 name="trackingCode"
                 defaultValue={order.trackingCode ?? ""}
-                placeholder="Takip no"
+                placeholder="Tracking number"
                 className="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none focus:border-emerald-500"
               />
               <button
                 type="submit"
                 className="shrink-0 rounded-lg bg-slate-800 px-3 py-2 text-sm font-medium text-white hover:bg-slate-700"
-              >
-                Kaydet
-              </button>
+              >Save</button>
             </form>
           </div>
         </aside>

@@ -47,7 +47,7 @@ export function ProductGallery({
           <button
             type="button"
             onClick={() => setOpen(true)}
-            aria-label="Büyük görseli aç"
+            aria-label="Open full image"
             className="absolute inset-0 cursor-zoom-in"
           >
             <Image
@@ -65,7 +65,7 @@ export function ProductGallery({
             <button
               type="button"
               onClick={() => go(active - 1)}
-              aria-label="Önceki görsel"
+              aria-label="Previous image"
               className="absolute left-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-lg text-slate-800 backdrop-blur hover:bg-white"
             >
               ‹
@@ -73,7 +73,7 @@ export function ProductGallery({
             <button
               type="button"
               onClick={() => go(active + 1)}
-              aria-label="Sonraki görsel"
+              aria-label="Next image"
               className="absolute right-2 top-1/2 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-white/80 text-lg text-slate-800 backdrop-blur hover:bg-white"
             >
               ›
@@ -94,7 +94,7 @@ export function ProductGallery({
               key={img.url + i}
               type="button"
               onClick={() => setActive(i)}
-              aria-label={`Görsel ${i + 1}`}
+              aria-label={`Image `}
               className={`relative aspect-square w-16 overflow-hidden rounded-lg border-2 ${
                 i === active ? "border-emerald-500" : "border-transparent"
               }`}
@@ -128,7 +128,7 @@ export function ProductGallery({
                   e.stopPropagation();
                   go(active - 1);
                 }}
-                aria-label="Önceki görsel"
+                aria-label="Previous image"
                 className="absolute left-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-3xl text-white hover:bg-white/25"
               >
                 ‹
@@ -139,7 +139,7 @@ export function ProductGallery({
                   e.stopPropagation();
                   go(active + 1);
                 }}
-                aria-label="Sonraki görsel"
+                aria-label="Next image"
                 className="absolute right-4 top-1/2 flex h-12 w-12 -translate-y-1/2 items-center justify-center rounded-full bg-white/15 text-3xl text-white hover:bg-white/25"
               >
                 ›

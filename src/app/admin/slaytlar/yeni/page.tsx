@@ -10,8 +10,8 @@ export default function NewSlidePage() {
       <nav className="mb-2 text-sm text-slate-500">
         <Link href="/admin/slaytlar" className="hover:text-emerald-600">Slaytlar</Link> / Yeni
       </nav>
-      <h1 className="mb-6 text-2xl font-bold text-slate-900">Yeni Slayt</h1>
-      <SlideForm action={createSlide} submitLabel="Oluştur" />
+      <h1 className="mb-6 text-2xl font-bold text-slate-900">New Slide</h1>
+      <SlideForm action={createSlide} submitLabel="Create" />
     </div>
   );
 }

@@ -21,7 +21,7 @@ export async function signInWithPassword(
 ): Promise<AuthState> {
   const email = String(formData.get("email") ?? "").trim();
   const password = String(formData.get("password") ?? "");
-  if (!email || !password) return { error: "E-posta ve şifre gerekli." };
+  if (!email || !password) return { error: "Email and password are required." };
 
   const supabase = await createSupabaseServer();
   const { data, error } = await supabase.auth.signInWithPassword({
@@ -42,7 +42,7 @@ export async function signUpWithPassword(
   const password = String(formData.get("password") ?? "");
   const fullName = String(formData.get("fullName") ?? "").trim();
   if (!email || password.length < 6)
-    return { error: "Geçerli e-posta ve en az 6 karakter şifre girin." };
+    return { error: "Enter a valid email and a password of at least 6 characters." };
 
   const supabase = await createSupabaseServer();
   const origin = await getOrigin();

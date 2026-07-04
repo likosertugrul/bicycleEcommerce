@@ -5,11 +5,11 @@ import { signOut } from "@/server/auth-actions";
 export const dynamic = "force-dynamic";
 
 const NAV = [
-  { href: "/admin", label: "Panel", emoji: "📊" },
-  { href: "/admin/slaytlar", label: "Slaytlar", emoji: "🖼️" },
-  { href: "/admin/urunler", label: "Ürünler", emoji: "🚲" },
-  { href: "/admin/ilanlar", label: "İlanlar", emoji: "📝" },
-  { href: "/admin/siparisler", label: "Siparişler", emoji: "📦" },
+  { href: "/admin", label: "Dashboard", emoji: "📊" },
+  { href: "/admin/slaytlar", label: "Slides", emoji: "🖼️" },
+  { href: "/admin/urunler", label: "Products", emoji: "🚲" },
+  { href: "/admin/ilanlar", label: "Listings", emoji: "📝" },
+  { href: "/admin/siparisler", label: "Orders", emoji: "📦" },
 ];
 
 export default async function AdminLayout({
@@ -38,12 +38,10 @@ export default async function AdminLayout({
         </nav>
         <div className="hidden border-t border-slate-800 p-3 md:block">
           <Link href="/" className="block rounded-lg px-3 py-2 text-sm text-slate-400 hover:bg-slate-800 hover:text-white">
-            ← Siteye dön
+            ← Back to site
           </Link>
           <form action={signOut}>
-            <button type="submit" className="w-full rounded-lg px-3 py-2 text-left text-sm text-slate-400 hover:bg-slate-800 hover:text-white">
-              Çıkış
-            </button>
+            <button type="submit" className="w-full rounded-lg px-3 py-2 text-left text-sm text-slate-400 hover:bg-slate-800 hover:text-white">Sign out</button>
           </form>
         </div>
       </aside>

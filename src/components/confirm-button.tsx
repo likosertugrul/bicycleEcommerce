@@ -8,9 +8,9 @@ export function ConfirmButton({
   action,
   children,
   message,
-  title = "Emin misin?",
-  confirmLabel = "Sil",
-  cancelLabel = "Vazgeç",
+  title = "Are you sure?",
+  confirmLabel = "Delete",
+  cancelLabel = "Cancel",
   className,
   stopPropagation = false,
 }: {

@@ -14,9 +14,9 @@ export async function uploadImage(
   folder: string,
 ): Promise<string | null> {
   if (!(file instanceof File) || file.size === 0) return null;
-  if (file.size > MAX_BYTES) throw new Error("Görsel 8MB'den büyük olamaz.");
+  if (file.size > MAX_BYTES) throw new Error("Image must be under 8MB.");
   if (file.type && !ALLOWED.includes(file.type))
-    throw new Error("Desteklenmeyen görsel türü.");
+    throw new Error("Unsupported image type.");
 
   const ext =
     (file.name.split(".").pop() || "jpg").toLowerCase().replace(/[^a-z0-9]/g, "") ||
