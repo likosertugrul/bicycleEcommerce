@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
-import { SiteHeader } from "@/components/site-header";
-import { SiteFooter } from "@/components/site-footer";
 import { getCart } from "@/server/cart";
 import { setQuantity, removeFromCart, clearCart } from "@/server/cart-actions";
 import { getT, getCurrency } from "@/lib/locale";
@@ -21,10 +19,8 @@ export default async function CartPage() {
   ]);
 
   return (
-    <>
-      <SiteHeader t={t} />
-      <main className="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
-        <h1 className="text-2xl font-bold text-slate-900">{t.cart.title}</h1>
+    <div className="mx-auto w-full max-w-5xl px-4 py-8">
+      <h1 className="text-2xl font-bold text-slate-900">{t.cart.title}</h1>
 
         {cart.items.length === 0 ? (
           <div className="mt-10 flex flex-col items-center text-center">
@@ -152,16 +148,12 @@ export default async function CartPage() {
                 </span>
               </div>
 
-              <button
-                type="button"
-                disabled
-                className="mt-5 w-full cursor-not-allowed rounded-full bg-emerald-600 px-4 py-3 font-semibold text-white opacity-60"
+              <Link
+                href="/odeme"
+                className="mt-5 block w-full rounded-full bg-emerald-600 px-4 py-3 text-center font-semibold text-white transition-all hover:bg-emerald-700 active:scale-[0.99]"
               >
                 {t.cart.checkout}
-              </button>
-              <p className="mt-2 text-center text-xs text-slate-400">
-                {t.cart.checkoutNote}
-              </p>
+              </Link>
 
               <form action={clearCart} className="mt-4 text-center">
                 <button
@@ -173,9 +165,7 @@ export default async function CartPage() {
               </form>
             </aside>
           </div>
-        )}
-      </main>
-      <SiteFooter t={t} />
-    </>
+      )}
+    </div>
   );
 }
