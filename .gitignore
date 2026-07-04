@@ -48,3 +48,6 @@ next-env.d.ts
 .wrangler
 .dev.vars*
 !.dev.vars.example
+
+# İş dokümanları (fiyat teklifi vb.) — repoya gitmesin
+proposal/
