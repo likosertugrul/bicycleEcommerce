@@ -3,7 +3,7 @@
 
 export type Locale = "tr" | "en";
 export const LOCALES: Locale[] = ["tr", "en"];
-export const DEFAULT_LOCALE: Locale = "tr";
+export const DEFAULT_LOCALE: Locale = "en";
 export const LANG_COOKIE = "lang";
 
 export function isLocale(v: string | undefined | null): v is Locale {

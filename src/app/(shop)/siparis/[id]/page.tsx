@@ -23,35 +23,34 @@ export default async function OrderPage({ params }: PageProps<"/siparis/[id]">) 
       {/* Onay bandı */}
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-6 text-center">
         <span aria-hidden className="text-4xl">✅</span>
-        <h1 className="mt-2 text-2xl font-bold text-slate-900">Siparişiniz alındı!</h1>
+        <h1 className="mt-2 text-2xl font-bold text-slate-900">Order received!</h1>
         <p className="mt-1 text-slate-600">
-          Sipariş No: <strong>{order.orderNumber}</strong>
+          Order No: <strong>{order.orderNumber}</strong>
         </p>
       </div>
 
       <div className="mt-6 rounded-xl border border-slate-200 bg-white p-5">
         <div className="flex items-center justify-between">
-          <h2 className="font-semibold text-slate-900">Durum</h2>
+          <h2 className="font-semibold text-slate-900">Status</h2>
           <span className={`rounded-full px-3 py-1 text-sm font-semibold ${st.cls}`}>
             {st.label}
           </span>
         </div>
         {order.status === "PENDING" && (
           <p className="mt-2 text-sm text-slate-500">
-            Ödeme entegrasyonu yakında. Ödeme onayı için mağaza sizinle iletişime
-            geçecek (havale/EFT veya mağazadan ödeme).
+            Online payment is coming soon. The shop will reach out to complete your payment.
           </p>
         )}
         {order.trackingCode && (
           <p className="mt-2 text-sm text-slate-600">
-            Kargo takip: <strong>{order.trackingCode}</strong>
+            Tracking: <strong>{order.trackingCode}</strong>
           </p>
         )}
       </div>
 
       {/* Ürünler */}
       <div className="mt-4 rounded-xl border border-slate-200 bg-white p-5">
-        <h2 className="font-semibold text-slate-900">Ürünler</h2>
+        <h2 className="font-semibold text-slate-900">Items</h2>
         <ul className="mt-3 space-y-3">
           {order.items.map((it, i) => (
             <li key={i} className="flex gap-3 text-sm">
@@ -80,15 +79,15 @@ export default async function OrderPage({ params }: PageProps<"/siparis/[id]">) 
         </ul>
         <dl className="mt-4 space-y-1.5 border-t border-slate-100 pt-4 text-sm">
           <div className="flex justify-between">
-            <dt className="text-slate-500">Ara toplam</dt>
+            <dt className="text-slate-500">Subtotal</dt>
             <dd>{formatPrice(order.subtotalCents, currency)}</dd>
           </div>
           <div className="flex justify-between">
-            <dt className="text-slate-500">Kargo</dt>
-            <dd>{order.shippingCents === 0 ? "Ücretsiz" : formatPrice(order.shippingCents, currency)}</dd>
+            <dt className="text-slate-500">Shipping</dt>
+            <dd>{order.shippingCents === 0 ? "Free" : formatPrice(order.shippingCents, currency)}</dd>
           </div>
           <div className="flex justify-between border-t border-slate-100 pt-2 text-base font-bold text-slate-900">
-            <dt>Toplam</dt>
+            <dt>Total</dt>
             <dd>{formatPrice(order.totalCents, currency)}</dd>
           </div>
         </dl>
@@ -96,9 +95,9 @@ export default async function OrderPage({ params }: PageProps<"/siparis/[id]">) 
 
       {/* Teslimat */}
       <div className="mt-4 rounded-xl border border-slate-200 bg-white p-5 text-sm">
-        <h2 className="font-semibold text-slate-900">Teslimat</h2>
+        <h2 className="font-semibold text-slate-900">Delivery</h2>
         {order.fulfillment === "PICKUP" ? (
-          <p className="mt-2 text-slate-600">🏪 Mağazadan teslim alınacak.</p>
+          <p className="mt-2 text-slate-600">🏪 Store pickup.</p>
         ) : addr ? (
           <p className="mt-2 text-slate-600">
             <strong>{addr.recipient}</strong> · {addr.phone}
@@ -116,13 +115,13 @@ export default async function OrderPage({ params }: PageProps<"/siparis/[id]">) 
           href="/urunler"
           className="rounded-full bg-emerald-600 px-6 py-3 text-sm font-semibold text-white hover:bg-emerald-700"
         >
-          Alışverişe devam et
+          Continue shopping
         </Link>
         <Link
           href="/siparislerim"
           className="rounded-full border border-slate-300 px-6 py-3 text-sm font-medium text-slate-600 hover:bg-slate-50"
         >
-          Siparişlerim
+          My Orders
         </Link>
       </div>
     </div>

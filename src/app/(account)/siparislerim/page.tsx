@@ -52,9 +52,9 @@ export default async function OrdersPage() {
                   <div>
                     <p className="font-semibold text-slate-900">{o.orderNumber}</p>
                     <p className="text-sm text-slate-500">
-                      {new Date(o.createdAt).toLocaleDateString("tr-TR")} ·{" "}
-                      {o.itemCount} ürün ·{" "}
-                      {o.fulfillment === "PICKUP" ? "Mağazadan" : "Kargo"}
+                      {new Date(o.createdAt).toLocaleDateString("en-US")} ·{" "}
+                      {o.itemCount} {o.itemCount === 1 ? "item" : "items"} ·{" "}
+                      {o.fulfillment === "PICKUP" ? "Pickup" : "Shipping"}
                     </p>
                   </div>
                   <div className="text-right">

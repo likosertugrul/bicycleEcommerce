@@ -3,9 +3,7 @@ import { getAllProductSlugs } from "@/server/products";
 import { BIKE_TYPE_TO_SLUG } from "@/lib/types";
 import { site } from "@/lib/site";
 
-const LEGAL_ROUTES = [
-  "gizlilik", "kullanim-sartlari", "mesafeli-satis", "cerez-politikasi", "iptal-iade",
-];
+const LEGAL_ROUTES = ["privacy", "terms", "returns", "cookie-policy"];
 
 // Runtime'da üret (build ortamı DB'ye bağlanmasın diye).
 export const dynamic = "force-dynamic";

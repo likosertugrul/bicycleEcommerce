@@ -30,7 +30,7 @@ export async function createOrder(
 ): Promise<OrderFormState> {
   const prisma = getPrisma();
   const cart = await getCart();
-  if (cart.items.length === 0) return { error: "Sepetiniz boş." };
+  if (cart.items.length === 0) return { error: "Your cart is empty." };
 
   const fulfillment = s(fd, "fulfillment") === "PICKUP" ? "PICKUP" : "DELIVERY";
   const user = await getAuthUser();
@@ -44,7 +44,7 @@ export async function createOrder(
       const addr = await prisma.address.findFirst({
         where: { id: s(fd, "addressId"), userId: user.id },
       });
-      if (!addr) return { error: "Lütfen bir teslimat adresi seçin." };
+      if (!addr) return { error: "Please select a shipping address." };
       shippingAddress = {
         recipient: addr.recipient, phone: addr.phone, city: addr.city,
         district: addr.district, fullAddress: addr.fullAddress, zipCode: addr.zipCode,
@@ -56,7 +56,7 @@ export async function createOrder(
       const district = s(fd, "district");
       const fullAddress = s(fd, "fullAddress");
       if (!recipient || !phone || !city || !district || !fullAddress)
-        return { error: "Teslimat bilgilerini eksiksiz doldurun." };
+        return { error: "Please fill in all shipping details." };
       shippingAddress = {
         recipient, phone, city, district, fullAddress,
         zipCode: s(fd, "zipCode") || null,
@@ -66,9 +66,9 @@ export async function createOrder(
 
   if (user?.email) email = user.email;
   if (!email || !email.includes("@"))
-    return { error: "Geçerli bir e-posta adresi girin." };
+    return { error: "Please enter a valid email address." };
   if (!user && fulfillment === "PICKUP" && !phone)
-    return { error: "İletişim için telefon girin." };
+    return { error: "Please enter a phone number for contact." };
 
   const subtotal = cart.subtotalCents;
   const shipping = computeShipping(subtotal, fulfillment);
@@ -84,7 +84,7 @@ export async function createOrder(
           select: { stock: true },
         });
         if (!p || p.stock < it.quantity)
-          throw new Error(`Stok yetersiz: ${it.title}`);
+          throw new Error(`Out of stock: ${it.title}`);
       }
       const created = await tx.order.create({
         data: {
@@ -122,7 +122,7 @@ export async function createOrder(
     });
     orderId = order.id;
   } catch (e) {
-    return { error: e instanceof Error ? e.message : "Sipariş oluşturulamadı." };
+    return { error: e instanceof Error ? e.message : "Could not create order." };
   }
 
   // Sepeti boşalt

@@ -34,13 +34,13 @@ export function CookieConsent() {
     <div className="fixed inset-x-0 bottom-0 z-50 border-t border-slate-200 bg-white/95 p-4 shadow-lg backdrop-blur">
       <div className="mx-auto flex max-w-5xl flex-col items-center gap-3 sm:flex-row">
         <p className="text-sm text-slate-600">
-          Deneyiminizi iyileştirmek ve sepet gibi temel işlevler için çerez
-          kullanıyoruz.{" "}
+          We use cookies to improve your experience and for essential features
+          like the cart.{" "}
           <Link
-            href="/cerez-politikasi"
+            href="/cookie-policy"
             className="font-medium text-emerald-600 hover:underline"
           >
-            Çerez Politikası
+            Cookie Policy
           </Link>
           .
         </p>
@@ -49,7 +49,7 @@ export function CookieConsent() {
           onClick={accept}
           className="shrink-0 rounded-full bg-emerald-600 px-5 py-2 text-sm font-semibold text-white hover:bg-emerald-700 sm:ml-auto"
         >
-          Kabul Et
+          Accept
         </button>
       </div>
     </div>

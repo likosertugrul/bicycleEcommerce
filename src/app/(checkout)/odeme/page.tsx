@@ -13,7 +13,7 @@ import { formatPrice } from "@/lib/format";
 import { CheckoutForm } from "@/components/checkout-form";
 
 export const dynamic = "force-dynamic";
-export const metadata: Metadata = { title: "Ödeme", robots: { index: false } };
+export const metadata: Metadata = { title: "Checkout", robots: { index: false } };
 
 export default async function CheckoutPage() {
   const [cart, user, currency] = await Promise.all([
@@ -29,14 +29,14 @@ export default async function CheckoutPage() {
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8">
-      <h1 className="text-2xl font-bold text-slate-900">Ödeme</h1>
+      <h1 className="text-2xl font-bold text-slate-900">Checkout</h1>
 
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_340px]">
         <CheckoutForm addresses={addresses} isLoggedIn={!!user} />
 
         {/* Sipariş özeti */}
         <aside className="h-fit rounded-xl border border-slate-200 bg-white p-5 lg:sticky lg:top-24">
-          <h2 className="font-semibold text-slate-900">Sipariş Özeti</h2>
+          <h2 className="font-semibold text-slate-900">Order Summary</h2>
           <ul className="mt-3 space-y-3">
             {cart.items.map((it) => (
               <li key={it.productId} className="flex gap-3 text-sm">
@@ -60,20 +60,20 @@ export default async function CheckoutPage() {
 
           <dl className="mt-4 space-y-1.5 border-t border-slate-100 pt-4 text-sm">
             <div className="flex justify-between">
-              <dt className="text-slate-500">Ara toplam</dt>
+              <dt className="text-slate-500">Subtotal</dt>
               <dd className="font-medium">{formatPrice(cart.subtotalCents, currency)}</dd>
             </div>
             <div className="flex justify-between">
-              <dt className="text-slate-500">Kargo (tahmini)</dt>
+              <dt className="text-slate-500">Shipping (est.)</dt>
               <dd className="font-medium">
-                {shipping === 0 ? "Ücretsiz" : formatPrice(shipping, currency)}
+                {shipping === 0 ? "Free" : formatPrice(shipping, currency)}
               </dd>
             </div>
             <p className="text-xs text-slate-400">
-              Mağazadan teslimde kargo ücretsiz. {formatPrice(FREE_SHIPPING_OVER_CENTS, currency)} üzeri kargo bedava.
+              Free store pickup. Free shipping on orders over {formatPrice(FREE_SHIPPING_OVER_CENTS, currency)}.
             </p>
             <div className="flex justify-between border-t border-slate-100 pt-2 text-base">
-              <dt className="font-semibold text-slate-900">Toplam</dt>
+              <dt className="font-semibold text-slate-900">Total</dt>
               <dd className="font-bold text-slate-900">{formatPrice(total, currency)}</dd>
             </div>
           </dl>

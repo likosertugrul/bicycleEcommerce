@@ -25,13 +25,13 @@ export function CheckoutForm({
 
   return (
     <form action={action} className="space-y-5">
-      {/* Teslimat yöntemi */}
+      {/* Delivery method */}
       <section className={card}>
-        <h2 className="font-semibold text-slate-900">Teslimat Yöntemi</h2>
+        <h2 className="font-semibold text-slate-900">Delivery Method</h2>
         <div className="mt-3 grid gap-2 sm:grid-cols-2">
           {[
-            { v: "DELIVERY", t: "🚚 Kargo ile Teslim", d: "Adresinize gönderilir" },
-            { v: "PICKUP", t: "🏪 Mağazadan Teslim", d: "Dükkandan alırsınız (ücretsiz)" },
+            { v: "DELIVERY", t: "🚚 Ship to Address", d: "Delivered to your address" },
+            { v: "PICKUP", t: "🏪 Store Pickup", d: "Pick up at the shop (free)" },
           ].map((o) => (
             <label
               key={o.v}
@@ -58,10 +58,10 @@ export function CheckoutForm({
         </div>
       </section>
 
-      {/* Adres (kargo) */}
+      {/* Address (shipping) */}
       {fulfillment === "DELIVERY" && (
         <section className={card}>
-          <h2 className="font-semibold text-slate-900">Teslimat Adresi</h2>
+          <h2 className="font-semibold text-slate-900">Shipping Address</h2>
           {isLoggedIn ? (
             addresses.length > 0 ? (
               <div className="mt-3 space-y-2">
@@ -82,7 +82,7 @@ export function CheckoutForm({
                         {a.title ? `${a.title} · ` : ""}{a.recipient}
                       </span>
                       <span className="block text-slate-500">
-                        {a.fullAddress}, {a.district}/{a.city} · {a.phone}
+                        {a.fullAddress}, {a.district}, {a.city} · {a.phone}
                       </span>
                     </span>
                   </label>
@@ -91,63 +91,63 @@ export function CheckoutForm({
                   href="/adreslerim"
                   className="inline-block text-sm font-medium text-emerald-600 hover:text-emerald-700"
                 >
-                  + Yeni adres ekle
+                  + Add new address
                 </Link>
               </div>
             ) : (
               <p className="mt-3 text-sm text-slate-500">
-                Kayıtlı adresiniz yok.{" "}
+                You have no saved addresses.{" "}
                 <Link href="/adreslerim" className="font-medium text-emerald-600">
-                  Adres ekleyin
+                  Add an address
                 </Link>{" "}
-                ya da mağazadan teslimi seçin.
+                or choose store pickup.
               </p>
             )
           ) : (
             <div className="mt-3 grid gap-3 sm:grid-cols-2">
-              <input name="recipient" placeholder="Ad Soyad" className={input} required />
-              <input name="phone" placeholder="Telefon" className={input} required />
-              <input name="city" placeholder="İl" className={input} required />
-              <input name="district" placeholder="İlçe" className={input} required />
+              <input name="recipient" placeholder="Full name" className={input} required />
+              <input name="phone" placeholder="Phone" className={input} required />
               <textarea
                 name="fullAddress"
-                placeholder="Açık adres"
+                placeholder="Street address"
                 rows={2}
                 className={`${input} sm:col-span-2`}
                 required
               />
-              <input name="zipCode" placeholder="Posta kodu (opsiyonel)" className={input} />
+              <input name="city" placeholder="City" className={input} required />
+              <input name="district" placeholder="State" className={input} required />
+              <input name="zipCode" placeholder="ZIP code (optional)" className={input} />
             </div>
           )}
         </section>
       )}
 
-      {/* Misafir iletişim */}
+      {/* Guest contact */}
       {!isLoggedIn && (
         <section className={card}>
-          <h2 className="font-semibold text-slate-900">İletişim</h2>
+          <h2 className="font-semibold text-slate-900">Contact</h2>
           <div className="mt-3 grid gap-3 sm:grid-cols-2">
             <input
               type="email"
               name="email"
-              placeholder="E-posta (sipariş bilgisi için)"
+              placeholder="Email (for order updates)"
               className={input}
               required
             />
             {fulfillment === "PICKUP" && (
-              <input name="phone" placeholder="Telefon" className={input} required />
+              <input name="phone" placeholder="Phone" className={input} required />
             )}
           </div>
         </section>
       )}
 
-      {/* Ödeme (placeholder) */}
+      {/* Payment (placeholder) */}
       <section className={card}>
-        <h2 className="font-semibold text-slate-900">Ödeme</h2>
+        <h2 className="font-semibold text-slate-900">Payment</h2>
         <p className="mt-2 rounded-lg bg-amber-50 p-3 text-sm text-amber-800">
-          Online ödeme (iyzico) yakında eklenecek. Şimdilik siparişiniz{" "}
-          <strong>Ödeme Bekliyor</strong> olarak oluşturulur; havale/EFT veya
-          mağazadan ödeme ile tamamlanır. Sipariş numaranızla takip edebilirsiniz.
+          Online payment (Stripe) is coming soon. For now your order is created as{" "}
+          <strong>Awaiting Payment</strong>; the shop will reach out to complete
+          payment. You can track it with your order number.
         </p>
       </section>
 
@@ -162,7 +162,7 @@ export function CheckoutForm({
         disabled={pending}
         className="w-full rounded-full bg-emerald-600 px-6 py-3 font-semibold text-white transition-all hover:bg-emerald-700 active:scale-[0.99] disabled:opacity-60"
       >
-        {pending ? "Sipariş oluşturuluyor…" : "Siparişi Tamamla"}
+        {pending ? "Placing order…" : "Place Order"}
       </button>
     </form>
   );
