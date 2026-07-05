@@ -13,6 +13,11 @@ Yerel bisiklet dükkanı için sıfır + 2. el bisiklet satan, SEO dostu e-ticar
 - Ödeme: iyzico (birincil), Stripe (opsiyonel) — `PaymentProvider` arayüzü ardında
 - Hosting: Vercel
 
+## Hedef & Dil (GÜNCEL)
+- **Hedef müşteri ABD'de bir bisikletçi.** Site **İngilizce-öncelikli** (`DEFAULT_LOCALE="en"`, root `lang="en"`, marka "Bike World" placeholder, USD). Ödeme **Stripe** olacak (iyzico değil).
+- **Komple İngilizce:** tüm rota URL'leri (`/products /cart /checkout /account /orders /category/mountain` ...), query param'ları (`?type ?condition ?size ?brand ?minPrice ?maxPrice ?sort`, değerler `new/used`, `price-asc/price-desc`), tür slug'ları (`mountain/road/city/electric/kids/gravel`), storefront + admin + yasal (US: `/privacy /terms /returns /cookie-policy`) İngilizce. i18n TR/EN altyapısı duruyor (selector 🇺🇸 EN default). Ürün *verisi* (başlık) hâlâ Türkçe olabilir — o veri, kod değil.
+- **Deploy: Vercel önerildi** (Cloudflare değil — Prisma edge zorlukları yok). `next.config` OpenNext dev hook'u sadece dev'de; `postinstall: prisma generate`; pages force-dynamic (build DB'siz). `next build` doğrulandı. Kullanıcı: Vercel'e repo import + env değişkenleri + Supabase Auth redirect URL.
+
 ## Kilitlenen Kararlar
 - **2. el modeli:** MVP'de dükkan-aracılı. Kullanıcı "Bisikletini Sat" ile gönderir → dükkan inceler/satın alır/satar. Şema ileride pazaryerine açık (escrow/komisyon ertelendi).
 - **Sıfır vs 2. el:** Tek `products` tablosu, `condition` (NEW/USED) ayrımı. 2. el alanları nullable. Sıfır → varyantlı stok; 2. el → tekil (stock=1).
