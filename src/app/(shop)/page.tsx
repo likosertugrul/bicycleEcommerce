@@ -45,13 +45,13 @@ export default async function HomePage() {
             <p className="mt-4 max-w-xl text-emerald-100">{t.home.heroSubtitle}</p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
-                href="/urunler"
+                href="/products"
                 className="rounded-full bg-white px-6 py-3 font-semibold text-emerald-700 hover:bg-emerald-50 transition-colors"
               >
                 {t.home.explore}
               </Link>
               <Link
-                href="/bisikletini-sat"
+                href="/sell-your-bike"
                 className="rounded-full border border-white/40 px-6 py-3 font-semibold text-white hover:bg-white/10 transition-colors"
               >
                 {t.home.sell}
@@ -68,7 +68,7 @@ export default async function HomePage() {
           {CATEGORIES.map(({ type, emoji }, idx) => (
             <Reveal key={type} delay={idx * 60} className="h-full">
               <Link
-                href={`/kategori/${BIKE_TYPE_TO_SLUG[type]}`}
+                href={`/category/${BIKE_TYPE_TO_SLUG[type]}`}
                 className="group flex h-full flex-col items-center gap-2 rounded-xl border border-slate-200 bg-white p-5 text-center transition-all duration-300 hover:-translate-y-0.5 hover:border-emerald-400 hover:bg-emerald-50 hover:shadow-md"
               >
                 <span
@@ -91,7 +91,7 @@ export default async function HomePage() {
         <div className="flex items-end justify-between">
           <h2 className="text-2xl font-bold text-slate-900">{t.home.featured}</h2>
           <Link
-            href="/urunler"
+            href="/products"
             className="text-sm font-semibold text-emerald-600 hover:text-emerald-700"
           >
             {t.home.seeAll}

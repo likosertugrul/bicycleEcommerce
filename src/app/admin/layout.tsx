@@ -6,10 +6,10 @@ export const dynamic = "force-dynamic";
 
 const NAV = [
   { href: "/admin", label: "Dashboard", emoji: "📊" },
-  { href: "/admin/slaytlar", label: "Slides", emoji: "🖼️" },
-  { href: "/admin/urunler", label: "Products", emoji: "🚲" },
-  { href: "/admin/ilanlar", label: "Listings", emoji: "📝" },
-  { href: "/admin/siparisler", label: "Orders", emoji: "📦" },
+  { href: "/admin/slides", label: "Slides", emoji: "🖼️" },
+  { href: "/admin/products", label: "Products", emoji: "🚲" },
+  { href: "/admin/listings", label: "Listings", emoji: "📝" },
+  { href: "/admin/orders", label: "Orders", emoji: "📦" },
 ];
 
 export default async function AdminLayout({

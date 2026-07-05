@@ -46,7 +46,7 @@ export async function addToCart(productId: string, quantity = 1): Promise<void> 
     : [...lines, { productId, quantity: nextQty }];
 
   await writeCart(updated);
-  revalidatePath("/sepet");
+  revalidatePath("/cart");
 }
 
 /** Bir satırın miktarını belirli değere ayarla (0 veya altı → kaldır). */
@@ -68,18 +68,18 @@ export async function setQuantity(
     l.productId === productId ? { ...l, quantity: Math.min(qty, cap) } : l,
   );
   await writeCart(updated);
-  revalidatePath("/sepet");
+  revalidatePath("/cart");
 }
 
 /** Satırı sepetten çıkar. */
 export async function removeFromCart(productId: string): Promise<void> {
   const lines = await getCartLines();
   await writeCart(lines.filter((l) => l.productId !== productId));
-  revalidatePath("/sepet");
+  revalidatePath("/cart");
 }
 
 /** Sepeti tamamen boşalt. */
 export async function clearCart(): Promise<void> {
   await writeCart([]);
-  revalidatePath("/sepet");
+  revalidatePath("/cart");
 }

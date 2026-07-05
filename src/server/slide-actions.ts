@@ -48,9 +48,9 @@ export async function createSlide(
       imageUrl: image,
     },
   });
-  revalidatePath("/admin/slaytlar");
+  revalidatePath("/admin/slides");
   revalidatePath("/");
-  redirect("/admin/slaytlar");
+  redirect("/admin/slides");
 }
 
 export async function updateSlide(
@@ -83,16 +83,16 @@ export async function updateSlide(
       ...(image ? { imageUrl: image } : {}),
     },
   });
-  revalidatePath("/admin/slaytlar");
+  revalidatePath("/admin/slides");
   revalidatePath("/");
-  redirect("/admin/slaytlar");
+  redirect("/admin/slides");
 }
 
 export async function deleteSlide(id: string): Promise<void> {
   await requireAdmin();
   const prisma = getPrisma();
   await prisma.heroSlide.delete({ where: { id } });
-  revalidatePath("/admin/slaytlar");
+  revalidatePath("/admin/slides");
   revalidatePath("/");
 }
 
@@ -102,7 +102,7 @@ export async function toggleSlide(id: string): Promise<void> {
   const s = await prisma.heroSlide.findUnique({ where: { id }, select: { isActive: true } });
   if (s) {
     await prisma.heroSlide.update({ where: { id }, data: { isActive: !s.isActive } });
-    revalidatePath("/admin/slaytlar");
+    revalidatePath("/admin/slides");
     revalidatePath("/");
   }
 }

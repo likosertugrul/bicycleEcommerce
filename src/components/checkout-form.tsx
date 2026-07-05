@@ -88,7 +88,7 @@ export function CheckoutForm({
                   </label>
                 ))}
                 <Link
-                  href="/adreslerim"
+                  href="/addresses"
                   className="inline-block text-sm font-medium text-emerald-600 hover:text-emerald-700"
                 >
                   + Add new address
@@ -97,7 +97,7 @@ export function CheckoutForm({
             ) : (
               <p className="mt-3 text-sm text-slate-500">
                 You have no saved addresses.{" "}
-                <Link href="/adreslerim" className="font-medium text-emerald-600">
+                <Link href="/addresses" className="font-medium text-emerald-600">
                   Add an address
                 </Link>{" "}
                 or choose store pickup.

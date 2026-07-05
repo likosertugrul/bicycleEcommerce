@@ -8,7 +8,7 @@ export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const token_hash = searchParams.get("token_hash");
   const type = searchParams.get("type") as EmailOtpType | null;
-  const next = searchParams.get("next") ?? "/hesabim";
+  const next = searchParams.get("next") ?? "/account";
 
   if (token_hash && type) {
     const supabase = await createSupabaseServer();
@@ -23,6 +23,6 @@ export async function GET(request: Request) {
   }
 
   return NextResponse.redirect(
-    `${origin}/giris?error=${encodeURIComponent("Doğrulama bağlantısı geçersiz veya süresi dolmuş.")}`,
+    `${origin}/login?error=${encodeURIComponent("Doğrulama bağlantısı geçersiz veya süresi dolmuş.")}`,
   );
 }

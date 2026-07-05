@@ -33,7 +33,7 @@ export async function toggleFavorite(productId: string): Promise<boolean> {
   const favs = await readFavs();
   if (favs.includes(productId)) {
     await writeFavs(favs.filter((id) => id !== productId));
-    revalidatePath("/favorilerim");
+    revalidatePath("/favorites");
     return false;
   }
   // Eklemeden önce ürünün gerçekten var/aktif olduğunu doğrula.
@@ -44,7 +44,7 @@ export async function toggleFavorite(productId: string): Promise<boolean> {
   });
   if (!exists) return false;
   await writeFavs([...favs, productId]);
-  revalidatePath("/favorilerim");
+  revalidatePath("/favorites");
   return true;
 }
 
@@ -52,11 +52,11 @@ export async function toggleFavorite(productId: string): Promise<boolean> {
 export async function removeFavorite(productId: string): Promise<void> {
   const favs = await readFavs();
   await writeFavs(favs.filter((id) => id !== productId));
-  revalidatePath("/favorilerim");
+  revalidatePath("/favorites");
 }
 
 /** Tüm favorileri temizle. */
 export async function clearWishlist(): Promise<void> {
   await writeFavs([]);
-  revalidatePath("/favorilerim");
+  revalidatePath("/favorites");
 }

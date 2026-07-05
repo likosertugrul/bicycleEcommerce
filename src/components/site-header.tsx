@@ -8,10 +8,10 @@ import { AccountMenu } from "@/components/account-menu";
 
 export function SiteHeader({ t }: { t: Dictionary }) {
   const nav = [
-    { href: "/urunler", label: t.nav.allBikes },
-    { href: "/urunler?durum=sifir", label: t.nav.new },
-    { href: "/urunler?durum=2el", label: t.nav.used },
-    { href: "/bisikletini-sat", label: t.nav.sell },
+    { href: "/products", label: t.nav.allBikes },
+    { href: "/products?condition=new", label: t.nav.new },
+    { href: "/products?condition=used", label: t.nav.used },
+    { href: "/sell-your-bike", label: t.nav.sell },
   ];
 
   return (
@@ -36,7 +36,7 @@ export function SiteHeader({ t }: { t: Dictionary }) {
 
         <div className="ml-auto flex items-center gap-3">
           <Link
-            href="/urunler"
+            href="/products"
             className="hidden sm:inline text-sm text-slate-600 hover:text-emerald-600"
           >
             {t.nav.search}

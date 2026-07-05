@@ -17,8 +17,8 @@ export function SortSelect({
 
   function onChange(value: string) {
     const params = new URLSearchParams(sp.toString());
-    if (value) params.set("sirala", value);
-    else params.delete("sirala");
+    if (value) params.set("sort", value);
+    else params.delete("sort");
     const qs = params.toString();
     start(() => router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false }));
   }
@@ -29,7 +29,7 @@ export function SortSelect({
     >
       <span className="text-slate-500">{label}</span>
       <select
-        value={sp.get("sirala") ?? ""}
+        value={sp.get("sort") ?? ""}
         onChange={(e) => onChange(e.target.value)}
         className="rounded-lg border border-slate-300 px-3 py-1.5 outline-none focus:border-emerald-500"
       >

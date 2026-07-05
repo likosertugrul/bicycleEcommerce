@@ -55,7 +55,7 @@ export async function addAddress(input: AddressInput): Promise<AddressResult> {
   await prisma.address.create({
     data: { userId: user.id, ...clean(input), isDefault: count === 0 },
   });
-  revalidatePath("/adreslerim");
+  revalidatePath("/addresses");
   return { ok: true };
 }
 
@@ -74,7 +74,7 @@ export async function updateAddress(
     where: { id, userId: user.id },
     data: clean(input),
   });
-  revalidatePath("/adreslerim");
+  revalidatePath("/addresses");
   return { ok: true };
 }
 
@@ -96,7 +96,7 @@ export async function deleteAddress(id: string): Promise<AddressResult> {
       data: { isDefault: true },
     });
   }
-  revalidatePath("/adreslerim");
+  revalidatePath("/addresses");
   return { ok: true };
 }
 
@@ -116,6 +116,6 @@ export async function setDefaultAddress(id: string): Promise<AddressResult> {
       data: { isDefault: true },
     }),
   ]);
-  revalidatePath("/adreslerim");
+  revalidatePath("/addresses");
   return { ok: true };
 }

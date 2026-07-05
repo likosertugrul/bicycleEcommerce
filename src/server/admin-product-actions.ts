@@ -126,8 +126,8 @@ export async function createProduct(
         : undefined,
     },
   });
-  revalidatePath("/admin/urunler");
-  redirect("/admin/urunler");
+  revalidatePath("/admin/products");
+  redirect("/admin/products");
 }
 
 export async function updateProduct(
@@ -170,8 +170,8 @@ export async function updateProduct(
       })),
     });
   }
-  revalidatePath("/admin/urunler");
-  redirect("/admin/urunler");
+  revalidatePath("/admin/products");
+  redirect("/admin/products");
 }
 
 /** Ürün görselini sil (kapaksa sıradakini kapak yap). */
@@ -192,7 +192,7 @@ export async function deleteProductImage(imageId: string): Promise<void> {
     if (next)
       await prisma.productImage.update({ where: { id: next.id }, data: { isCover: true } });
   }
-  revalidatePath(`/admin/urunler/${img.productId}`);
+  revalidatePath(`/admin/products/${img.productId}`);
 }
 
 /** Görseli sırada bir sola/sağa taşı (komşuyla yer değiştir). */
@@ -220,7 +220,7 @@ export async function moveProductImage(
     prisma.productImage.update({ where: { id: a.id }, data: { position: b.position } }),
     prisma.productImage.update({ where: { id: b.id }, data: { position: a.position } }),
   ]);
-  revalidatePath(`/admin/urunler/${img.productId}`);
+  revalidatePath(`/admin/products/${img.productId}`);
 }
 
 /** Görseli kapak yap (diğerlerini kaldır). */
@@ -239,14 +239,14 @@ export async function setCoverImage(imageId: string): Promise<void> {
     }),
     prisma.productImage.update({ where: { id: imageId }, data: { isCover: true } }),
   ]);
-  revalidatePath(`/admin/urunler/${img.productId}`);
+  revalidatePath(`/admin/products/${img.productId}`);
 }
 
 export async function deleteProduct(id: string): Promise<void> {
   await requireAdmin();
   const prisma = getPrisma();
   await prisma.product.delete({ where: { id } });
-  revalidatePath("/admin/urunler");
+  revalidatePath("/admin/products");
 }
 
 // Listeden hızlı düzenleme: fiyat/stok/durum/tür.
@@ -273,7 +273,7 @@ export async function quickUpdateProduct(
       bikeType,
     },
   });
-  revalidatePath("/admin/urunler");
+  revalidatePath("/admin/products");
 }
 
 // Belirli duruma ayarla (segmented radio için).
@@ -284,7 +284,7 @@ export async function setProductActive(
   await requireAdmin();
   const prisma = getPrisma();
   await prisma.product.update({ where: { id }, data: { isActive: active } });
-  revalidatePath("/admin/urunler");
+  revalidatePath("/admin/products");
 }
 
 export async function toggleActive(id: string): Promise<void> {
@@ -299,6 +299,6 @@ export async function toggleActive(id: string): Promise<void> {
       where: { id },
       data: { isActive: !p.isActive },
     });
-    revalidatePath("/admin/urunler");
+    revalidatePath("/admin/products");
   }
 }

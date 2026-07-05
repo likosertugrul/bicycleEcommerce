@@ -11,38 +11,38 @@ function one(v: string | string[] | undefined): string | undefined {
 }
 
 // URL parametreleri (Türkçe) → ProductFilters
-// örn: /urunler?tur=dag&durum=2el&kadro=L&minFiyat=10000&sirala=fiyat-artan&q=dağ
+// örn: /products?type=dag&condition=used&size=L&minPrice=10000&sort=fiyat-artan&q=dağ
 export function parseFilters(sp: RawSearchParams): ProductFilters {
   const filters: ProductFilters = {};
 
-  const tur = one(sp.tur);
+  const tur = one(sp.type);
   if (tur && BIKE_TYPE_SLUGS[tur]) filters.bikeType = BIKE_TYPE_SLUGS[tur];
 
-  const durum = one(sp.durum);
-  if (durum === "sifir") filters.condition = "NEW" as ProductCondition;
-  if (durum === "2el") filters.condition = "USED" as ProductCondition;
+  const condition = one(sp.condition);
+  if (condition === "new") filters.condition = "NEW" as ProductCondition;
+  if (condition === "used") filters.condition = "USED" as ProductCondition;
 
-  const kadro = one(sp.kadro);
-  if (kadro) filters.frameSize = kadro;
+  const size = one(sp.size);
+  if (size) filters.frameSize = size;
 
-  const marka = one(sp.marka);
-  if (marka) filters.brand = marka;
+  const brand = one(sp.brand);
+  if (brand) filters.brand = brand;
 
   // Fiyatlar arayüzde TL girilir, kuruşa çevrilir
-  const minFiyat = Number(one(sp.minFiyat));
-  if (Number.isFinite(minFiyat) && minFiyat > 0)
-    filters.minPriceCents = Math.round(minFiyat * 100);
+  const minPrice = Number(one(sp.minPrice));
+  if (Number.isFinite(minPrice) && minPrice > 0)
+    filters.minPriceCents = Math.round(minPrice * 100);
 
-  const maxFiyat = Number(one(sp.maxFiyat));
-  if (Number.isFinite(maxFiyat) && maxFiyat > 0)
-    filters.maxPriceCents = Math.round(maxFiyat * 100);
+  const maxPrice = Number(one(sp.maxPrice));
+  if (Number.isFinite(maxPrice) && maxPrice > 0)
+    filters.maxPriceCents = Math.round(maxPrice * 100);
 
   const q = one(sp.q);
   if (q) filters.query = q;
 
-  const sirala = one(sp.sirala);
-  if (sirala === "fiyat-artan") filters.sort = "price-asc";
-  else if (sirala === "fiyat-azalan") filters.sort = "price-desc";
+  const sort = one(sp.sort);
+  if (sort === "price-asc") filters.sort = "price-asc";
+  else if (sort === "price-desc") filters.sort = "price-desc";
   else filters.sort = "newest";
 
   return filters;

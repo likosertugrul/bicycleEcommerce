@@ -16,17 +16,17 @@ export function SiteFooter({ t }: { t: Dictionary }) {
         <div>
           <h3 className="text-sm font-semibold text-slate-900">{t.footer.categories}</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-500">
-            <li><Link href="/kategori/dag" className="hover:text-emerald-600">{t.footer.mountain}</Link></li>
-            <li><Link href="/kategori/yol" className="hover:text-emerald-600">{t.footer.road}</Link></li>
-            <li><Link href="/kategori/sehir" className="hover:text-emerald-600">{t.footer.city}</Link></li>
-            <li><Link href="/kategori/elektrikli" className="hover:text-emerald-600">{t.footer.electric}</Link></li>
+            <li><Link href="/category/mountain" className="hover:text-emerald-600">{t.footer.mountain}</Link></li>
+            <li><Link href="/category/road" className="hover:text-emerald-600">{t.footer.road}</Link></li>
+            <li><Link href="/category/city" className="hover:text-emerald-600">{t.footer.city}</Link></li>
+            <li><Link href="/category/electric" className="hover:text-emerald-600">{t.footer.electric}</Link></li>
           </ul>
         </div>
 
         <div>
           <h3 className="text-sm font-semibold text-slate-900">{t.footer.corporate}</h3>
           <ul className="mt-3 space-y-2 text-sm text-slate-500">
-            <li><Link href="/bisikletini-sat" className="hover:text-emerald-600">{t.footer.sell}</Link></li>
+            <li><Link href="/sell-your-bike" className="hover:text-emerald-600">{t.footer.sell}</Link></li>
             <li><Link href="/privacy" className="hover:text-emerald-600">Privacy Policy</Link></li>
             <li><Link href="/terms" className="hover:text-emerald-600">Terms of Service</Link></li>
             <li><Link href="/returns" className="hover:text-emerald-600">Returns &amp; Refunds</Link></li>

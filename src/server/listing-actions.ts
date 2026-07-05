@@ -75,8 +75,8 @@ export async function createListing(
       status: ListingStatus.PENDING,
     },
   });
-  revalidatePath("/ilanlarim");
-  redirect("/ilanlarim");
+  revalidatePath("/my-listings");
+  redirect("/my-listings");
 }
 
 /** Admin: onayla. */
@@ -87,7 +87,7 @@ export async function approveListing(id: string): Promise<void> {
     where: { id },
     data: { status: ListingStatus.APPROVED },
   });
-  revalidatePath("/admin/ilanlar");
+  revalidatePath("/admin/listings");
 }
 
 /** Admin: reddet (not ile). */
@@ -99,7 +99,7 @@ export async function rejectListing(id: string, fd: FormData): Promise<void> {
     where: { id },
     data: { status: ListingStatus.REJECTED, adminNote: note },
   });
-  revalidatePath("/admin/ilanlar");
+  revalidatePath("/admin/listings");
 }
 
 /** Admin: ilanı ürüne dönüştür (dükkan stoğuna al) → düzenleme sayfasına git. */
@@ -153,7 +153,7 @@ export async function convertToProduct(id: string): Promise<void> {
     where: { id },
     data: { status: ListingStatus.PUBLISHED, convertedProductId: product.id },
   });
-  revalidatePath("/admin/ilanlar");
+  revalidatePath("/admin/listings");
   // Admin fiyatı/detayı gözden geçirsin diye ürün düzenlemeye yönlendir.
-  redirect(`/admin/urunler/${product.id}`);
+  redirect(`/admin/products/${product.id}`);
 }

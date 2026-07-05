@@ -15,9 +15,9 @@ export const site = {
   url: normalizeUrl(process.env.NEXT_PUBLIC_SITE_URL),
   phone: "(555) 000-0000",
   nav: [
-    { href: "/urunler", label: "All Bikes" },
-    { href: "/urunler?durum=sifir", label: "New" },
-    { href: "/urunler?durum=2el", label: "Used" },
-    { href: "/bisikletini-sat", label: "Sell Your Bike" },
+    { href: "/products", label: "All Bikes" },
+    { href: "/products?durum=sifir", label: "New" },
+    { href: "/products?durum=2el", label: "Used" },
+    { href: "/sell-your-bike", label: "Sell Your Bike" },
   ],
 } as const;

@@ -7,11 +7,11 @@ export default async function AdminDashboard() {
   const s = await getAdminStats();
 
   const cards = [
-    { label: "Total Products", value: s.total, href: "/admin/urunler" },
-    { label: "Active Products", value: s.active, href: "/admin/urunler" },
-    { label: "Used Products", value: s.used, href: "/admin/urunler" },
-    { label: "Low Stock (≤2)", value: s.lowStock, href: "/admin/urunler", warn: s.lowStock > 0 },
-    { label: "Orders", value: s.orders, href: "/admin/siparisler" },
+    { label: "Total Products", value: s.total, href: "/admin/products" },
+    { label: "Active Products", value: s.active, href: "/admin/products" },
+    { label: "Used Products", value: s.used, href: "/admin/products" },
+    { label: "Low Stock (≤2)", value: s.lowStock, href: "/admin/products", warn: s.lowStock > 0 },
+    { label: "Orders", value: s.orders, href: "/admin/orders" },
   ];
 
   return (
@@ -19,7 +19,7 @@ export default async function AdminDashboard() {
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-slate-900">Dashboard</h1>
         <Link
-          href="/admin/urunler/yeni"
+          href="/admin/products/new"
           className="rounded-lg bg-emerald-600 px-4 py-2 text-sm font-semibold text-white hover:bg-emerald-700"
         >
           + Yeni Ürün

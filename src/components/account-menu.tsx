@@ -9,7 +9,7 @@ export async function AccountMenu({ t }: { t: Dictionary }) {
   if (!user) {
     return (
       <Link
-        href="/giris"
+        href="/login"
         className="text-sm font-medium text-slate-600 hover:text-emerald-600"
       >
         {t.auth.signIn}
@@ -26,7 +26,7 @@ export async function AccountMenu({ t }: { t: Dictionary }) {
 
   return (
     <Link
-      href="/hesabim"
+      href="/account"
       aria-label={t.auth.account}
       className="flex h-9 items-center gap-1.5 rounded-full bg-slate-100 px-3 text-sm font-medium text-slate-700 hover:bg-slate-200"
     >

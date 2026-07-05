@@ -87,7 +87,7 @@ export function AdminProductRow({ p }: { p: AdminRowProduct }) {
 
   return (
     <tr
-      onClick={() => router.push(`/admin/urunler/${p.id}`)}
+      onClick={() => router.push(`/admin/products/${p.id}`)}
       className="cursor-pointer hover:bg-slate-50"
     >
       <td className="p-3">

@@ -39,7 +39,7 @@ export function SlideForm({
         </label>
         <label className="block text-sm font-medium text-slate-700">
           Button Link
-          <input name="ctaHref" defaultValue={initial?.ctaHref ?? ""} placeholder="/urunler/... or https://..." className={input} />
+          <input name="ctaHref" defaultValue={initial?.ctaHref ?? ""} placeholder="/products/... or https://..." className={input} />
         </label>
         <label className="block text-sm font-medium text-slate-700">
           Order

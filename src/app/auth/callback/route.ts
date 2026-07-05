@@ -6,7 +6,7 @@ import { ensureUserRow } from "@/server/auth";
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/hesabim";
+  const next = searchParams.get("next") ?? "/account";
 
   if (code) {
     const supabase = await createSupabaseServer();
@@ -21,6 +21,6 @@ export async function GET(request: Request) {
   }
 
   return NextResponse.redirect(
-    `${origin}/giris?error=${encodeURIComponent("Giriş tamamlanamadı.")}`,
+    `${origin}/login?error=${encodeURIComponent("Giriş tamamlanamadı.")}`,
   );
 }

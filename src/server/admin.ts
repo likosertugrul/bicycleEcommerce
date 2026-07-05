@@ -7,7 +7,7 @@ import { getPrisma } from "@/lib/prisma";
 /** Admin değilse yönlendirir; adminse kullanıcıyı döner. */
 export async function requireAdmin(): Promise<User> {
   const user = await getAuthUser();
-  if (!user) redirect("/giris");
+  if (!user) redirect("/login");
   const prisma = getPrisma();
   const row = await prisma.user.findUnique({
     where: { id: user.id },

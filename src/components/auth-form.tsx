@@ -113,14 +113,14 @@ export function AuthForm({
         {mode === "signin" ? (
           <>
             {t.noAccount}{" "}
-            <Link href="/kayit" className="font-semibold text-emerald-600 hover:text-emerald-700">
+            <Link href="/register" className="font-semibold text-emerald-600 hover:text-emerald-700">
               {t.signUp}
             </Link>
           </>
         ) : (
           <>
             {t.haveAccount}{" "}
-            <Link href="/giris" className="font-semibold text-emerald-600 hover:text-emerald-700">
+            <Link href="/login" className="font-semibold text-emerald-600 hover:text-emerald-700">
               {t.signIn}
             </Link>
           </>

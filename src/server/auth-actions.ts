@@ -30,7 +30,7 @@ export async function signInWithPassword(
   });
   if (error) return { error: error.message };
   if (data.user) await ensureUserRow(data.user);
-  redirect("/hesabim");
+  redirect("/account");
 }
 
 /** E-posta + şifre ile kayıt. */
@@ -51,7 +51,7 @@ export async function signUpWithPassword(
     password,
     options: {
       data: fullName ? { full_name: fullName } : undefined,
-      emailRedirectTo: `${origin}/auth/callback?next=/hesabim`,
+      emailRedirectTo: `${origin}/auth/callback?next=/account`,
     },
   });
   if (error) return { error: error.message };
@@ -59,9 +59,9 @@ export async function signUpWithPassword(
   // "Confirm email" kapalıysa oturum hemen açılır; açıksa doğrulama sayfasına git.
   if (data.session && data.user) {
     await ensureUserRow(data.user);
-    redirect("/hesabim");
+    redirect("/account");
   }
-  redirect(`/dogrula?email=${encodeURIComponent(email)}`);
+  redirect(`/verify?email=${encodeURIComponent(email)}`);
 }
 
 /** E-posta doğrulama — 6 haneli kod ile. */
@@ -79,7 +79,7 @@ export async function verifyEmailOtp(
   if (res.error) res = await supabase.auth.verifyOtp({ email, token, type: "signup" });
   if (res.error) return { error: res.error.message };
   if (res.data.user) await ensureUserRow(res.data.user);
-  redirect("/hesabim");
+  redirect("/account");
 }
 
 /** Google ile giriş — OAuth sağlayıcısına yönlendirir. */
@@ -88,9 +88,9 @@ export async function signInWithGoogle(): Promise<void> {
   const origin = await getOrigin();
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: "google",
-    options: { redirectTo: `${origin}/auth/callback?next=/hesabim` },
+    options: { redirectTo: `${origin}/auth/callback?next=/account` },
   });
-  if (error) redirect(`/giris?error=${encodeURIComponent(error.message)}`);
+  if (error) redirect(`/login?error=${encodeURIComponent(error.message)}`);
   if (data.url) redirect(data.url);
 }
 

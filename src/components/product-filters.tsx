@@ -61,16 +61,16 @@ export function ProductFilters({
   const typeLabel = (slug: string) => types.find((t) => t.slug === slug)?.label ?? slug;
   const active: { key: string; label: string }[] = [];
   if (get("q")) active.push({ key: "q", label: `"${get("q")}"` });
-  if (get("tur")) active.push({ key: "tur", label: typeLabel(get("tur")) });
-  if (get("durum"))
+  if (get("type")) active.push({ key: "type", label: typeLabel(get("type")) });
+  if (get("condition"))
     active.push({
-      key: "durum",
-      label: get("durum") === "sifir" ? labels.conditionNew : labels.conditionUsed,
+      key: "condition",
+      label: get("condition") === "new" ? labels.conditionNew : labels.conditionUsed,
     });
-  if (get("kadro")) active.push({ key: "kadro", label: get("kadro") });
-  if (get("marka")) active.push({ key: "marka", label: get("marka") });
-  if (get("minFiyat")) active.push({ key: "minFiyat", label: `≥ $${get("minFiyat")}` });
-  if (get("maxFiyat")) active.push({ key: "maxFiyat", label: `≤ $${get("maxFiyat")}` });
+  if (get("size")) active.push({ key: "size", label: get("size") });
+  if (get("brand")) active.push({ key: "brand", label: get("brand") });
+  if (get("minPrice")) active.push({ key: "minPrice", label: `≥ $${get("minPrice")}` });
+  if (get("maxPrice")) active.push({ key: "maxPrice", label: `≤ $${get("maxPrice")}` });
 
   const activeCount = active.length;
 
@@ -116,8 +116,8 @@ export function ProductFilters({
               type="button"
               onClick={() =>
                 update({
-                  q: null, tur: null, durum: null, kadro: null,
-                  marka: null, minFiyat: null, maxFiyat: null,
+                  q: null, type: null, condition: null, size: null,
+                  brand: null, minPrice: null, maxPrice: null,
                 })
               }
               className="text-xs font-medium text-slate-400 underline hover:text-slate-600"
@@ -150,12 +150,12 @@ export function ProductFilters({
           <p className="font-semibold text-slate-900">{labels.type}</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {types.map((ty) => {
-              const on = get("tur") === ty.slug;
+              const on = get("type") === ty.slug;
               return (
                 <button
                   key={ty.slug}
                   type="button"
-                  onClick={() => toggle("tur", ty.slug)}
+                  onClick={() => toggle("type", ty.slug)}
                   className={`${CHIP} ${
                     on
                       ? "border-emerald-600 bg-emerald-600 text-white"
@@ -175,15 +175,15 @@ export function ProductFilters({
           <div className="mt-2 inline-flex rounded-lg border border-slate-300 p-0.5">
             {[
               { v: "", l: labels.statusAll },
-              { v: "sifir", l: labels.conditionNew },
-              { v: "2el", l: labels.conditionUsed },
+              { v: "new", l: labels.conditionNew },
+              { v: "used", l: labels.conditionUsed },
             ].map((o) => {
-              const on = get("durum") === o.v;
+              const on = get("condition") === o.v;
               return (
                 <button
                   key={o.v || "all"}
                   type="button"
-                  onClick={() => update({ durum: o.v || null })}
+                  onClick={() => update({ condition: o.v || null })}
                   className={`rounded-md px-3 py-1 text-sm font-medium transition-colors ${
                     on ? "bg-emerald-600 text-white" : "text-slate-600 hover:text-slate-900"
                   }`}
@@ -200,12 +200,12 @@ export function ProductFilters({
           <p className="font-semibold text-slate-900">{labels.frameSize}</p>
           <div className="mt-2 flex flex-wrap gap-2">
             {frameSizes.map((s) => {
-              const on = get("kadro") === s;
+              const on = get("size") === s;
               return (
                 <button
                   key={s}
                   type="button"
-                  onClick={() => toggle("kadro", s)}
+                  onClick={() => toggle("size", s)}
                   className={`${CHIP} min-w-9 ${
                     on
                       ? "border-emerald-600 bg-emerald-600 text-white"
@@ -223,8 +223,8 @@ export function ProductFilters({
         <div>
           <label className="block font-semibold text-slate-900">{labels.brand}</label>
           <select
-            value={get("marka")}
-            onChange={(e) => update({ marka: e.target.value || null })}
+            value={get("brand")}
+            onChange={(e) => update({ brand: e.target.value || null })}
             className="mt-2 w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-emerald-500"
           >
             <option value="">{labels.all}</option>
@@ -236,26 +236,26 @@ export function ProductFilters({
 
         {/* Fiyat */}
         <form
-          key={`p-${get("minFiyat")}-${get("maxFiyat")}`}
+          key={`p-${get("minPrice")}-${get("maxPrice")}`}
           onSubmit={(e) => {
             e.preventDefault();
             const f = new FormData(e.currentTarget);
             update({
-              minFiyat: (f.get("minFiyat") as string) || null,
-              maxFiyat: (f.get("maxFiyat") as string) || null,
+              minPrice: (f.get("minPrice") as string) || null,
+              maxPrice: (f.get("maxPrice") as string) || null,
             });
           }}
         >
           <label className="block font-semibold text-slate-900">{labels.price}</label>
           <div className="mt-2 flex items-center gap-2">
             <input
-              type="number" name="minFiyat" min={0} defaultValue={get("minFiyat")}
+              type="number" name="minPrice" min={0} defaultValue={get("minPrice")}
               placeholder={labels.min}
               className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-emerald-500"
             />
             <span className="text-slate-400">–</span>
             <input
-              type="number" name="maxFiyat" min={0} defaultValue={get("maxFiyat")}
+              type="number" name="maxPrice" min={0} defaultValue={get("maxPrice")}
               placeholder={labels.max}
               className="w-full rounded-lg border border-slate-300 px-3 py-2 outline-none focus:border-emerald-500"
             />

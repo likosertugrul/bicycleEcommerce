@@ -18,20 +18,20 @@ export type SellerType = "SHOP" | "CONSUMER";
 
 // URL slug'ları ↔ enum eşlemesi (filtre linkleri için)
 export const BIKE_TYPE_SLUGS: Record<string, BikeType> = {
-  dag: "MOUNTAIN",
-  yol: "ROAD",
-  sehir: "CITY",
-  elektrikli: "ELECTRIC",
-  cocuk: "KIDS",
+  mountain: "MOUNTAIN",
+  road: "ROAD",
+  city: "CITY",
+  electric: "ELECTRIC",
+  kids: "KIDS",
   gravel: "GRAVEL",
 };
 
 export const BIKE_TYPE_TO_SLUG: Record<BikeType, string> = {
-  MOUNTAIN: "dag",
-  ROAD: "yol",
-  CITY: "sehir",
-  ELECTRIC: "elektrikli",
-  KIDS: "cocuk",
+  MOUNTAIN: "mountain",
+  ROAD: "road",
+  CITY: "city",
+  ELECTRIC: "electric",
+  KIDS: "kids",
   GRAVEL: "gravel",
 };
 

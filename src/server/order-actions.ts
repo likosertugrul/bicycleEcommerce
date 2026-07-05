@@ -127,7 +127,7 @@ export async function createOrder(
 
   // Sepeti boşalt
   (await cookies()).set(CART_COOKIE, "", { maxAge: 0, path: "/" });
-  redirect(`/siparis/${orderId}`);
+  redirect(`/order/${orderId}`);
 }
 
 // --- Admin ---
@@ -146,8 +146,8 @@ export async function updateOrderStatus(id: string, status: string): Promise<voi
       data: { status: "PAID" },
     });
   }
-  revalidatePath("/admin/siparisler");
-  revalidatePath(`/admin/siparisler/${id}`);
+  revalidatePath("/admin/orders");
+  revalidatePath(`/admin/orders/${id}`);
 }
 
 export async function setTrackingCode(id: string, fd: FormData): Promise<void> {
@@ -158,5 +158,5 @@ export async function setTrackingCode(id: string, fd: FormData): Promise<void> {
     where: { id },
     data: { trackingCode: code || null },
   });
-  revalidatePath(`/admin/siparisler/${id}`);
+  revalidatePath(`/admin/orders/${id}`);
 }
