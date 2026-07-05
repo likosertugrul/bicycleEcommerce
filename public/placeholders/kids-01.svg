@@ -1,4 +1,4 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Çocuk Bisikleti — temsili görsel">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img" aria-label="Kids Bike — sample image">
   <defs>
     <linearGradient id="g-kids-01" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0" stop-color="#e6f2fb"/>
@@ -25,6 +25,6 @@
     <circle cx="360" cy="380" r="26"/>
     <path d="M360 380 L385 405"/>
   </g>
-  <text x="400" y="545" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="600" fill="#2980b9" opacity="0.85">Çocuk Bisikleti</text>
-  <text x="400" y="580" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#2980b9" opacity="0.55">Temsili görsel</text>
+  <text x="400" y="545" text-anchor="middle" font-family="system-ui, sans-serif" font-size="30" font-weight="600" fill="#2980b9" opacity="0.85">Kids Bike</text>
+  <text x="400" y="580" text-anchor="middle" font-family="system-ui, sans-serif" font-size="18" fill="#2980b9" opacity="0.55">Sample image</text>
 </svg>
