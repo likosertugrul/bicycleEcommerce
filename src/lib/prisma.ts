@@ -1,23 +1,36 @@
-import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
+import type { PrismaClient as PrismaClientType } from "@prisma/client";
 
-// YEREL (Node) yapılandırması. `next dev` Node üzerinde çalışır; varsayılan
-// @prisma/client + global singleton en verimli ve hot-reload dostu yöntemdir.
-//
-// NOT (deploy'a dönünce): Cloudflare Workers için bunu değiştirmek gerekir —
-// (1) import'u `@prisma/client/edge` yap (WASM modül yüklemesi), (2) singleton
-// yerine istek başına taze client üret (istekler arası soket paylaşımı Worker'ı
-// asar). Ayrıntı CLAUDE.md'de. Şimdilik yerel geliştirmeye odaklanıyoruz.
+// Runtime'a göre Prisma client seç:
+// - Cloudflare Workers (workerd): "@prisma/client/edge" (varsayılan client Node
+//   yolunda `new WebAssembly.Module(bytes)` çağırır, Workers bunu yasaklar).
+// - Node (next dev / diğer): varsayılan "@prisma/client" (edge sürümü Node'da
+//   ".wasm" yükleme hatası verir).
+const isWorkerd =
+  typeof navigator !== "undefined" &&
+  navigator.userAgent === "Cloudflare-Workers";
+
+const { PrismaClient } = isWorkerd
+  ? await import("@prisma/client/edge")
+  : await import("@prisma/client");
+
+// Node'da (next dev) hot-reload sırasında bağlantı patlamasını önlemek için
+// singleton; Workers'ta ise bir isteğin soketi başka istekte kullanılırsa Worker
+// asılır → her çağrıda TAZE client (singleton YOK).
 const globalForPrisma = globalThis as unknown as {
-  prisma: PrismaClient | undefined;
+  prisma: PrismaClientType | undefined;
 };
 
-export function getPrisma(): PrismaClient {
+export function getPrisma(): PrismaClientType {
+  if (isWorkerd) {
+    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+    return new PrismaClient({ adapter }) as unknown as PrismaClientType;
+  }
   if (!globalForPrisma.prisma) {
-    const adapter = new PrismaPg({
-      connectionString: process.env.DATABASE_URL,
-    });
-    globalForPrisma.prisma = new PrismaClient({ adapter });
+    const adapter = new PrismaPg({ connectionString: process.env.DATABASE_URL });
+    globalForPrisma.prisma = new PrismaClient({
+      adapter,
+    }) as unknown as PrismaClientType;
   }
   return globalForPrisma.prisma;
 }
