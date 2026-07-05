@@ -4,7 +4,7 @@ import { AuthForm } from "@/components/auth-form";
 import { getT } from "@/lib/locale";
 import { getAuthUser } from "@/server/auth";
 
-export const metadata: Metadata = { title: "Giriş Yap", robots: { index: false } };
+export const metadata: Metadata = { title: "Sign In", robots: { index: false } };
 export const dynamic = "force-dynamic";
 
 export default async function SignInPage() {
