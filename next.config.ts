@@ -23,4 +23,8 @@ const nextConfig: NextConfig = {
 
 export default nextConfig;
 
-import('@opennextjs/cloudflare').then(m => m.initOpenNextCloudflareForDev());
+// Cloudflare dev binding'lerini yalnızca yerel geliştirmede kur. Vercel/başka
+// platformlarda (production build) tetiklenmesin.
+if (process.env.NODE_ENV === "development") {
+  import("@opennextjs/cloudflare").then((m) => m.initOpenNextCloudflareForDev());
+}
